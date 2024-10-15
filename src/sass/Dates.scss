@@ -1,0 +1,181 @@
+@mixin add-animation-delay($max-childs: 100) {
+  @for $i from 1 through $max-childs {
+    &:nth-child(#{$i}) {
+      animation-delay: $i * 0.1s;
+    }
+  }
+}
+
+#dates {
+  margin-top: 150px;
+  padding: 50px 0 20px 0;
+  color: white;
+  background-color: #00000045;
+  position: relative;
+
+  h2 {
+    position: absolute;
+    top: -30px;
+    left: -20px;
+    color: black;
+    font-size: 50px;
+    font-weight: 900;
+    text-shadow: 2px 2px 0px #ffffff;
+  }
+
+  .earlierDates,
+  .laterDates {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    cursor: pointer;
+
+    &:hover {
+      color: yellow; // Optionale Hover-Änderung für bessere Sichtbarkeit
+    }
+  }
+
+  .earlierDates {
+    left: 10px;
+  }
+
+  .laterDates {
+    right: 10px;
+  }
+
+  .dateElement {
+    width: fit-content;
+    display: flex;
+    margin: 20px auto;
+    // border: 1px solid white;
+    opacity: 0;
+
+    .date {
+      background-color: red;
+      padding: 5px 0;
+      width: 60px;
+
+      > div {
+        text-align: center;
+      }
+
+      > div:first-of-type {
+        font-size: 30px;
+      }
+    }
+
+    .location {
+      margin: 0 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+
+      .place {
+        text-align: center;
+        font-size: 30px;
+      }
+
+      .address {
+        display: flex;
+
+        > div:first-of-type {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      margin-right: 20px;
+
+      > div {
+        display: flex;
+
+        svg {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+    }
+
+    &.initial {
+      opacity: 1;
+    }
+
+    &.slideInLeft {
+      animation: slideInLeft 0.3s forwards;
+    }
+
+    &.slideOutLeft {
+      animation: slideOutLeft 0.3s forwards;
+      opacity: 1;
+    }
+
+    &.slideInRight {
+      animation: slideInRight 0.3s forwards;
+    }
+
+    &.slideOutRight {
+      animation: slideOutRight 0.3s forwards;
+      opacity: 1;
+    }
+
+    @include add-animation-delay(100);
+
+    // &:last-of-type {
+    //     animation-delay: 0.1s;
+    // }
+    
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}

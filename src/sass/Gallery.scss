@@ -1,0 +1,26 @@
+#gallery {
+    width: 100vw;
+
+  .gallery-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+
+    .gallery-image-wrapper {
+        width: 20%;
+        margin: 1rem;
+        background-color: #00000045;
+
+        > img {
+            width: 100%
+        }
+
+        .image-text {
+            color: white;
+            font-family: 'Roboto';
+            text-align: center;
+        }
+    }
+  }
+}

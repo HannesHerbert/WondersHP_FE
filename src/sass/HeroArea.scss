@@ -1,0 +1,31 @@
+#hero-area {
+    transform-style: preserve-3d;
+
+  #group-image-container {
+    width: 50vw;
+    margin-left: auto;
+    overflow: hidden;
+    background-color: #00000045;
+    transform: rotateY(-10deg) translateZ(-100px);
+    transform-origin: right;
+
+    .image-wrapper {
+        overflow: hidden;
+
+      img {
+        width: 100%;
+        //   height: 100px;
+        //   background-image: url("../images/Wonders-GROUPimg.jpg");
+        //   background-size: cover; /* Das Bild wird skaliert, um den gesamten Container zu bedecken */
+        //   background-position: center; /* Das Bild wird in der Mitte des Containers zentriert */
+        //   background-repeat: no-repeat;
+      }
+    }
+
+    .hero-text {
+        padding: 0 .5rem .5rem 1rem;
+        color: #fff;
+        text-align: right;
+    }
+  }
+}

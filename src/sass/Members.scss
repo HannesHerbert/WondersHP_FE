@@ -1,0 +1,194 @@
+@import "./variables.scss";
+
+#members {
+  margin-top: 150px;
+
+  .members-grid {
+    margin: 0 auto;
+    width: $grid_size;
+    height: $grid_size;
+    background-color: #000000;
+    border: white $grid_border solid;
+    position: relative;
+
+    .member {
+      box-sizing: border-box;
+      border: white $grid_border solid;
+      position: absolute;
+      background-color: #000000;
+      color: #fff;
+      z-index: 10;
+      width: calc(($grid_size / 2) - (1.5 * $grid_gap) - $grid_border);
+      height: calc(($grid_size / 2) - (1.5 * $grid_gap) - $grid_border);
+      transition: all 0.3s ease-in-out;
+      display: flex;
+
+      &.topLeft {
+        top: $grid_gap;
+        left: $grid_gap;
+
+        .member-image {
+          top: 0;
+          left: 0;
+        }
+
+        .image-overlay {
+          background-color: nth($colors, 1);
+          right: 0;
+        }
+
+        .member-name {
+          top: 0;
+          right: 0;
+        }
+
+        .member-description {
+          align-self: flex-end;
+        }
+      }
+
+      &.topRight {
+        top: $grid_gap;
+        right: $grid_gap;
+
+        .member-image {
+          top: 0;
+          right: 0;
+        }
+
+        .image-overlay {
+          background-color: nth($colors, 5);
+          left: 0;
+        }
+
+        .member-name {
+          top: 0;
+          left: 0;
+        }
+
+        .member-description {
+          align-self: flex-end;
+        }
+      }
+
+      &.bottomLeft {
+        left: $grid_gap;
+        bottom: $grid_gap;
+
+        .member-image {
+          left: 0;
+          bottom: 0;
+        }
+
+        .image-overlay {
+          background-color: nth($colors, 6);
+          right: 0;
+          bottom: 0;
+        }
+
+        .member-name {
+          bottom: 0;
+          right: 0;
+        }
+      }
+
+      &.bottomRight {
+        right: $grid_gap;
+        bottom: $grid_gap;
+
+        .member-image {
+          right: 0;
+          bottom: 0;
+        }
+
+        .image-overlay {
+          background-color: nth($colors, 7);
+          left: 0;
+          bottom: 0;
+        }
+
+        .member-name {
+          bottom: 0;
+          left: 0;
+        }
+      }
+
+      .member-image {
+        width: calc(($grid_size / 2) - (1.5 * $grid_gap) - (3 * $grid_border));
+        height: calc(($grid_size / 2) - (1.5 * $grid_gap) - (3 * $grid_border));
+        position: absolute;
+        transition-delay: 0.3s;
+      }
+
+      .image-overlay {
+        width: calc(($grid_size / 2) - (1.5 * $grid_gap) - (3 * $grid_border));
+        height: calc(($grid_size / 2) - (1.5 * $grid_gap) - (3 * $grid_border));
+        position: absolute;
+        opacity: .5;
+      }
+
+      .member-name {
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        display: flex;
+        flex-wrap: wrap;
+        position: absolute;
+        width: calc(($grid_size / 2) - (1.5 * $grid_gap) - (3 * $grid_border));
+        height: calc(($grid_size / 2) - (1.5 * $grid_gap) - (3 * $grid_border));
+        z-index: 100;
+        
+        .empty {
+            border: 1px solid white;
+         }
+
+        &:hover {
+          opacity: 1;
+        }
+
+        > div {
+          width: 25%;
+          height: 25%;
+          // border: 1px solid green;
+          font-size: calc(500%);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-transform: capitalize;
+        } 
+      }
+
+      .member-description {
+        padding: 10px;
+        height: 50%;
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        font-size: 20px;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &:not(.expanded) {
+        transition-delay: 0.3s;
+      }
+
+      &.expanded {
+        z-index: 15;
+        width: calc($grid_size - (2.3 * $grid_gap) - $grid_border);
+        height: calc($grid_size - (2.3 * $grid_gap) - $grid_border);
+
+        .member-image {
+        }
+
+        .image-overlay {
+        }
+
+        .member-description, .member-name {
+          opacity: 1;
+          transition-delay: 0.3s;
+        }
+      }
+    }
+  }
+}

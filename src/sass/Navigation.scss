@@ -1,0 +1,118 @@
+#navigation-desktop {
+  padding: 3rem;
+  position: absolute;
+  left: 0;
+  top: 150px;
+  display: none;
+  z-index: 100;
+
+  nav {
+    ul {
+      perspective: 500px;
+
+      .navLink {
+        list-style: none;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        transform: rotateY(40deg);
+        transition: all 0.3s;
+
+        &:hover {
+          transform: rotateY(10deg);
+        }
+
+        a {
+          font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+            "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+          text-decoration: none;
+          color: black;
+          font-size: 80px;
+          font-weight: 900;
+          text-shadow: 2px 2px 0px #ffffff;
+        }
+      }
+
+      //       .activeNav {
+
+      //       }
+    }
+  }
+}
+
+@media (min-width: 769px) {
+  #navigation-desktop {
+    display: block;
+  }
+}
+
+#navigation-mobile {
+  display: none;
+
+  #burger-menu {
+    width: 60px;
+    padding: 1rem;
+
+    .burger-layer {
+      height: 4px;
+      margin: 2px 0;
+      border-radius: 2px;
+      background-color: black;
+      border: 1px solid white;
+      transform-origin: calc(0% + 4px);
+      transition: all 0.3s;
+    }
+
+    &.active .burger-layer {
+      &:nth-of-type(1) {
+        transform: rotateZ(45deg) translateY(-3px);
+      }
+
+      &:nth-of-type(2) {
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+
+      &:nth-of-type(3) {
+        transform: rotateZ(-45deg) translateY(3px);
+      }
+    }
+  }
+
+  nav {
+    position: absolute;
+    bottom: 0;
+    transform: translateY(100%);
+    transition: all 0.3s;
+    height: 0;
+    overflow: hidden;
+
+    &.expanded {
+      height: 100px;
+    }
+
+    > ul {
+      .navLink {
+        font-family: "Roboto";
+
+        &.activeNav a {
+          text-decoration: underline;
+        }
+
+        a {
+          text-decoration: none;
+          color: white;
+        }
+      }
+      #navigation-mobile {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  #navigation-mobile {
+    display: block;
+  }
+}

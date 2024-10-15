@@ -1,0 +1,28 @@
+#header {
+    padding: 1rem;
+    z-index: 99999;
+    position: fixed;
+    width: 100%;
+    background-color: #00000045;
+  
+    > div {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      #name {
+        font-family: "Pacifico", cursive;
+        font-weight: 400;
+        font-size: 30px;
+        color: #cba27c;
+        width: fit-content;
+        text-shadow: 5px 5px 3px #000000;
+  
+        br {
+          display: inline;
+          content: "  ";
+        }
+      }
+    }
+  }

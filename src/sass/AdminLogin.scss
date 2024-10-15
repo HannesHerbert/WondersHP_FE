@@ -1,0 +1,38 @@
+#admin-login {
+    position: absolute;
+    top: 300px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    .admin-login-container {
+        width: 40%;
+        background-color: #00000045;
+        padding: 1rem;
+        
+        .login-form {
+            margin-top: 1rem;
+            width: 100%;
+            text-align: center;
+
+            .input-field {
+                display: flex;
+                justify-content: space-between;
+
+                label {
+                    color: white
+                }
+            }
+
+            button {
+                margin: 1rem 0;
+                padding: 0.2rem 1rem;
+            }
+        }
+    }
+}
+

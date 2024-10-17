@@ -11,20 +11,31 @@ const useAuthStore = create( set => ({
     }, 
     
     validateToken: async () => {
+
       const token = localStorage.getItem('token');
+      let isValid = false;
+
       try {
-          let resp = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/protected/uservalidation`, {
+
+
+          let resp = await axios.post(`${import.meta.env.VITE_BASE_API_URL}/admin/validate`, {}, {
             headers: {
               'Authorization': `Bearer ${token}`
             }  
           });
-          
-          set({user: resp.data.user});
+
+          if(resp.data.user) {
+            
+            set({user: resp.data.user});
+            isValid = true;
+          }
 
       } catch (error) {
         console.log(error);
         localStorage.removeItem('token');
-      } 
+      }
+
+      return isValid
     },
 
     // Methode zum Speichern des users und des tokens

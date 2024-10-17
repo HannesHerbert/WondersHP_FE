@@ -1,0 +1,29 @@
+#members-management {
+
+
+    .member-row {
+        display: flex;
+   
+
+        .member-image {
+
+            > img {
+
+                width: 200px;
+            }
+        }
+        
+        .member-informations {
+            color: #ffffff;
+
+            .member-name {
+
+            }
+
+            .member-description {
+
+            }
+        }
+    }
+
+}

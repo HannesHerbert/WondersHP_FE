@@ -14,6 +14,7 @@ function AdminLogin() {
 
   const token = useAuthStore((state) => state.getToken());
   const validateToken = useAuthStore((state) => state.validateToken);
+  const user = useAuthStore((state) => state.user)
 
   // Notification Handler function
   // const notificationHandler = useNotificationStore(state => state.notificationHandler);
@@ -35,15 +36,17 @@ function AdminLogin() {
   //   }
   // }, []);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/admin");
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     console.log(user);
+      
+  //     navigate("/admin");
+  //   }
+  // }, [isAuthenticated]);
 
   const submitHandler = async (event) => {
     event.preventDefault();
-
+    
     // Erstelle Objekt fuer den Body des Requests
     const loginData = {
       username: usernameRef.current.value,
@@ -55,8 +58,7 @@ function AdminLogin() {
 
             authenticate(response.data.user, response.data.token);
 
-            // display eine 'SUCCESS' Meldung
-            // alertSuccessHandler(`Hey, ${response.data.user.username}!`);
+            navigate("/admin");
 
         } catch (error) {
             console.log('ERROR:', error);

@@ -28,9 +28,9 @@ function AdminDashboard() {
         },
     ];
 
-    useEffect(() => {
-        console.log(activeNav);
-    }, [activeNav]);
+    // useEffect(() => {
+    //     console.log(activeNav);
+    // }, [activeNav]);
 
     const navElements = adminNavs.map((nav, index) => (
         <li 

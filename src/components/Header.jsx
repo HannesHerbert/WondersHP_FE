@@ -1,4 +1,5 @@
 import Navigation from "./Navigation";
+import AudioPlayer from "../components/Home/AudioPlayer";
 import "../sass/Header.scss"
 
 function Header() {
@@ -17,6 +18,9 @@ function Header() {
           Wonders
         </div>
       </div>
+
+      {/* <AudioPlayer /> */}
+
     </header>
   );
 }

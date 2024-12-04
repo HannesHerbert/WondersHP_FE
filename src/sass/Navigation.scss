@@ -39,14 +39,13 @@
   }
 }
 
-@media (min-width: 769px) {
-  #navigation-desktop {
-    display: block;
-  }
-}
+// @media (min-width: 769px) {
+//   #navigation-desktop {
+//     display: block;
+//   }
+// }
 
 #navigation-mobile {
-  display: none;
 
   #burger-menu {
     width: 60px;
@@ -88,12 +87,14 @@
     overflow: hidden;
 
     &.expanded {
-      height: 100px;
+      height: 150px;
     }
 
     > ul {
       .navLink {
         font-family: "Roboto";
+        margin-top: 10px;
+        font-size: 20px;
 
         &.activeNav a {
           text-decoration: underline;
@@ -104,15 +105,6 @@
           color: white;
         }
       }
-      #navigation-mobile {
-        display: none;
-      }
     }
-  }
-}
-
-@media (max-width: 768px) {
-  #navigation-mobile {
-    display: block;
   }
 }

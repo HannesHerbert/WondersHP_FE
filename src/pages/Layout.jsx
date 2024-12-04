@@ -7,43 +7,43 @@
 // import ReportModal from '../components/user/ReportModal';
 // import LoadingSpinner from '../components/user/LoadingSpinner';
 import AdminLogin from "./AdminLogin";
-import "../sass/Layout.scss"
+import "../sass/Layout.scss";
 import Header from "../components/Header";
-import { Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
 import BackgroundStripes from "../components/BackgroundStripes";
 import Background from "../components/Background";
 import Navigation from "../components/Navigation";
-
-
-
+import AudioPlayer from "../components/Home/AudioPlayer";
+import Modal from "../components/Modal";
 
 function Layout() {
-    // const isAuthenticated = useAuthStore(state => state.isAuthenticated());
-    // const token = useAuthStore(state => state.getToken());
-    // const validateToken = useAuthStore(state => state.validateToken);
+  // const isAuthenticated = useAuthStore(state => state.isAuthenticated());
+  // const token = useAuthStore(state => state.getToken());
+  // const validateToken = useAuthStore(state => state.validateToken);
 
-    // //Auto Auth
-    // useEffect(() => {
-    //     if (token && !isAuthenticated) {
-    //         validateToken();
-    //     }
-    // }, []);
+  // //Auto Auth
+  // useEffect(() => {
+  //     if (token && !isAuthenticated) {
+  //         validateToken();
+  //     }
+  // }, []);
 
+  return (
+    <div id="layout">
+      {/* <Background/> */}
+      <BackgroundStripes />
 
-    return (
-        <div id="layout" >
+      {/* <AudioPlayer /> */}
 
-            {/* <Background/> */}
-            <BackgroundStripes/>
+      <Header />
 
-            <Header/>
+      <Modal />
 
-            <Navigation viewScope="desktop"/>
+      {/* <Navigation viewScope="desktop" /> */}
 
-            <Outlet/>
-            
-        </div>
-    );
+      <Outlet />
+    </div>
+  );
 }
 
 export default Layout;

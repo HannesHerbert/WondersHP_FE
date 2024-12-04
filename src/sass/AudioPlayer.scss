@@ -1,0 +1,224 @@
+#audio-player {
+  background-color: red;
+  // position: fixed;
+  right: 0;
+  z-index: 10000;
+  width: 400px;
+  padding: 10px;
+  transform: translateX(100%);
+  transition: all 0.3s;
+  // margin-top: 100px;
+
+  &.show {
+    transform: translateX(0);
+  }
+
+  .player-toggle {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    transform: translateX(-100%);
+    margin: -10px;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    cursor: pointer;
+  }
+
+  audio {
+    background-color: green;
+    border-radius: 0;
+  }
+
+  .duration-display {
+    display: flex;
+    align-items: center;
+
+    .time-bar {
+      border: 1px solid black;
+      margin-left: 10px;
+      flex-grow: 1;
+      height: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      .time-bar-inner {
+        background-color: black;
+        height: 100%;
+        position: relative;
+
+        // &:after {
+        //     content: '';
+        //     width: 16px;
+        //     height: 16px;
+        //     background-color: aliceblue;
+        //     position: absolute;
+        //     right: 0;
+        //     top: 50%;
+        //     transform: translate(50%, -50%);
+        //     border-radius: 50%;
+        //     display: none;
+        // }
+
+        // &:hover::after {
+        //     display: block;
+        // }
+      }
+    }
+  }
+
+  .controls {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+
+    .volume-control {
+      display: flex;
+      align-items: center;
+
+      > div {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      > input {
+        position: absolute;
+        width: 20%;
+        display: none;
+        left: -25px;
+        transform: rotateZ(270deg) translate(0, 0);
+      }
+
+      &:hover > input {
+        display: block;
+      }
+    }
+
+    > div {
+      border-radius: 50%;
+      border: 1px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    > div:nth-child(3) {
+      width: 50px;
+      height: 50px;
+    }
+
+    > div:nth-child(2),
+    > div:nth-child(4) {
+      width: 40px;
+      height: 40px;
+    }
+
+    > div:nth-child(1),
+    > div:nth-child(5) {
+      width: 30px;
+      height: 30px;
+    }
+
+    .songlist {
+      position: absolute;
+      list-style: none;
+      right: 0;
+      bottom: 0;
+      max-height: 0;
+      transition: all 0.3s;
+      overflow: hidden;
+      background-color: aliceblue;
+      width: calc(100% + 20px);
+      transform: translate(10px, calc(100% + 20px));
+
+      &.shown {
+        max-height: 200px;
+      }
+
+      > li {
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+
+        &.current {
+          font-weight: 900;
+        }
+      }
+    }
+  }
+
+  // .audio-player-footer {
+  //   position: relative;
+  //   display: flex;
+  //   justify-content: space-between;
+
+  //   .volume-control {
+  //     display: flex;
+  //     align-items: center;
+
+  //     > div {
+  //       width: 20px;
+  //       height: 20px;
+  //       display: flex;
+  //       justify-content: center;
+  //       align-items: center;
+  //     }
+
+  //     > input {
+  //       width: 50%;
+  //       margin-left: 10px;
+  //     }
+  //   }
+
+  //   .songlist-toggle, .volume-control > div {
+  //     border-radius: 50%;
+  //     width: 30px;
+  //     height: 30px;
+  //     border: 1px solid black;
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //   }
+
+  //   .songlist {
+  //     position: absolute;
+  //     list-style: none;
+  //     right: 0;
+  //     bottom: 0;
+  //     max-height: 0;
+  //     transition: all 0.3s;
+  //     overflow: hidden;
+  //     background-color: aliceblue;
+  //     width: calc(100% + 20px);
+  //     transform: translate(10px, calc(100% + 10px));
+
+  //     &.shown {
+  //       max-height: 200px;
+  //     }
+
+  //     > li {
+  //       &:hover {
+  //         text-decoration: underline;
+  //         cursor: pointer;
+  //       }
+
+  //       &.current {
+  //         font-weight: 900;
+  //       }
+  //     }
+  //   }
+  // }
+}

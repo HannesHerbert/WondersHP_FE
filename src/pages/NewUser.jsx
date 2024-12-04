@@ -62,8 +62,7 @@ function NewUser() {
 };
   
     return (
-      <div id="new-user">  
-        <h1>Contact Form</h1>
+      <div id="new-user">
         <form action="/submit-form" onSubmit={submitHandler} method="post">
           <label htmlFor="name">Name:</label>
           <input type="text" id="username" name="username" placeholder="Username" ref={usernameRef} required/>

@@ -17,7 +17,6 @@ const useAuthStore = create( set => ({
 
       try {
 
-
           let resp = await axios.post(`${import.meta.env.VITE_BASE_API_URL}/admin/validate`, {}, {
             headers: {
               'Authorization': `Bearer ${token}`

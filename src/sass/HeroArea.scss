@@ -6,7 +6,7 @@
     margin-left: auto;
     overflow: hidden;
     background-color: #00000045;
-    transform: rotateY(-10deg) translateZ(-100px);
+    // transform: rotateY(-10deg) translateZ(-100px);
     transform-origin: right;
 
     .image-wrapper {
@@ -26,6 +26,28 @@
         padding: 0 .5rem .5rem 1rem;
         color: #fff;
         text-align: right;
+        font-size: 20px;
     }
   }
+}
+
+
+@media screen and (max-width: 760px) {
+  #hero-area {
+
+  #group-image-container {
+    width: 100vw;
+
+    .image-wrapper {
+
+      img {
+      }
+    }
+
+    .hero-text {
+
+      font-size: 15px;
+    }
+  }
+}
 }

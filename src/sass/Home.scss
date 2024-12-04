@@ -1,4 +1,11 @@
 #home {
     padding: 8rem 4rem;
     perspective: 2000px;
-  }
+}
+
+
+@media screen and (max-width: 760px) {
+  #home {
+    padding: 8rem 0;
+  }  
+}

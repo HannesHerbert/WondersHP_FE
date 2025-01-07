@@ -5,28 +5,28 @@ import { PiMusicNotesLight } from "react-icons/pi";
 import { SlVolume1, SlVolume2, SlVolumeOff } from "react-icons/sl";
 import { LuListMusic } from "react-icons/lu";
 import "../../sass/AudioPlayer.scss";
+import useMe from "../../assets/audio/use me.mp3";
+import superstition from "../../assets/audio/superstition.mp3";
+import aintNobody from "../../assets/audio/Aint nobody.mp3";
+import Background from "../Layout/Background";
 
 function AudioPlayer() {
   const [audioFiles, setAudioFiles] = useState([
-    "/src/assets/audio/use me.mp3",
-    "/src/assets/audio/superstition.mp3",
-    "/src/assets/audio/Aint nobody.mp3",
+    useMe,
+    superstition,
+    aintNobody,
   ]);
 
   const [currAudioIndex, setCurrAudioIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
   const timeBarRef = useRef(null);
+  const volumeBarRef = useRef(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isInit, setIsInit] = useState(true);
   const [volume, setVolume] = useState(0);
-  const [playerIsShown, setPlayerIsShown] = useState(true);
   const [songListIsShown, setSongListIsShown] = useState(false);
-
-  const togglePlayer = () => {
-    setPlayerIsShown(!playerIsShown);
-  };
 
   const getSongTitle = (songPath) => {
     const lastSlashIndex = songPath.lastIndexOf("/");
@@ -109,21 +109,19 @@ function AudioPlayer() {
     audioRef.current.currentTime = duration * clickedRatio;
   };
 
-  const handleVolumeChange = (event) => {
-    const newVolume = parseFloat(event.target.value);
-    setVolume(newVolume);
-    audioRef.current.volume = newVolume;
-  };
+  const handleVolumeChange = (evt) => {
+    // const newVolume = parseFloat(event.target.value);
+    const elemDimensions = evt.currentTarget.getBoundingClientRect();
+    const clickedRatio = (evt.clientX - elemDimensions.x) / elemDimensions.width;
 
-  const togglePlayList = () => {
-    setSongListIsShown(!songListIsShown);
+      console.log(clickedRatio);
+      
+    setVolume(clickedRatio);
+    audioRef.current.volume = clickedRatio;
   };
 
   return (
-    <div id="audio-player" className={playerIsShown ? "show" : ""}>
-      <div className="player-toggle" onClick={togglePlayer}>
-        <PiMusicNotesLight />
-      </div>
+    <div id="audio-player">
 
       <audio
         ref={audioRef}
@@ -141,7 +139,7 @@ function AudioPlayer() {
         <div
           ref={timeBarRef}
           className="time-bar"
-          title={currentTime}
+          title={formatTime(currentTime)}
           onClick={(evt) => changePlayTime(evt)}
         >
           <div
@@ -152,76 +150,48 @@ function AudioPlayer() {
       </div>
 
       <div className="controls">
-        <div className="volume-control">
-          <div>
-            {volume > 0.5 ? (
-              <SlVolume2 />
-            ) : volume > 0 ? (
-              <SlVolume1 />
-            ) : (
-              <SlVolumeOff />
-            )}
+        <div>
+          <div onClick={() => changeAudio(-1)}>
+            <RxTrackPrevious />
           </div>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-          />
+
+          <div onClick={() => setPlayMode()}>
+            {isPlaying ? <RxPause /> : <RxPlay />}
+          </div>
+
+          <div onClick={() => changeAudio(1)}>
+            <RxTrackNext />
+          </div>
         </div>
 
-        <div onClick={() => changeAudio(-1)}>
-          <RxTrackPrevious />
-        </div>
+        <div>
+          <div className="volume-control">
+            <div className="volume-toggle">
+              {volume > 0.5 ? (
+                <SlVolume2 />
+              ) : volume > 0 ? (
+                <SlVolume1 />
+              ) : (
+                <SlVolumeOff />
+              )}
+            </div>
 
-        <div onClick={() => setPlayMode()}>
-          {isPlaying ? <RxPause /> : <RxPlay />}
+            <div
+              ref={volumeBarRef}
+              className="volume-bar"
+              title={volume}
+              onClick={(evt) => handleVolumeChange(evt)}
+            >
+              <div
+                className="volume-bar-inner"
+                style={{ width: volume * 100 + "%" }}
+              ></div>
+            </div>
+          </div>
         </div>
-
-        <div onClick={() => changeAudio(1)}>
-          <RxTrackNext />
-        </div>
-
-        <div className="songlist-toggle">
-          <LuListMusic onClick={togglePlayList} />
-        </div>
-        <ul className={`songlist${songListIsShown ? " shown" : ""}`}>
-          {AUDIO_LIST}
-        </ul>
       </div>
 
-      {/* <div className="audio-player-footer">
-        <div className="volume-control">
-          <div>
-            {volume > 0.5 ? (
-              <SlVolume2 />
-            ) : volume > 0 ? (
-              <SlVolume1 />
-            ) : (
-              <SlVolumeOff />
-            )}
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-          />
-        </div>
-
-        <div className="songlist-toggle">
-          <LuListMusic onClick={togglePlayList} />
-        </div>
-        <ul
-          className={`songlist${songListIsShown ? " shown" : ""}`}
-        >
-          {AUDIO_LIST}
-        </ul>
-      </div> */}
+      <ul className="songlist">{AUDIO_LIST}</ul>
     </div>
   );
 }

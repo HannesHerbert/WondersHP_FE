@@ -39,13 +39,14 @@
   }
 }
 
-// @media (min-width: 769px) {
-//   #navigation-desktop {
-//     display: block;
-//   }
-// }
+@media (min-width: 769px) {
+  #navigation-desktop {
+    display: block;
+  }
+}
 
 #navigation-mobile {
+  display: none;
 
   #burger-menu {
     width: 60px;
@@ -106,5 +107,12 @@
         }
       }
     }
+  }
+}
+
+
+@media (max-width: 768px) {
+  #navigation-mobile {
+    display: block;
   }
 }

@@ -1,8 +1,7 @@
 import HeroArea from "../components/Home/HeroArea";
 import Members from "../components/Home/Members";
 import Dates from "../components/Home/Dates";
-import Information from "../components/Home/Information";
-import AudioPlayer from "../components/Home/AudioPlayer";
+import Media from "../components/Home/MediaContainer";
 import "../sass/Home.scss";
 
 function Home() {
@@ -11,8 +10,9 @@ function Home() {
       {/* <AudioPlayer /> */}
       <HeroArea />
       <Members />
+      <Media />
       <Dates/>
-      <Information />
+      {/* <Information /> */}
     </main>
   );
 }

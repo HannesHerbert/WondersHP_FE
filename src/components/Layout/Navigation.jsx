@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import '../sass/Navigation.scss';
+import '../../sass/Navigation.scss';
 
 function Navigation({viewScope}) {
   const location = useLocation();

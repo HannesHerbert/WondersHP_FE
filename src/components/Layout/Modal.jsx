@@ -1,7 +1,7 @@
 import { IoCloseOutline } from "react-icons/io5";
-import Songlist from "./Home/SongList";
-import useModalStore from "../store/useModalStore";
-import "../sass/Modal.scss"
+import Songlist from "../Home/SongList";
+import useModalStore from "../../store/useModalStore";
+import "../../sass/Modal.scss"
 
 
 

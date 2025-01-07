@@ -3,7 +3,7 @@ import "./sass/App.scss";
 import axios from "axios";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import KeyListener from "./services/KeyListener";
-import Background from "./components/Background";
+import Background from "./components/Layout/Background";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
@@ -12,7 +12,7 @@ import Impressum from "./pages/Impressum";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRoute from "./services/AdminRoute";
 import AdminDashboard from "./components/AdminDashboard";
-import BackgroundStripes from "./components/BackgroundStripes";
+import BackgroundStripes from "./components/Layout/BackgroundStripes";
 
 
 

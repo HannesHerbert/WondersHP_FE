@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import '../sass/Background.scss';
+import '../../sass/Background.scss';
 
 function Background() {
 
@@ -36,7 +36,7 @@ function Background() {
 
         </div>
 
-        <div className="bg-overlay"></div>
+        {/* <div className="bg-overlay"></div> */}
 
     </div>
   );

@@ -8,13 +8,16 @@
 // import LoadingSpinner from '../components/user/LoadingSpinner';
 import AdminLogin from "./AdminLogin";
 import "../sass/Layout.scss";
-import Header from "../components/Header";
+import Header from "../components/Layout/Header";
 import { Outlet } from "react-router-dom";
-import BackgroundStripes from "../components/BackgroundStripes";
-import Background from "../components/Background";
-import Navigation from "../components/Navigation";
+import BackgroundStripes from "../components/Layout/BackgroundStripes";
+import Background from "../components/Layout/Background";
+import Navigation from "../components/Layout/Navigation";
 import AudioPlayer from "../components/Home/AudioPlayer";
-import Modal from "../components/Modal";
+import Modal from "../components/Layout/Modal";
+import Footer from "../components/Layout/Footer";
+
+
 
 function Layout() {
   // const isAuthenticated = useAuthStore(state => state.isAuthenticated());
@@ -39,9 +42,11 @@ function Layout() {
 
       <Modal />
 
-      {/* <Navigation viewScope="desktop" /> */}
+      <Navigation viewScope="desktop" />
 
       <Outlet />
+
+      <Footer />
     </div>
   );
 }

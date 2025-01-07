@@ -1,5 +1,5 @@
 import "../../sass/Information.scss";
-import ContactForm from "./ContactForm";
+import ContactForm from "../Contact/ContactForm";
 import Documents from "./Documents";
 
 function Information() {

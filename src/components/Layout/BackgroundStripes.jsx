@@ -1,4 +1,4 @@
-import "../sass/BackgroundStripes.scss"
+import "../../sass/BackgroundStripes.scss"
 
 function BackgroundStripes() {
   return (

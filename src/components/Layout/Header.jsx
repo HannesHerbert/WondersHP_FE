@@ -1,6 +1,6 @@
 import Navigation from "./Navigation";
-import AudioPlayer from "../components/Home/AudioPlayer";
-import "../sass/Header.scss"
+import AudioPlayer from "../Home/AudioPlayer";
+import "../../sass/Header.scss"
 
 function Header() {
   return (

@@ -1,6 +1,10 @@
 import "../../sass/Members.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import GordonFrontal from "../../assets/images/Gordon-frontal.jpg";
+import UlrichFrontal from "../../assets/images/Ulli-frontal.jpg";
+import JodyFrontal from "../../assets/images/Jody-frontal.jpg";
+import HannesFrontal from "../../assets/images/Hannes-frontal.jpg";
 
 function Members() {
   
@@ -19,7 +23,7 @@ function Members() {
       instrument: 'Piano',
       description: 'Der “Man on the the Keys” - Gordon - ist der Neuzugang der Wonders. Wenn er nicht gerade Coldplay-Songs singt, reißt auch ihn das Disco-Funk-Spielfieber mit! Während seines Lehramtsstudiums in Halle übte er sich in die Band hinein und ist nun ein festes Mitglied. Nach der klassischen Klavierausbildung für Schulmusik an der Uni sind ihm viel mehr die modernen Musikstile zugetan - ob Blues, Jazz, Funk oder Fusion, stets mit einer Liebe zu den elektronischen Klängen. Gordons Finger zaubern alles auf die Tasten - von den funky Clavinet-Rhythmen à la Stevie Wonder, bis hin zu melodiösen String-Bläser-Sätzen von Earth, Wind & Fire!',
       image_position: 1,
-      image_path: '/src/assets/images/Gordon-frontal.jpg'
+      image_path: GordonFrontal
     },
     {
       firstname: 'Ulrich',
@@ -27,7 +31,7 @@ function Members() {
       instrument: 'Bass',
       description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
       image_position: 2,
-      image_path: '/src/assets/images/Ulli-frontal.jpg'
+      image_path: UlrichFrontal
     },
     {
       firstname: 'Jody',
@@ -35,7 +39,7 @@ function Members() {
       instrument: 'Gesang, Gitarre',
       description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
       image_position: 3,
-      image_path: '/src/assets/images/Jody-frontal.jpg'
+      image_path: JodyFrontal
     },
     {
       firstname: 'Hannes',
@@ -43,7 +47,7 @@ function Members() {
       instrument: 'Schlagzeug',
       description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
       image_position: 4,
-      image_path: '/src/assets/images/Hannes-frontal.jpg'
+      image_path: HannesFrontal
     }
   ];
 

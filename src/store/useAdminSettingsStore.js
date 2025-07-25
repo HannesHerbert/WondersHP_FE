@@ -1,6 +1,14 @@
 import { create } from "zustand";
 
-const useModalStore = create((set) => ({
+const useAdminSettingsStore = create((set) => ({
+
+  membersArray: [],
+
+  setMembersArray: ( membersArray ) =>
+    set(() => ({
+      membersArray: membersArray
+    })),
+
   modalContent: {
     title: null,
     content: null,
@@ -22,6 +30,7 @@ const useModalStore = create((set) => ({
         ? { title: null, content: null } // Modal wird geschlossen, Inhalt zurücksetzen
         : state.modalContent, // Modal wird geöffnet, Inhalt bleibt unverändert
     })),
+
 }));
 
-export default useModalStore;
+export default useAdminSettingsStore;

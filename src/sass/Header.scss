@@ -5,6 +5,7 @@
     width: 100%;
     background-color: #00000045;
     display: flex;
+    padding: 0 1rem;
   
     > div:first-of-type {
       width: 100%;
@@ -21,10 +22,27 @@
         width: fit-content;
         text-shadow: 5px 5px 3px #000000;
   
-        br {
-          display: inline;
-          content: "  ";
+        > span:nth-of-type(2) {
+
         }
       }
     }
+  }
+
+  @media screen and (max-width: 450px) {
+
+    
+      #name {
+        width: 70% !important;
+
+        > span:nth-of-type(1) {
+          // display: block;
+        }
+  
+        > span:nth-of-type(2) {
+          display: block;
+          text-align: right;
+        }
+      }
+    
   }

@@ -1,55 +1,79 @@
+import { FaEdit } from "react-icons/fa";
+import useModalStore from "../../store/useModalStore.js";
+import ImageSelect from "../ModalContent/ImageSelect.jsx";
+import CloudinaryImage from "../Snippets/CloudinaryImage.jsx";
+import useAdminSettingsStore from "../../store/useAdminSettingsStore.js";
 
+function MemberRow({ member }) {
+  const setModalContent = useModalStore((state) => state.setModalContent);
+  const setModalIsShown = useModalStore((state) => state.setModalIsShown);
+  const setMembersArrStore = useAdminSettingsStore(
+    (state) => state.setMembersArray
+  );
 
+  const membersArrStore = useAdminSettingsStore((state) => state.membersArray);
 
+  function updateMemberImage(userId, imagePublicId) {
+    const updatedMembers = membersArrStore.map((member) => {
+      if (member.id === userId) {
+        return { ...member, image_path: imagePublicId };
+      }
+      return member;
+    });
 
-function MemberRow({member}) {
+    console.log(updatedMembers);
 
+    setMembersArrStore(updatedMembers);
+  }
 
-    // const memberObj = {
-    //     firstname: ,
-    //     lastname: ,
-    //     instrument: ,
-    //     description: ,
-    //     image_path: ,
-    //     image_position: 
-    // }
+  function toggleImageSelectModal() {
+    setModalContent(
+      "Bild Auswählen",
+      <ImageSelect
+        callback={(publicId) => updateMemberImage(member.id, publicId)}
+      />
+    );
+    setModalIsShown();
+  }
 
+  return (
+    <div className="member-row">
+      <div className="member-image">
+        <CloudinaryImage
+          className="image-wrapper"
+          publicId={member.image_path}
+          size={400}
+        />
+        <span title="Bild ändern" onClick={toggleImageSelectModal}>
+          <FaEdit />
+        </span>
+      </div>
 
+      <div className="member-informations">
+        <div className="member-name">
+          <label htmlFor="firstname">Vorname:</label>
+          <input type="text" name="firstname" defaultValue={member.firstname} />
 
-    return (
-        <div className="member-row">
+          <label htmlFor="lastname">Nachname:</label>
+          <input type="text" name="lastname" defaultValue={member.lastname} />
 
-                <div className="member-image">
-                    <img src={member.image} alt="" />
-                </div>
+          <label htmlFor="instrument">Instrument:</label>
+          <input
+            type="text"
+            name="instrument"
+            defaultValue={member.instrument}
+          />
 
-                <div className="member-informations">
+          <label htmlFor="image-position">Bildposition:</label>
+          <select name="image-position" id=""></select>
+        </div>
 
-                    <div className="member-name">
-
-                        <label htmlFor="firstname">Vorname:</label>
-                        <input type="text" name="firstname" />
-
-                        <label htmlFor="lastname">Nachname:</label>
-                        <input type="text" name="lastname" />
-
-                        <label htmlFor="instrument">Instrument:</label>
-                        <input type="text" name="instrument" />
-
-                        <label htmlFor="image-position">Bildposition:</label>
-                        <select name="image-position" id="">
-
-                        </select>
-
-                    </div>
-
-                    <div className="member-description">
-                        <textarea></textarea>
-                    </div>
-
-                </div>
-            </div>
-    )
+        <div className="member-description">
+          <textarea defaultValue={member.description}></textarea>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default MemberRow
+export default MemberRow;

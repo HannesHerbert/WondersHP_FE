@@ -7,14 +7,18 @@
   display: none;
   justify-content: center;
   align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%, 0);
 
   &.show {
     display: flex;
   }
 
   .modal-container {
-    min-width: 400px;
-    min-height: 400px;
+    min-width: 40vw;
+    max-width: 90vw;
+    height: 90vh;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -37,7 +41,7 @@
     }
 
     .modal-content {
-
+      overflow-y: auto;
 
       #songlist {
         max-height: 70vh;
@@ -68,6 +72,27 @@
           padding: 8px;
           text-align: left;
           
+        }
+      }
+
+      #image-select {
+        display: flex;
+        flex-wrap: wrap;
+
+        > .image-wrapper {
+          margin: 5px 10px;
+
+          &:hover {
+            cursor: pointer;
+
+            img {
+              filter: grayscale(05);
+            }
+          }
+
+          img {
+            height: 200px;
+          }
         }
       }
     }

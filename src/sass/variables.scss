@@ -1,4 +1,12 @@
-$colors: #022f4e, #044a67, #2e7380, #469291, #cba27c, #ca7810, #a0100e, #760712;
+$blue_1: #022f4e;
+$blue_2: #044a67;
+$blue_3: #2e7380;
+$blue_4: #469291;
+$yellow_1: #cba27c;
+$yellow_2: #ca7810;
+$red_1: #a0100e;
+$red_2: #760712;
+$colors: $blue_1, $blue_2, $blue_3, $blue_4, $yellow_1, $yellow_2, $red_1, $red_2;
 $color-count: length($colors);
 
 $room-depth: 1000px;

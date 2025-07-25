@@ -1,8 +1,10 @@
+@import "variables.scss";
+
 #navigation-desktop {
   padding: 3rem;
   position: absolute;
   left: 0;
-  top: 150px;
+  top: 50px;
   display: none;
   z-index: 100;
 
@@ -17,24 +19,45 @@
         transform: rotateY(40deg);
         transition: all 0.3s;
 
-        &:hover {
+        &:hover, &.activeNav {
           transform: rotateY(10deg);
+
+          > a > p:after {
+            content:'';
+            width: 100%;
+          }
         }
 
         a {
           font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
             "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
           text-decoration: none;
-          color: black;
           font-size: 80px;
           font-weight: 900;
-          text-shadow: 2px 2px 0px #ffffff;
+          // color: black;
+          // text-shadow: 2px 2px 0px #ffffff;
+          color: #ffffff;
+          text-shadow: 2px 2px 0px grey;
+
+          > p {
+            position: relative;
+            
+            &:after {
+              content:'';
+              width: 0;
+              position: absolute;
+              left: 0;
+              bottom: 0;
+              height: 3px;
+              background-color: $red_1;
+              transition: all 0.3s ease-in-out;
+              z-index: 10000;
+            }
+
+            
+          }
         }
       }
-
-      //       .activeNav {
-
-      //       }
     }
   }
 }
@@ -86,6 +109,7 @@
     transition: all 0.3s;
     height: 0;
     overflow: hidden;
+    background-color: #00000045;
 
     &.expanded {
       height: 150px;

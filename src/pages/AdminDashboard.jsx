@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../sass/AdminDashboard.scss";
-import MembersManagement from "./AdminDashboard/MembersManagement";
+import MembersManagement from "../components/AdminDashboard/MembersManagement";
+import MediaManagement from "../components/AdminDashboard/MediaManagement";
 
 function AdminDashboard() {
     const [activeNav, setActiveNav] = useState('members');
@@ -9,22 +10,22 @@ function AdminDashboard() {
         {
             title: 'Mitglieder',
             value: 'members',
-            element: <MembersManagement />, // Beispielinhalt
+            element: <MembersManagement />,
         },
         {
             title: 'Bilder/Videos',
             value: 'images',
-            element: <div>Inhalt für Bilder/Videos</div>, // Beispielinhalt
+            element: <MediaManagement />,
         },
         {
             title: 'Band',
             value: 'band',
-            element: <div>Inhalt für Band</div>, // Beispielinhalt
+            element: <div>Inhalt für Band</div>,
         },
         {
             title: 'Songliste',
             value: 'songs',
-            element: <div>Inhalt für Songliste</div>, // Beispielinhalt
+            element: <div>Inhalt für Songliste</div>
         },
     ];
 

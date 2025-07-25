@@ -34,21 +34,33 @@ function Navigation({viewScope}) {
 
           <li className={`navLink ${getNavClass("/gallery")}`}>
             <Link to="/gallery">
-              <p className="">Gallery</p>
+              <p className="">Gallerie</p>
             </Link>
           </li>
 
           <li className={`navLink ${getNavClass("/contact")}`}>
             <Link to="/contact">
-              <p className="">Contact</p>
+              <p className="">Kontakt</p>
             </Link>
           </li>
 
-          <li className={`navLink ${getNavClass("/impressum")}`}>
+          <li className={`navLink ${getNavClass("/news")}`}>
+            <Link to="/news">
+              <p className="">News</p>
+            </Link>
+          </li>
+
+          <li className={`navLink ${getNavClass("/admin")}`}>
+            <Link to="/admin">
+              <p className="">Admin</p>
+            </Link>
+          </li>
+
+          {/* <li className={`navLink ${getNavClass("/impressum")}`}>
             <Link to="/impressum">
               <p className="">Impressum</p>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

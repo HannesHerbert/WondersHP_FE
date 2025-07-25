@@ -11,7 +11,7 @@ import Contact from "./pages/Contact";
 import Impressum from "./pages/Impressum";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRoute from "./services/AdminRoute";
-import AdminDashboard from "./components/AdminDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import BackgroundStripes from "./components/Layout/BackgroundStripes";
 
 

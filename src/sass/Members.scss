@@ -145,10 +145,10 @@
           opacity: 1;
         }
 
-        > div {
+        .name-box {
           width: 25%;
           height: 25%;
-          font-size: calc(500%);
+          font-size: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -162,6 +162,13 @@
         transition: all 0.3s ease-in-out;
         opacity: 0;
         font-size: 20px;
+
+          .description-text {
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-color: white black;
+            scrollbar-width: thin;
+          }
       }
 
       &:hover {
@@ -316,7 +323,6 @@
   
         .member-description {
           font-size: 15px;
-          height: fit-content;
         }
   
         &:hover {
@@ -326,10 +332,8 @@
         }
   
         &.expanded {
-          height: fit-content;
           width: calc($grid_size_sm - (2.3 * $grid_gap) - $grid_border);
           min-height: calc($grid_size_sm - (2.3 * $grid_gap) - $grid_border);
-          height: fit-content;
   
           .member-image {
           }
@@ -343,4 +347,13 @@
       }
     }
   }
+}
+
+
+@media screen and (max-width: 450px) {
+    
+  #members .members-grid .member .member-description {
+    font-size: 10px;
+  }
+
 }

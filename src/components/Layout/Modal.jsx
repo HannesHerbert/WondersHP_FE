@@ -24,7 +24,7 @@ function Modal() {
           </div>
 
           <div className="modal-content">
-            <Songlist />
+            {modalContent.content}
           </div>
           
         </div>

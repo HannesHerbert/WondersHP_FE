@@ -8,7 +8,6 @@ import "../../sass/AudioPlayer.scss";
 import useMe from "../../assets/audio/use me.mp3";
 import superstition from "../../assets/audio/superstition.mp3";
 import aintNobody from "../../assets/audio/Aint nobody.mp3";
-import Background from "../Layout/Background";
 
 function AudioPlayer() {
   const [audioFiles, setAudioFiles] = useState([
@@ -25,8 +24,10 @@ function AudioPlayer() {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isInit, setIsInit] = useState(true);
-  const [volume, setVolume] = useState(0);
-  const [songListIsShown, setSongListIsShown] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const [mouseXDurationBar, setMouseXDurationBar] = useState(0);
+  const [mouseXVolumeBar, setMouseXVolumeBar] = useState(0);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
 
   const getSongTitle = (songPath) => {
     const lastSlashIndex = songPath.lastIndexOf("/");
@@ -112,18 +113,34 @@ function AudioPlayer() {
   const handleVolumeChange = (evt) => {
     // const newVolume = parseFloat(event.target.value);
     const elemDimensions = evt.currentTarget.getBoundingClientRect();
-    const clickedRatio = (evt.clientX - elemDimensions.x) / elemDimensions.width;
-
-      console.log(clickedRatio);
-      
+    const clickedRatio =
+      (evt.clientX - elemDimensions.x) / elemDimensions.width;
     setVolume(clickedRatio);
     audioRef.current.volume = clickedRatio;
   };
 
+  const handleMouseMoveOnTimeBar = (evt) => {
+    const elemDimensions = evt.currentTarget.getBoundingClientRect();
+    const mouseX = evt.clientX - elemDimensions.left;
+    const percentage = formatTime((mouseX / elemDimensions.width) * duration);
+    setMouseXDurationBar(percentage);
+  };
+
+  const handleMouseMoveOnVolumeBar = (evt) => {
+    const elemDimensions = evt.currentTarget.getBoundingClientRect();
+    const mouseX = evt.clientX - elemDimensions.left;
+    const percentage = Math.trunc((mouseX / elemDimensions.width) * 100);
+    setMouseXVolumeBar(percentage);
+  };
+
+  const toggleAudioMuted = () => {
+    setIsAudioMuted(!isAudioMuted);
+  };
+
   return (
     <div id="audio-player">
-
       <audio
+        muted={isAudioMuted}
         ref={audioRef}
         src={audioFiles[currAudioIndex]}
         onLoadedMetadata={handleLoadedMetadata}
@@ -139,8 +156,9 @@ function AudioPlayer() {
         <div
           ref={timeBarRef}
           className="time-bar"
-          title={formatTime(currentTime)}
+          title={mouseXDurationBar}
           onClick={(evt) => changePlayTime(evt)}
+          onMouseMove={handleMouseMoveOnTimeBar}
         >
           <div
             className="time-bar-inner"
@@ -166,8 +184,10 @@ function AudioPlayer() {
 
         <div>
           <div className="volume-control">
-            <div className="volume-toggle">
-              {volume > 0.5 ? (
+            <div className="volume-toggle" onClick={() => toggleAudioMuted()}>
+              {isAudioMuted ? (
+                <SlVolumeOff />
+              ) : volume > 0.5 ? (
                 <SlVolume2 />
               ) : volume > 0 ? (
                 <SlVolume1 />
@@ -179,8 +199,9 @@ function AudioPlayer() {
             <div
               ref={volumeBarRef}
               className="volume-bar"
-              title={volume}
+              title={`${mouseXVolumeBar}%`}
               onClick={(evt) => handleVolumeChange(evt)}
+              onMouseMove={handleMouseMoveOnVolumeBar}
             >
               <div
                 className="volume-bar-inner"

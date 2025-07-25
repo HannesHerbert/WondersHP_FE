@@ -9,17 +9,11 @@ function Header() {
         <Navigation viewScope="mobile" />
 
         <div id="name">
-          Jody
-          <br />
-          Cooper
-          <br />
-          & the
-          <br />
-          Wonders
+          <span>Jody Cooper &</span>
+          <span>the Wonders</span>
         </div>
-      </div>
 
-      {/* <AudioPlayer /> */}
+      </div>
 
     </header>
   );

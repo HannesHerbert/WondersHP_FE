@@ -41,9 +41,10 @@ function App() {
 
             <Route path="*" element={<Navigate to="/" replace />} />
 
-            <Route element={<AdminRoute />}>
+{/* TODO: AdminRoute aktivieren*/} 
+            {/* <Route element={<AdminRoute />}> */}
               <Route path="/admin" element={<AdminDashboard />} />
-            </Route>
+            {/* </Route> */}
 
           </Route>
 

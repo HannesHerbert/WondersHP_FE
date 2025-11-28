@@ -12,7 +12,9 @@ function Footer() {
         <div>
           <a>Datenschutz</a>
           <span>|</span>
-          <a>Impressum</a>
+          <Link to="/impressum">
+            <p className="">Impressum</p>
+          </Link>
         </div>
 
       <div>

@@ -142,7 +142,7 @@ function Members() {
 
   return (
     <section id="members">
-      <div className="members-grid shadow">{membersElements}</div>
+      <div className="members-grid">{membersElements}</div>
     </section>
   );
 }

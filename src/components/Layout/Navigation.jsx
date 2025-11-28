@@ -56,11 +56,11 @@ function Navigation({viewScope}) {
             </Link>
           </li>
 
-          <li className={`navLink ${getNavClass("/impressum")}`}>
+          {/* <li className={`navLink ${getNavClass("/impressum")}`}>
             <Link to="/impressum">
               <p className="">Impressum</p>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

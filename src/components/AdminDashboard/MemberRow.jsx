@@ -30,7 +30,7 @@ function MemberRow({ member }) {
     setModalContent(
       "Bild Auswählen",
       <ImageSelect
-        callback={(publicId) => updateMemberImage(member.id, publicId)}
+        // callback={(publicId) => updateMemberImage(member.id, publicId)}
       />
     );
     setModalIsShown();
@@ -39,11 +39,12 @@ function MemberRow({ member }) {
   return (
     <div className="member-row">
       <div className="member-image">
-        <CloudinaryImage
+        {/* <CloudinaryImage
           className="image-wrapper"
           publicId={member.image_path}
           size={400}
-        />
+        /> */}
+        <img src={member.image_path} alt="" />
         <span title="Bild ändern" onClick={toggleImageSelectModal}>
           <FaEdit />
         </span>

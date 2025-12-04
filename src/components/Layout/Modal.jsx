@@ -17,7 +17,7 @@ function Modal() {
         <div className="modal-container">
 
           <div className="modal-header">
-            <h3>{modalContent.title}</h3>
+            { modalContent.title !== "" ? <h3>{modalContent.title}</h3> : null }
             <div className="modal-toggle" onClick={setModalIsShown}>
               <IoCloseOutline />
             </div>

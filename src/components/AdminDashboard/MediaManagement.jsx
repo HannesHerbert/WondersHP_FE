@@ -1,52 +1,33 @@
-import CloudUpload from "./CloudUpload";
 import { useState, useEffect } from "react";
-import axios from "axios";
-
+import axios from "axios"; import useModalStore from "../../store/useModalStore.js";
+import MediaUpload from "../ModalContent/MediaUpload.jsx";
 
 
 
 function MediaManagement() {
 
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
   const [isInit, setIsInit] = useState([true]);
-  const folder = 'wonders/images'
-  const cloudAPI = `https://api.cloudinary.com/v1_1/${cloudName}/resources/image/folder/${folder}`;
+  const setModalContent = useModalStore((state) => state.setModalContent);
+  const setModalIsShown = useModalStore((state) => state.setModalIsShown);
+
+  function openUploadModal() {
+    setModalContent(
+      "Bild/Video hochladen",
+      <MediaUpload />
+    );
+    setModalIsShown();
+  }
 
 
-  useEffect(() => {
-    // if (isInit) {
-    //   getAllMembers();
-    //   setIsInit(isInit => !isInit)
-    // }
-    const fetchImages = async () => {
+  return (
+    <div id="media-management">
 
-      let params = {
-        folder: folder
-      }
+      <section className="media-upload">
+        <button onClick={openUploadModal}>Hochladen</button>
+      </section>
 
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/cloud`, {
-          params: params
-        });
-        console.log(response.data);
-      } catch (error) {
-        console.error("Fehler beim Abrufen der Bilder:", error);
-      }
-    };
-
-    fetchImages();
-  }, []);
-
-
-    return (
-        <div id="media-management">
-
-          <section className="media-upload">
-            <CloudUpload />
-          </section>
-            
-        </div>
-    )
+    </div>
+  )
 }
 
 export default MediaManagement

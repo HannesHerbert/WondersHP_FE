@@ -12,78 +12,94 @@ import galImg8 from "../assets/images/9e924b7a-9995-4ef1-a272-bb7a10a8fe0c.webp"
 import galImg9 from "../assets/images/b7adafa5-400d-4e6b-acde-7d9459addec7.webp";
 import galImg10 from "../assets/images/d2b87d9c-2860-4de6-bfe7-1c8b5e453157.webp";
 import galImg11 from "../assets/images/f2be344a-5511-4dd2-81f2-9c07775eeb9c.webp";
+import useGalleryStore from "../store/useGalleryStore.js";
+import { useEffect } from "react";
 
 
 
 function Gallery() {
 
-  let galleryImages = [];
-  // let imageSrc = 'https://picsum.photos/200/300';
+  const setGalleryElements = useGalleryStore((state) => state.setGalleryElements);
+  const galleryElements = useGalleryStore((state) => state.galleryElements);
+
   let images = [
     {
       src: galImg1,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg2,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg3,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg4,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg5,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg6,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg7,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg8,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg9,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg10,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
     {
       src: galImg11,
-      title: 'something'
+      title: 'something',
+      tag: 'img'
     },
-  ]
+  ];
 
-  // for (let i=0; i<=12; i++) {
-  //   galleryImages.push(<GalleryImage key={i} imageUrl={imageSrc} />)
-  // }
+  useEffect(() => {
+    setGalleryElements(images);
+  }, []);
 
+  useEffect(() => {
+    console.log(galleryElements);
+  }, [galleryElements]);
 
-
-  galleryImages = images.map((image, index) => {
+  let galleryImages = images.map((image, index) => {
     return (
-      <GalleryImage key={index} imageUrl={image.src} imageTitle={image.title}/>
+      <GalleryImage key={index} imageIndex={index} imageUrl={image.src} imageTitle={image.title} />
     )
   })
 
   return (
     <section id="gallery">
 
-      <div id="top-video-wrapper">
-        <VideoPlayer/>
-      </div>
+      {/* <div id="top-video-wrapper">
+        <VideoPlayer />
+      </div> */}
 
       <div className="gallery-wrapper">
         {galleryImages}

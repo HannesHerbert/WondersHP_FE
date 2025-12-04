@@ -18,11 +18,11 @@ function MembersManagement() {
   const token = useAuthStore((state) => state.getToken())
 
   const getAllMembers = async () => {
-    let res = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/members`);
-    console.log(res.data.data);
+    let response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/members`);
+    console.log(response.data.data);
     
     // setMembersArr(res.data.data);
-    setMembersArrStore(res.data.data);
+    setMembersArrStore(response.data.data);
 
   };
 

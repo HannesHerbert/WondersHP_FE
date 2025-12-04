@@ -5,7 +5,7 @@ import groupPhoto from "../../assets/images/group-photo.jpg";
 function HeroArea() {
   return (
 
-        <section id="hero-area">
+        <section id="hero-area" className="upper-content">
           <div id="group-image-container">
             <div className="image-wrapper">
               <img src={groupPhoto} alt="Wonders Gruppenfoto" />

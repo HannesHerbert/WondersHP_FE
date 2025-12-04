@@ -1,8 +1,8 @@
 @import "variables.scss";
 
 #navigation-desktop {
-  padding: 3rem;
-  position: absolute;
+  // padding: 3rem;
+  // position: absolute;
   left: 0;
   top: 50px;
   display: none;
@@ -64,7 +64,7 @@
 
 @media (min-width: 769px) {
   #navigation-desktop {
-    display: block;
+    display: flex;
   }
 }
 

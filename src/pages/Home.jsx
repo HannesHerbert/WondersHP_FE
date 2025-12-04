@@ -7,12 +7,10 @@ import "../sass/Home.scss";
 function Home() {
   return (
     <main id="home">
-      {/* <AudioPlayer /> */}
-      <HeroArea />
+      {/* <HeroArea /> */}
       <Members />
       <Media />
       <Dates/>
-      {/* <Information /> */}
     </main>
   );
 }

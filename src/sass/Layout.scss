@@ -1,3 +1,6 @@
+@import "variables.scss";
+
+
 #layout {
     width: 100%;
     position: relative;
@@ -5,4 +8,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    #upper-content {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4rem;
+        padding: $page_vertical_padding $page_horizontal_padding 0;
+    }
 }

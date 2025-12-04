@@ -1,8 +1,13 @@
+@import "variables.scss";
+
 #admin-dashboard {
     padding: 8rem 4rem;
-    border: 1px solid red;
-    width: 70%;
-    margin-left: auto;
+    // border: 1px solid red;
+    min-height: 100vh;
+    height: fit-content;
+    // width: auto;
+    // margin-left: auto;
+    padding: $page_vertical_padding $page_horizontal_padding;
 
     h2 {
         color: #ffffff;

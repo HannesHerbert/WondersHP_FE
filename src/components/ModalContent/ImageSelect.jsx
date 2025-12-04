@@ -1,82 +1,62 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import CloudinaryImage from "../Snippets/CloudinaryImage";
+import Image from "../Snippets/Image";
 
 
-function ImageSelect ({ callback }) {
-  const folder = 'wonders/images';
-  const [cloudPublicIdsArr, setCloudPublicIdsArr] = useState([]);
-  let [cloudImages, setCloudImages] = useState();
+function ImageSelect({ callback }) {
+
+  let [imagesObjects, setImagesObjects] = useState([]);
+  let [imageElements, setImageElements] = useState([]);
+
+  async function fetchImages() {
+
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/admin/list-images`);
+
+      setImagesObjects(response.data.data);
+      console.log(response.data.data);
+      
+
+    } catch (error) {
+      console.error("Fehler beim Abrufen der Bilder:", error);
+    }
+  };
+
+  function createImages() {
+    let elements = imagesObjects.map((image, index) => {
+
+        return (
+            // <Image key={index} image={image}/>
+            <div key={index}>{image.title}</div>
+          )
+      })
+      console.log(elements);
+      
+
+      setImageElements(elements);
+  }
 
   useEffect(() => {
-    const fetchImages = async () => {
-
-      let params = {
-        folder: folder
-      }
-
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/cloud`, {
-          params: params
-        });
-        
-        setCloudPublicIdsArr(response.data.publicIds);
-
-      } catch (error) {
-        console.error("Fehler beim Abrufen der Bilder:", error);
-      }
-    };
-
     fetchImages();
   }, []);
 
-
-  useEffect(() =>{
-    
-    if(cloudPublicIdsArr.length != 0) {
-
-      let viewport = window.screen.width
-
-      let imgWidth
-
-      if(viewport < 768) {
-        imgWidth = 400
-      } else if(viewport >= 768 && viewport < 1024) {
-        imgWidth = 800
-      } else {
-        imgWidth = 1200
-      }
-
-      function setMembersImage(id) {
-        console.log(id);
-      }
-      
-
-      setCloudImages(cloudPublicIdsArr.map((publicId, index) => {
-          return (
-            <div className="image-wrapper" onClick={() => callback(publicId)}>
-              <CloudinaryImage
-                key={publicId}
-                className="image-wrapper"
-                publicId={publicId}
-                size={imgWidth}
-              />
-            </div>
-          )
-        })
-      )
+  useEffect(() => {
+    console.log(imagesObjects);
+    if (imagesObjects.length > 0) {
+      createImages();
     }
+  }, [imagesObjects]);
 
-    console.log(cloudPublicIdsArr);
-    
+  useEffect(() => {
+    console.log(imageElements);
+  }, [imageElements]);
 
-  }, [cloudPublicIdsArr])
 
 
 
   return (
     <div id="image-select">
-      {cloudImages}
+      {/* {cloudImages} */}
     </div>
   )
 }

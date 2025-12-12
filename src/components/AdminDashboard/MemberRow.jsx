@@ -44,7 +44,7 @@ function MemberRow({ member }) {
           publicId={member.image_path}
           size={400}
         /> */}
-        <img src={member.image_path} alt="" />
+        <img src={member.images.sm} alt="" />
         <span title="Bild ändern" onClick={toggleImageSelectModal}>
           <FaEdit />
         </span>

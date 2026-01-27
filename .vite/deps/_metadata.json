@@ -1,0 +1,127 @@
+{
+  "hash": "f264cb6e",
+  "configHash": "16a1459d",
+  "lockfileHash": "a2d76479",
+  "browserHash": "8f540e97",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "4d8d8553",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "c6f4ecd6",
+      "needsInterop": true
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "389ec0d0",
+      "needsInterop": false
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "84e0bb19",
+      "needsInterop": false
+    },
+    "sass": {
+      "src": "../../node_modules/sass/sass.default.js",
+      "file": "sass.js",
+      "fileHash": "ffbdc86a",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "2b903eb0",
+      "needsInterop": false
+    },
+    "react-icons/fa": {
+      "src": "../../node_modules/react-icons/fa/index.mjs",
+      "file": "react-icons_fa.js",
+      "fileHash": "37ba1f33",
+      "needsInterop": false
+    },
+    "@hcaptcha/react-hcaptcha": {
+      "src": "../../node_modules/@hcaptcha/react-hcaptcha/dist/esm/index.js",
+      "file": "@hcaptcha_react-hcaptcha.js",
+      "fileHash": "85ba4b0d",
+      "needsInterop": false
+    },
+    "react-icons/io5": {
+      "src": "../../node_modules/react-icons/io5/index.mjs",
+      "file": "react-icons_io5.js",
+      "fileHash": "40cf0b7b",
+      "needsInterop": false
+    },
+    "react-audio-player": {
+      "src": "../../node_modules/react-audio-player/dist/bundle.js",
+      "file": "react-audio-player.js",
+      "fileHash": "9cebbd92",
+      "needsInterop": true
+    },
+    "react-icons/rx": {
+      "src": "../../node_modules/react-icons/rx/index.mjs",
+      "file": "react-icons_rx.js",
+      "fileHash": "a48de5a1",
+      "needsInterop": false
+    },
+    "react-icons/pi": {
+      "src": "../../node_modules/react-icons/pi/index.mjs",
+      "file": "react-icons_pi.js",
+      "fileHash": "6b9a8caf",
+      "needsInterop": false
+    },
+    "react-icons/sl": {
+      "src": "../../node_modules/react-icons/sl/index.mjs",
+      "file": "react-icons_sl.js",
+      "fileHash": "332cf785",
+      "needsInterop": false
+    },
+    "react-icons/lu": {
+      "src": "../../node_modules/react-icons/lu/index.mjs",
+      "file": "react-icons_lu.js",
+      "fileHash": "ad8bc928",
+      "needsInterop": false
+    },
+    "@cloudinary/react": {
+      "src": "../../node_modules/@cloudinary/react/index.js",
+      "file": "@cloudinary_react.js",
+      "fileHash": "20d12c3b",
+      "needsInterop": false
+    },
+    "@cloudinary/url-gen": {
+      "src": "../../node_modules/@cloudinary/url-gen/index.js",
+      "file": "@cloudinary_url-gen.js",
+      "fileHash": "75d2514f",
+      "needsInterop": false
+    },
+    "@cloudinary/url-gen/actions/resize": {
+      "src": "../../node_modules/@cloudinary/url-gen/actions/resize.js",
+      "file": "@cloudinary_url-gen_actions_resize.js",
+      "fileHash": "25785266",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-I5NZCGIW": {
+      "file": "chunk-I5NZCGIW.js"
+    },
+    "chunk-QIRAAMLG": {
+      "file": "chunk-QIRAAMLG.js"
+    },
+    "chunk-QMYD5KZB": {
+      "file": "chunk-QMYD5KZB.js"
+    },
+    "chunk-QTVD6AVW": {
+      "file": "chunk-QTVD6AVW.js"
+    },
+    "chunk-PR4QN5HX": {
+      "file": "chunk-PR4QN5HX.js"
+    }
+  }
+}

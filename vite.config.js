@@ -7,8 +7,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   // TODO : change base to '.' before deployment to server
-  /* TODO : change homepage to PACKAGE.JSON '.' before deployment to server */
+  /* TODO : change homepage to '.' before deployment to server */
 
-  base: '.',
+  base: '/Wonders_HP/frontend/',
   server: {host: process.env.VITE_HOST}
 })

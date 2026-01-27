@@ -1,15 +1,11 @@
 import "../../sass/Members.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import GordonFrontal from "../../assets/images/Gordon-frontal.jpg";
-import UlrichFrontal from "../../assets/images/Ulli-frontal.jpg";
-import JodyFrontal from "../../assets/images/Jody-frontal.jpg";
-import HannesFrontal from "../../assets/images/Hannes-frontal.jpg";
-import CloudinaryImage from "../Snippets/CloudinaryImage";
+import Image from "../Snippets/Image";
 
 function Members() {
 
-  // const [membersArr, setMembersArr] = useState([]);
+  const [membersArr, setMembersArr] = useState([]);
 
   const [descExpandedObj, setDescEnpandedObj] = useState({
     topLeft: false,
@@ -18,40 +14,40 @@ function Members() {
     bottomRight: false,
   });
 
-  let membersArr = [
-    {
-      firstname: 'Gordon',
-      lastname: 'Dannat',
-      instrument: 'Piano',
-      description: 'Der “Man on the the Keys” - Gordon - ist der Neuzugang der Wonders. Wenn er nicht gerade Coldplay-Songs singt, reißt auch ihn das Disco-Funk-Spielfieber mit! Während seines Lehramtsstudiums in Halle übte er sich in die Band hinein und ist nun ein festes Mitglied. Nach der klassischen Klavierausbildung für Schulmusik an der Uni sind ihm viel mehr die modernen Musikstile zugetan - ob Blues, Jazz, Funk oder Fusion, stets mit einer Liebe zu den elektronischen Klängen. Gordons Finger zaubern alles auf die Tasten - von den funky Clavinet-Rhythmen à la Stevie Wonder, bis hin zu melodiösen String-Bläser-Sätzen von Earth, Wind & Fire!',
-      image_position: 1,
-      image_path: GordonFrontal
-    },
-    {
-      firstname: 'Ulrich',
-      lastname: 'Dobe',
-      instrument: 'Bass',
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
-      image_position: 2,
-      image_path: UlrichFrontal
-    },
-    {
-      firstname: 'Jody',
-      lastname: 'Cooper',
-      instrument: 'Gesang, Gitarre',
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
-      image_position: 3,
-      image_path: JodyFrontal
-    },
-    {
-      firstname: 'Hannes',
-      lastname: 'Petri',
-      instrument: 'Schlagzeug',
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
-      image_position: 4,
-      image_path: HannesFrontal
-    }
-  ];
+  // let membersArr = [
+  //   {
+  //     firstname: 'Gordon',
+  //     lastname: 'Dannat',
+  //     instrument: 'Piano',
+  //     description: 'Der “Man on the the Keys” - Gordon - ist der Neuzugang der Wonders. Wenn er nicht gerade Coldplay-Songs singt, reißt auch ihn das Disco-Funk-Spielfieber mit! Während seines Lehramtsstudiums in Halle übte er sich in die Band hinein und ist nun ein festes Mitglied. Nach der klassischen Klavierausbildung für Schulmusik an der Uni sind ihm viel mehr die modernen Musikstile zugetan - ob Blues, Jazz, Funk oder Fusion, stets mit einer Liebe zu den elektronischen Klängen. Gordons Finger zaubern alles auf die Tasten - von den funky Clavinet-Rhythmen à la Stevie Wonder, bis hin zu melodiösen String-Bläser-Sätzen von Earth, Wind & Fire!',
+  //     image_position: 1,
+  //     image_path: GordonFrontal
+  //   },
+  //   {
+  //     firstname: 'Ulrich',
+  //     lastname: 'Dobe',
+  //     instrument: 'Bass',
+  //     description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
+  //     image_position: 2,
+  //     image_path: UlrichFrontal
+  //   },
+  //   {
+  //     firstname: 'Jody',
+  //     lastname: 'Cooper',
+  //     instrument: 'Gesang, Gitarre',
+  //     description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
+  //     image_position: 3,
+  //     image_path: JodyFrontal
+  //   },
+  //   {
+  //     firstname: 'Hannes',
+  //     lastname: 'Petri',
+  //     instrument: 'Schlagzeug',
+  //     description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, debitis harum praesentium recusandae quas, iure labore dolores officia enim iusto explicabo reprehenderit id natus molestias dolore cupiditate quam omnis sit perspiciatis deleniti. Odit dolores sint atque, labore error hic dolor magni, ullam facilis tempora voluptatibus quis praesentium alias? Ratione, facilis.',
+  //     image_position: 4,
+  //     image_path: HannesFrontal
+  //   }
+  // ];
 
   const imagePositionVals = {
     1: "topLeft",
@@ -78,16 +74,16 @@ function Members() {
 
   let membersNamesLength = getMembersNameSquared(membersArr);
 
-  // const getAllMembers = async () => {
-  //   let res = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/members`);
-  //   console.log(res.data.data);
+  const getAllMembers = async () => {
+    let res = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/members`);
+    console.log(res.data.data);
 
-  //   setMembersArr(res.data.data);
-  // };
+    setMembersArr(res.data.data);
+  };
 
-  // useEffect(() => {
-  //   getAllMembers();
-  // }, []);
+  useEffect(() => {
+    getAllMembers();
+  }, []);
 
   const toggleDescription = (position) => {
     setDescEnpandedObj((prevState) => ({
@@ -96,10 +92,13 @@ function Members() {
     }));
   };
 
+
+
   const membersElements = membersArr.map((member) => {
     const fullNameLength = member.firstname.length + member.lastname.length;
     const emptyDivsCount = membersNamesLength - fullNameLength;
     const positionClass = imagePositionVals[member.image_position];
+    
 
     return (
       <div
@@ -107,10 +106,13 @@ function Members() {
         className={`member ${positionClass}${descExpandedObj[positionClass] ? " expanded" : ""}`}
         onClick={() => toggleDescription(positionClass)}
       >
-        <img src={member.image_path}
-          key={member.image_path}
-          className="member-image">
-        </img>
+
+        <Image imageObject={{
+          images: member.images,
+          altText: `${member.firstname} ${member.lastname}`,
+          className: "member-image"
+        }} />
+
         <div className="image-overlay"></div>
         <div className="member-name">
           {member.firstname.split("").map((letter, i) => (

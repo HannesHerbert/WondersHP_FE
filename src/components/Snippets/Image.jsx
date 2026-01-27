@@ -4,7 +4,7 @@ import axios from "axios";
 function Image({ imageObject }) {
 
     const { images, altText, className } = imageObject;
-    const baseUrl = import.meta.env.BASE_URL.substring(1, import.meta.env.BASE_URL.length - 1);
+    const baseUrl = import.meta.env.VITE_BASE_API_URL + '/public';
 
     return (
         <picture>

@@ -1,0 +1,14 @@
+#layout {
+  width: 100%;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#layout #upper-content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+  padding: 6rem 4rem 0;
+}/*# sourceMappingURL=Layout.css.map */

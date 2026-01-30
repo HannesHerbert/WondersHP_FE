@@ -1,0 +1,115 @@
+#modal {
+  position: fixed;
+  min-width: 100vw;
+  min-height: 100vh;
+  z-index: 1100;
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+#modal.show {
+  display: flex;
+}
+#modal .modal-container {
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  max-width: 90vw;
+  height: -moz-fit-content;
+  height: fit-content;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+#modal .modal-container .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+#modal .modal-container .modal-header .modal-toggle {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-left: auto;
+}
+#modal .modal-container .modal-content {
+  overflow: visible;
+}
+#modal .modal-container .modal-content #songlist {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+#modal .modal-container .modal-content #songlist table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#modal .modal-container .modal-content #songlist thead tr {
+  position: sticky;
+  top: -1px;
+  background-color: #f1f1f1;
+  z-index: 1;
+}
+#modal .modal-container .modal-content #songlist thead tr > th {
+  position: relative;
+}
+#modal .modal-container .modal-content #songlist thead tr > th > svg {
+  position: absolute;
+  right: 0;
+}
+#modal .modal-container .modal-content #songlist th,
+#modal .modal-container .modal-content #songlist td {
+  padding: 8px;
+  text-align: left;
+}
+#modal .modal-container .modal-content #image-select {
+  display: flex;
+  flex-wrap: wrap;
+}
+#modal .modal-container .modal-content #image-select > .image-wrapper {
+  margin: 5px 10px;
+}
+#modal .modal-container .modal-content #image-select > .image-wrapper:hover {
+  cursor: pointer;
+}
+#modal .modal-container .modal-content #image-select > .image-wrapper:hover img {
+  filter: grayscale(5);
+}
+#modal .modal-container .modal-content #image-select > .image-wrapper img {
+  height: 200px;
+}
+#modal .modal-container .modal-content #gallery-viewer {
+  position: relative;
+}
+#modal .modal-container .modal-content #gallery-viewer .previous-image,
+#modal .modal-container .modal-content #gallery-viewer .next-image {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+}
+#modal .modal-container .modal-content #gallery-viewer .previous-image:hover,
+#modal .modal-container .modal-content #gallery-viewer .next-image:hover {
+  color: yellow;
+}
+#modal .modal-container .modal-content #gallery-viewer .previous-image {
+  transform: translateX(-150%);
+}
+#modal .modal-container .modal-content #gallery-viewer .next-image {
+  right: 0;
+  transform: translateX(150%);
+}
+#modal .modal-container .modal-content #gallery-viewer img {
+  width: auto;
+  height: 60vh;
+}/*# sourceMappingURL=Modal.css.map */

@@ -1,0 +1,108 @@
+#navigation-desktop {
+  left: 0;
+  top: 50px;
+  display: none;
+  z-index: 100;
+}
+#navigation-desktop nav ul {
+  perspective: 500px;
+}
+#navigation-desktop nav ul .navLink {
+  list-style: none;
+  transform-style: preserve-3d;
+  transform-origin: left;
+  transform: rotateY(40deg);
+  transition: all 0.3s;
+}
+#navigation-desktop nav ul .navLink:hover, #navigation-desktop nav ul .navLink.activeNav {
+  transform: rotateY(10deg);
+}
+#navigation-desktop nav ul .navLink:hover > a > p:after, #navigation-desktop nav ul .navLink.activeNav > a > p:after {
+  content: "";
+  width: 100%;
+}
+#navigation-desktop nav ul .navLink a {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  text-decoration: none;
+  font-size: 80px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 2px 2px 0px grey;
+}
+#navigation-desktop nav ul .navLink a > p {
+  position: relative;
+}
+#navigation-desktop nav ul .navLink a > p:after {
+  content: "";
+  width: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: #a0100e;
+  transition: all 0.3s ease-in-out;
+  z-index: 10000;
+}
+
+@media (min-width: 769px) {
+  #navigation-desktop {
+    display: flex;
+  }
+}
+#navigation-mobile {
+  display: none;
+}
+#navigation-mobile #burger-menu {
+  width: 60px;
+  padding: 1rem;
+}
+#navigation-mobile #burger-menu .burger-layer {
+  height: 4px;
+  margin: 2px 0;
+  border-radius: 2px;
+  background-color: black;
+  border: 1px solid white;
+  transform-origin: calc(0% + 4px);
+  transition: all 0.3s;
+}
+#navigation-mobile #burger-menu.active .burger-layer:nth-of-type(1) {
+  transform: rotateZ(45deg) translateY(-3px);
+}
+#navigation-mobile #burger-menu.active .burger-layer:nth-of-type(2) {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+#navigation-mobile #burger-menu.active .burger-layer:nth-of-type(3) {
+  transform: rotateZ(-45deg) translateY(3px);
+}
+#navigation-mobile nav {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(100%);
+  transition: all 0.3s;
+  height: 0;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.2705882353);
+}
+#navigation-mobile nav.expanded {
+  height: 150px;
+}
+#navigation-mobile nav > ul .navLink {
+  font-family: "Roboto";
+  margin-top: 10px;
+  font-size: 20px;
+}
+#navigation-mobile nav > ul .navLink.activeNav a {
+  text-decoration: underline;
+}
+#navigation-mobile nav > ul .navLink a {
+  text-decoration: none;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  #navigation-mobile {
+    display: block;
+  }
+}/*# sourceMappingURL=Navigation.css.map */

@@ -1,0 +1,31 @@
+#contact {
+  margin: auto;
+  position: relative;
+}
+#contact #contact-form {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2705882353);
+}
+#contact #contact-form form > div:first-of-type {
+  display: flex;
+}
+#contact #contact-form form .contact-field {
+  margin-bottom: 10px;
+}
+#contact #contact-form form .contact-field label {
+  display: block;
+}
+#contact #contact-form form .contact-field input, #contact #contact-form form .contact-field textarea {
+  width: 100%;
+}
+#contact #contact-form form div:has(iframe) {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: auto;
+}
+#contact #contact-form form button {
+  margin: 0 auto;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+}/*# sourceMappingURL=Contact.css.map */

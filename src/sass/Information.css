@@ -1,0 +1,64 @@
+#information {
+  margin-top: 150px;
+  padding: 50px 0 20px 0;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2705882353);
+  position: relative;
+}
+#information .info-container {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+}
+#information .info-container #contact-form form .contact-field {
+  margin-bottom: 10px;
+}
+#information .info-container #contact-form form .contact-field label {
+  display: block;
+}
+#information .info-container #contact-form form .contact-field input, #information .info-container #contact-form form .contact-field textarea {
+  width: 100%;
+}
+#information .info-container #contact-form form button {
+  margin: 0 auto;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+}
+#information .info-container .separator {
+  background-color: #ffffff;
+  height: 90%;
+  width: 1px;
+  position: absolute;
+}
+#information .info-container #documents {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+#information .info-container #documents > a {
+  position: relative;
+}
+#information .info-container #documents > a > div {
+  border: 3px solid white;
+  width: 70px;
+  height: 70px !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+  position: absolute;
+  top: 50%;
+  transform: translate3d(-100%, -50%, 0);
+}
+#information .info-container #documents > a > div > img {
+  width: 50px !important;
+  transform: scaleY(-1) rotate(70deg);
+}
+
+@media screen and (max-width: 760px) {
+  #information .info-container {
+    flex-direction: column;
+  }
+}/*# sourceMappingURL=Information.css.map */

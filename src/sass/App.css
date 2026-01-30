@@ -1,0 +1,50 @@
+@font-face {
+  font-family: "Pacifico";
+  src: url("../fonts/Pacifico-Regular.ttf") format("truetype");
+  font-weight: 700;
+  font-style: regular;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+#app {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+h2 {
+  position: absolute;
+  top: -30px;
+  left: -20px;
+  color: #ffffff;
+  font-size: 50px;
+  font-weight: 900;
+  text-shadow: 2px 2px 0px grey;
+}
+@media screen and (max-width: 760px) {
+  h2 {
+    font-size: 25px;
+    left: 0;
+    top: -15px;
+  }
+}
+
+.shadow {
+  position: relative;
+}
+.shadow:before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  bottom: -20px;
+  right: -20px;
+  left: -20px;
+  background-color: rgba(255, 255, 255, 0.3333333333);
+  -webkit-backdrop-filter: invert(80%);
+          backdrop-filter: invert(80%);
+  z-index: -1;
+}/*# sourceMappingURL=App.css.map */

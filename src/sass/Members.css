@@ -1,0 +1,238 @@
+#members {
+  margin-top: 150px;
+}
+#members .members-grid {
+  margin: 0 auto;
+  width: 40vw;
+  height: 40vw;
+  background-color: #000000;
+  border: white 1px solid;
+  position: relative;
+}
+#members .members-grid .member {
+  box-sizing: border-box;
+  border: white 1px solid;
+  position: absolute;
+  background-color: #000000;
+  color: #fff;
+  z-index: 10;
+  width: calc(20vw - 6px - 1px);
+  height: calc(20vw - 6px - 1px);
+  transition: all 0.3s ease-in-out;
+  display: flex;
+}
+#members .members-grid .member.topLeft {
+  top: 4px;
+  left: 4px;
+}
+#members .members-grid .member.topLeft .member-image {
+  top: 0;
+  left: 0;
+}
+#members .members-grid .member.topLeft .image-overlay {
+  background-color: #022f4e;
+  right: 0;
+}
+#members .members-grid .member.topLeft .member-name {
+  top: 0;
+  right: 0;
+}
+#members .members-grid .member.topLeft .member-description {
+  align-self: flex-end;
+}
+#members .members-grid .member.topRight {
+  top: 4px;
+  right: 4px;
+}
+#members .members-grid .member.topRight .member-image {
+  top: 0;
+  right: 0;
+}
+#members .members-grid .member.topRight .image-overlay {
+  background-color: #cba27c;
+  left: 0;
+}
+#members .members-grid .member.topRight .member-name {
+  top: 0;
+  left: 0;
+}
+#members .members-grid .member.topRight .member-description {
+  align-self: flex-end;
+}
+#members .members-grid .member.bottomLeft {
+  left: 4px;
+  bottom: 4px;
+}
+#members .members-grid .member.bottomLeft .member-image {
+  left: 0;
+  bottom: 0;
+}
+#members .members-grid .member.bottomLeft .image-overlay {
+  background-color: #ca7810;
+  right: 0;
+  bottom: 0;
+}
+#members .members-grid .member.bottomLeft .member-name {
+  bottom: 0;
+  right: 0;
+}
+#members .members-grid .member.bottomRight {
+  right: 4px;
+  bottom: 4px;
+}
+#members .members-grid .member.bottomRight .member-image {
+  right: 0;
+  bottom: 0;
+}
+#members .members-grid .member.bottomRight .image-overlay {
+  background-color: #a0100e;
+  left: 0;
+  bottom: 0;
+}
+#members .members-grid .member.bottomRight .member-name {
+  bottom: 0;
+  left: 0;
+}
+#members .members-grid .member .member-image {
+  width: calc(20vw - 6px - 3px);
+  height: calc(20vw - 6px - 3px);
+  position: absolute;
+  transition-delay: 0.3s;
+}
+#members .members-grid .member .image-overlay {
+  width: calc(20vw - 6px - 3px);
+  height: calc(20vw - 6px - 3px);
+  position: absolute;
+  opacity: 0.5;
+}
+#members .members-grid .member .member-name {
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  width: calc(20vw - 6px - 3px);
+  height: calc(20vw - 6px - 3px);
+  z-index: 100;
+}
+#members .members-grid .member .member-name .empty {
+  border: 1px solid white;
+}
+#members .members-grid .member .member-name:hover {
+  opacity: 1;
+}
+#members .members-grid .member .member-name .name-box {
+  width: 25%;
+  height: 25%;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize;
+}
+#members .members-grid .member .member-description {
+  padding: 10px;
+  height: 50%;
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  font-size: 20px;
+}
+#members .members-grid .member .member-description .description-text {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-color: white black;
+  scrollbar-width: thin;
+}
+#members .members-grid .member:hover {
+  cursor: pointer;
+}
+#members .members-grid .member:not(.expanded) {
+  transition-delay: 0.3s;
+}
+#members .members-grid .member.expanded {
+  z-index: 15;
+  width: calc(40vw - 9.2px - 1px);
+  height: calc(40vw - 9.2px - 1px);
+}
+#members .members-grid .member.expanded .member-description, #members .members-grid .member.expanded .member-name {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+@media screen and (max-width: 760px) {
+  #members {
+    margin-top: 150px;
+  }
+  #members .members-grid {
+    margin: 0 auto;
+    width: 80vw;
+    min-height: 80vw;
+    height: -moz-fit-content;
+    height: fit-content;
+    background-color: #000000;
+    border: white 1px solid;
+    position: relative;
+  }
+  #members .members-grid .member {
+    box-sizing: border-box;
+    border: white 1px solid;
+    position: absolute;
+    background-color: #000000;
+    color: #fff;
+    z-index: 10;
+    width: calc(40vw - 6px - 1px);
+    height: calc(40vw - 6px - 1px);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+  }
+  #members .members-grid .member.topLeft .member-description {
+    margin-top: calc(40vw - 6px - 1px);
+    min-height: calc(40vw - 6px - 1px);
+  }
+  #members .members-grid .member.topRight .member-description {
+    margin-top: calc(40vw - 6px - 1px);
+    min-height: calc(40vw - 6px - 1px);
+  }
+  #members .members-grid .member.bottomLeft .member-description {
+    margin-bottom: calc(40vw - 6px - 1px);
+    min-height: calc(40vw - 6px - 1px);
+  }
+  #members .members-grid .member.bottomRight .member-description {
+    margin-bottom: calc(40vw - 6px - 1px);
+    min-height: calc(40vw - 6px - 1px);
+  }
+  #members .members-grid .member .member-image {
+    width: calc(40vw - 6px - 3px);
+    height: calc(40vw - 6px - 3px);
+  }
+  #members .members-grid .member .image-overlay {
+    width: calc(40vw - 6px - 3px);
+    height: calc(40vw - 6px - 3px);
+  }
+  #members .members-grid .member .member-name {
+    width: calc(40vw - 6px - 3px);
+    height: calc(40vw - 6px - 3px);
+    opacity: 1;
+  }
+  #members .members-grid .member .member-name .empty {
+    border: 1px solid white;
+  }
+  #members .members-grid .member .member-name:hover {
+    opacity: 1;
+  }
+  #members .members-grid .member .member-name > div {
+    font-size: 6vw;
+  }
+  #members .members-grid .member .member-description {
+    font-size: 15px;
+  }
+  #members .members-grid .member.expanded {
+    width: calc(80vw - 9.2px - 1px);
+    min-height: calc(80vw - 9.2px - 1px);
+  }
+}
+@media screen and (max-width: 450px) {
+  #members .members-grid .member .member-description {
+    font-size: 10px;
+  }
+}/*# sourceMappingURL=Members.css.map */

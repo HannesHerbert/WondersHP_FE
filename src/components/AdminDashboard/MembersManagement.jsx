@@ -19,7 +19,8 @@ function MembersManagement() {
 
   const getAllMembers = async () => {
     let response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/members`);
-    console.log(response.data.data);
+
+    // console.log(response.data.data);
     
     // setMembersArr(res.data.data);
     setMembersArrStore(response.data.data);
@@ -32,6 +33,11 @@ function MembersManagement() {
       setIsInit(isInit => !isInit)
     }
   }, []);
+
+  useEffect(() => {
+    console.log(membersArrStore);
+    
+  }, [membersArrStore]);
 
 
     const imagePositionVals = {
@@ -86,7 +92,7 @@ function MembersManagement() {
     async function updateMembers() {
 
         try {
-            let res = await axios.put(`${import.meta.env.VITE_BASE_API_URL}/admin/update-members`, {membersArrStore}, {
+            let res = await axios.put(`${import.meta.env.VITE_BASE_API_URL}/admin/update-members`, membersArrStore, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

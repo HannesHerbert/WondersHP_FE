@@ -7,13 +7,11 @@ import { useRef } from "react";
 
 function MemberRow({ member }) {
 
-  console.log(member);
-
-
   const setModalContent = useModalStore((state) => state.setModalContent);
   const setModalIsShown = useModalStore((state) => state.setModalIsShown);
   const setMembersArrStore = useAdminSettingsStore((state) => state.setMembersArray);
   const membersArrStore = useAdminSettingsStore((state) => state.membersArray);
+  const imagePositionVals = useAdminSettingsStore((state) => state.imagePositionVals);
 
   const firstnameRef = useRef();
   const lastnameRef = useRef();
@@ -21,32 +19,43 @@ function MemberRow({ member }) {
   const imagePositionRef = useRef();
   const descriptionRef = useRef();
 
+  const POSITION_OPTS = imagePositionVals.map((option, index) => {
+    return (
+      <option key={option.class} value={option.value}>{option.label}</option>
+    )
+  });
 
-  function updateMemberImage(userId, imagePublicId) {
-    const updatedMembers = membersArrStore.map((member) => {
-      if (member.id === userId) {
-        return { ...member, image_path: imagePublicId };
-      }
-      return member;
-    });
 
-    console.log(updatedMembers);
+  function updateMemberImage(memberId, imageId) {
+    const updatedMembers = membersArrStore.map((mem) =>
+      mem.id === memberId ? { ...mem, image_id: imageId
+       } : mem
+    );
+
+    console.log("Updated Members Array:", updatedMembers);
+    
 
     setMembersArrStore(updatedMembers);
   }
 
+
   function toggleImageSelectModal() {
     setModalContent(
-      "Bild Auswählen",
+      "Bild auswählen",
       <ImageSelect
-      // callback={(publicId) => updateMemberImage(member.id, publicId)}
+        initialImageId={member.image_id}
+        onConfirm={(imageId) => {
+          updateMemberImage(member.id, imageId);
+          setModalIsShown(false);
+        }}
+        onCancel={() => setModalIsShown(false)}
       />
     );
-    setModalIsShown();
+    setModalIsShown(true);
   }
 
+
   function updateMembersStore() {
-    console.log("... MEMBERS UPDATING");
 
     const newImagePosition = parseInt(imagePositionRef.current.value);
     const oldImagePosition = member.image_position;
@@ -96,7 +105,6 @@ function MemberRow({ member }) {
   }
 
 
-
   return (
     <div className="member-row">
       <div className="member-image">
@@ -121,7 +129,7 @@ function MemberRow({ member }) {
           <input type="text"
             id="firstname-input"
             name="firstname"
-            defaultValue={member.firstname}
+            value={member.firstname}
             ref={firstnameRef}
             onChange={updateMembersStore}
           />
@@ -130,7 +138,7 @@ function MemberRow({ member }) {
           <input type="text"
             id="lastname-input"
             name="lastname"
-            defaultValue={member.lastname}
+            value={member.lastname}
             ref={lastnameRef}
             onChange={updateMembersStore}
           />
@@ -139,7 +147,7 @@ function MemberRow({ member }) {
           <input type="text"
             id="instrument-input"
             name="instrument"
-            defaultValue={member.instrument}
+            value={member.instrument}
             ref={instrumentRef}
             onChange={updateMembersStore}
           />
@@ -148,17 +156,17 @@ function MemberRow({ member }) {
           <select id="image-position-input"
             name="image-position"
             ref={imagePositionRef}
-            onChange={updateMembersStore}>
-            <option value="1" selected={member.image_position === 1}>Oben Links</option>
-            <option value="2" selected={member.image_position === 2}>Oben Rechts</option>
-            <option value="3" selected={member.image_position === 3}>Unten Links</option>
-            <option value="4" selected={member.image_position === 4}>Unten Rechts</option>
+            onChange={updateMembersStore}
+            value={member.image_position}>
+
+            {POSITION_OPTS}
+
           </select>
 
         </div>
 
         <div className="member-description">
-          <textarea defaultValue={member.description}
+          <textarea value={member.description}
             ref={descriptionRef}
             onChange={updateMembersStore}>
           </textarea>

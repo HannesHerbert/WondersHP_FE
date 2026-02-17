@@ -1,10 +1,7 @@
 @import "variables.scss";
 
 #navigation-desktop {
-  // padding: 3rem;
-  // position: absolute;
-  left: 0;
-  top: 50px;
+  padding: 3rem;
   display: none;
   z-index: 100;
 
@@ -19,11 +16,12 @@
         transform: rotateY(40deg);
         transition: all 0.3s;
 
-        &:hover, &.activeNav {
+        &:hover,
+        &.activeNav {
           transform: rotateY(10deg);
 
-          > a > p:after {
-            content:'';
+          >a>p:after {
+            content: '';
             width: 100%;
           }
         }
@@ -39,11 +37,13 @@
           color: #ffffff;
           text-shadow: 2px 2px 0px grey;
 
-          > p {
+          >p {
             position: relative;
-            
+            font-family: 'Righteous', cursive;
+
+
             &:after {
-              content:'';
+              content: '';
               width: 0;
               position: absolute;
               left: 0;
@@ -54,7 +54,7 @@
               z-index: 10000;
             }
 
-            
+
           }
         }
       }
@@ -115,7 +115,7 @@
       height: 150px;
     }
 
-    > ul {
+    >ul {
       .navLink {
         font-family: "Roboto";
         margin-top: 10px;

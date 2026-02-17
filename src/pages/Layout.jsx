@@ -19,6 +19,7 @@ import Footer from "../components/Layout/Footer";
 import HeroArea from "../components/Home/HeroArea";
 import VideoPlayer from "../components/Home/VideoPlayer";
 import ContactForm from "../components/Contact/ContactForm";
+import BackgroundStripes_II from "../components/Layout/BackgroundStripes_II";
 
 
 
@@ -36,36 +37,48 @@ function Layout() {
 
   const location = useLocation()
 
-  const upperContentByPath  = {
-    '/'         : <HeroArea />,
-    '/gallery'  : <div id="top-video-wrapper"><VideoPlayer /></div>,
-    '/contact'  : <div></div>,
+  const upperContentByPath = {
+
+    // '/': <HeroArea />,
+    '/': <div></div>,
+
+    '/gallery': <div id="top-video-wrapper"><VideoPlayer /></div>,
+    '/contact': <div></div>,
     '/impressum': <div></div>,
-    '/admin'    : <div></div>,
+    '/admin': <div></div>,
   }
 
   return (
     <div id="layout">
       {/* <Background/> */}
-      <BackgroundStripes />
-
-      {/* <AudioPlayer /> */}
-
-      <Header />
+      {/* <BackgroundStripes /> */}
+      <BackgroundStripes_II />
 
       <Modal />
 
-      <div id="upper-content">
+      <div id="layout-grid">
 
-        <Navigation viewScope="desktop" />
+        <Header />
 
-        {upperContentByPath[location.pathname]}  
+        <div id="main-content">
+
+          <Navigation viewScope="desktop" />
+
+          <main id="content-outlet">
+
+            <Outlet />
+
+            {/* {upperContentByPath[location.pathname]} */}
+
+          </main>
+
+        </div>
+
+        <Footer />
 
       </div>
 
-      <Outlet />
 
-      <Footer />
     </div>
   );
 }

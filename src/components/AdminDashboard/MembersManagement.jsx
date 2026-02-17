@@ -18,12 +18,10 @@ function MembersManagement() {
   const token = useAuthStore((state) => state.getToken())
 
   const getAllMembers = async () => {
-    let response = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/members`);
-
-    // console.log(response.data.data);
+    let res = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/public/members`);
     
     // setMembersArr(res.data.data);
-    setMembersArrStore(response.data.data);
+    setMembersArrStore(res.data.data);
 
   };
 
@@ -35,17 +33,10 @@ function MembersManagement() {
   }, []);
 
   useEffect(() => {
-    console.log(membersArrStore);
+    // console.log('CHANGE: ', membersArrStore);
     
   }, [membersArrStore]);
 
-
-    const imagePositionVals = {
-        1: 'topLeft',
-        2: 'topRight',
-        3: 'bottomLeft',
-        4: 'bottomRight'
-    }
 
     // let membersArr = [
     //     {

@@ -9,7 +9,7 @@ function Header() {
         <Navigation viewScope="mobile" />
 
         <div id="name">
-          <span>Jody Cooper &</span>
+          <span>Jody Cooper & </span>
           <span>the Wonders</span>
         </div>
 

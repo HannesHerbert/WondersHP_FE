@@ -2,17 +2,25 @@
 
 
 #layout {
-    width: 100%;
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 
-    #upper-content {
+    #layout-grid {
         display: flex;
-        justify-content: space-between;
-        margin-top: 4rem;
-        padding: $page_vertical_padding $page_horizontal_padding 0;
+        flex-direction: column;
+        height: 100vh;
+
+        #main-content {
+            flex: 1;
+            display: flex;
+            height: 85vh;
+
+            #content-outlet {
+                overflow-y: scroll;
+                flex: 1;
+                /* 80% effektiv */
+                  padding: 3rem;
+            }
+        }
     }
+
+
 }

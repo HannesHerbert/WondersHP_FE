@@ -1,32 +1,31 @@
 #hero-area {
-    transform-style: preserve-3d;
+  transform-style: preserve-3d;
 
   #group-image-container {
     width: 50vw;
-    margin-left: auto;
+    margin: auto;
     overflow: hidden;
-    background-color: #00000045;
+    // background-color: #00000045;
+    background: #FFFFFF45;
+    background: linear-gradient(45deg,rgba(255, 255, 255, .5) 0%, rgba(0, 0, 0, .5) 20%, rgba(0, 0, 0, .5) 80%, rgba(255, 255, 255, .5) 100%);
     // transform: rotateY(-10deg) translateZ(-100px);
     transform-origin: right;
+    padding: 15px;
+    border-radius: 0 15px 0 15px;
 
     .image-wrapper {
-        overflow: hidden;
+      overflow: hidden;
 
       img {
         width: 100%;
-        //   height: 100px;
-        //   background-image: url("../images/Wonders-GROUPimg.jpg");
-        //   background-size: cover; /* Das Bild wird skaliert, um den gesamten Container zu bedecken */
-        //   background-position: center; /* Das Bild wird in der Mitte des Containers zentriert */
-        //   background-repeat: no-repeat;
       }
     }
 
     .hero-text {
-        padding: 0 .5rem .5rem 1rem;
-        color: #fff;
-        text-align: right;
-        font-size: 20px;
+      padding: 0 .5rem .5rem 1rem;
+      color: #fff;
+      text-align: right;
+      font-size: 15px;
     }
   }
 }
@@ -35,19 +34,18 @@
 @media screen and (max-width: 760px) {
   #hero-area {
 
-  #group-image-container {
-    width: 100vw;
+    #group-image-container {
+      width: auto;
 
-    .image-wrapper {
+      .image-wrapper {
 
-      img {
+        img {}
+      }
+
+      .hero-text {
+
+        font-size: 15px;
       }
     }
-
-    .hero-text {
-
-      font-size: 15px;
-    }
   }
-}
 }

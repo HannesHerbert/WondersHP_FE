@@ -6,12 +6,12 @@ import "../sass/Home.scss";
 
 function Home() {
   return (
-    <main id="home">
-      {/* <HeroArea /> */}
+    <div id="home">
+      <HeroArea />
       <Members />
       <Media />
       <Dates/>
-    </main>
+    </div>
   );
 }
 

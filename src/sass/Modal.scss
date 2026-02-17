@@ -78,22 +78,39 @@
       }
 
       #image-select {
-        display: flex;
-        flex-wrap: wrap;
+        
 
-        >.image-wrapper {
-          margin: 5px 10px;
+        .image-list {
+          display: flex;
+          flex-wrap: wrap;
 
-          &:hover {
-            cursor: pointer;
+          .image-wrapper {
+            margin: 5px 10px;
+            position: relative;
+
+            &:hover {
+              cursor: pointer;
+
+              img {
+                filter: grayscale(05);
+              }
+            }
 
             img {
-              filter: grayscale(05);
+              height: 200px;
             }
-          }
 
-          img {
-            height: 200px;
+            .tick-icon {
+              z-index: 1;
+              position: absolute;
+              right: 0;
+              top: 0;
+              padding: .5rem;
+              transition: all 0.3s;
+              font-size: 20px;
+              color: green;
+              background-color: transparent;
+            }
           }
         }
       }

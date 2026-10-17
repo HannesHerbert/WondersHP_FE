@@ -4,6 +4,7 @@ import MembersManagement from "../components/AdminDashboard/MembersManagement";
 import MediaManagement from "../components/AdminDashboard/MediaManagement";
 import EventManagement from "../components/AdminDashboard/EventManagement";
 import BandManagement from "../components/AdminDashboard/BandManagement";
+import FlourishText from "../components/Snippets/FlourishText";
 
 function AdminDashboard() {
     const [activeNav, setActiveNav] = useState('members');
@@ -57,7 +58,7 @@ function AdminDashboard() {
 
     return (
         <div id="admin-dashboard">
-            <h2>Admin Dashboard</h2>
+            <h2><FlourishText>Admin Dashboard</FlourishText></h2>
             <div className="dashboard-container">
                 <div className="dashboard-header">
                     <ul>

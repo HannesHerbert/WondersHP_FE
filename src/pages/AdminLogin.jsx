@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../sass/AdminLogin.scss";
 import useNotificationStore from "../store/useNotificationStore.js";
+import FlourishText from "../components/Snippets/FlourishText";
 
 function AdminLogin() {
   const usernameRef = useRef();
@@ -46,7 +47,7 @@ function AdminLogin() {
   return (
     <div id="admin-login">
       <div className="admin-login-container">
-        <h2>Admin Login</h2>
+        <h2><FlourishText>Admin Login</FlourishText></h2>
         <form
           className="login-form"
           action="/submit-form"

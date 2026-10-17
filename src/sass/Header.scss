@@ -10,7 +10,7 @@
   @include glass(rgba(0, 0, 0, 0.55));
   border-width: 0 0 1px 0;
 
-  // 8-Farben-Linie unten am Header
+  // Weiße Akzentlinie unten am Header
   &::after {
     content: "";
     position: absolute;
@@ -18,7 +18,7 @@
     right: 0;
     bottom: -1px;
     height: 3px;
-    background: $stripe_gradient;
+    background: $accent_line;
     opacity: 0.9;
   }
 

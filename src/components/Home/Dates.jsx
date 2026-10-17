@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import DateElement from "./DateElement";
 import axios from "axios";
+import FlourishText from "../Snippets/FlourishText";
 
 function Dates() {
 
@@ -99,7 +100,7 @@ function Dates() {
 
   return (
     <section id="dates">
-      <h2>Unsere Spieltermine</h2>
+      <h2><FlourishText>Unsere Spieltermine</FlourishText></h2>
 
       {currDateIndex > 0 && (
         <div className="earlierDates" onClick={handlePrevious}>

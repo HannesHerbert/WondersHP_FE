@@ -1,0 +1,47 @@
+// Unterstreichung mit Spirale (FlourishText.jsx): Strich wird per stroke-dashoffset von links nach rechts gezeichnet
+$flourish_draw: 0.9s;
+
+.flourish {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+
+  // inline-block, damit der ResizeObserver Breitenänderungen (z.B. nach dem Laden der Schrift) meldet
+  .flourish-label {
+    display: inline-block;
+  }
+
+  .flourish-line {
+    position: absolute;
+    left: 0;
+    // Globale Bild-Regel (max-width: 100%) würde das SVG auf Textbreite stauchen – die Spirale liegt aber rechts daneben
+    max-width: none;
+    height: auto;
+    bottom: 0;
+    overflow: visible;
+    pointer-events: none;
+
+    path {
+      fill: none;
+      stroke: #ffffff;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      // Strich so lang wie der Pfad, Lücke etwas länger: Im Ruhezustand liegt der ganze Pfad in der Lücke,
+      // sonst bliebe das runde Linienende als Punkt sichtbar
+      stroke-dasharray: var(--flourish-length, 1000) calc(var(--flourish-length, 1000) + 24);
+      stroke-dashoffset: calc(var(--flourish-length, 1000) + 12);
+      transition: stroke-dashoffset $flourish_draw cubic-bezier(0.65, 0, 0.35, 1);
+    }
+  }
+
+  // Überschriften: einmal zeichnen, sobald sichtbar
+  &.is-drawn .flourish-line path {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flourish .flourish-line path {
+    transition: none;
+  }
+}

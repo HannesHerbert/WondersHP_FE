@@ -37,19 +37,6 @@
 
           > p {
             position: relative;
-            padding-bottom: 0.15em;
-
-            &::after {
-              content: '';
-              position: absolute;
-              left: 0;
-              bottom: 0;
-              width: 0;
-              height: 5px;
-              border-radius: 3px;
-              background: $stripe_gradient;
-              transition: width 0.35s ease-in-out;
-            }
           }
         }
 
@@ -62,8 +49,9 @@
             text-shadow: 3px 3px 0 $red_2, 5px 5px 0 rgba(0, 0, 0, 0.5);
           }
 
-          a > p::after {
-            width: 100%;
+          // Strich mit Spirale zeichnen (FlourishText), beim Verlassen zieht er sich zurück
+          .flourish-line path {
+            stroke-dashoffset: 0;
           }
         }
       }
@@ -171,6 +159,10 @@
         &.activeNav a {
           color: #fff;
           text-shadow: 3px 3px 0 $red_2;
+        }
+
+        &.activeNav .flourish-line path {
+          stroke-dashoffset: 0;
         }
       }
     }

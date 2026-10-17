@@ -3,21 +3,25 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { mediaUrl } from "../../config.js";
+import FlourishText from "../Snippets/FlourishText";
 
 // Endvergrößerung: das Auge füllt dann etwa die Bühne
 const MAX_ZOOM = 28;
-// Zoombereich, in dem der runde "Hier anfragen"-Button über dem Zoompunkt erscheint
-const CTA_FROM = 3;
-const CTA_TO = 8;
+// Scroll-Fortschritt, über den der runde "Hier anfragen"-Button langsam sichtbar wird
+const CTA_FROM = 0.35;
+const CTA_TO = 0.9;
+// Helligkeit des Bildes am Ende des Zooms (1 = unverändert) – dunkler, aber nie ganz schwarz
+const MIN_BRIGHTNESS = 0.55;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+// Weicher Ein- und Ausstieg (S-Kurve) für langsames Einblenden
+const smoothstep = (t) => t * t * (3 - 2 * t);
 
 function BookingTeaser() {
   const [teaser, setTeaser] = useState(null);
   const sceneRef = useRef(null);
   const stageRef = useRef(null);
   const photoRef = useRef(null);
-  const veilRef = useRef(null);
   const detailRefs = useRef([]);
   const ctaRef = useRef(null);
   const navigate = useNavigate();
@@ -63,15 +67,15 @@ function BookingTeaser() {
         const el = detailRefs.current[i];
         if (el) el.style.opacity = clamp((scale - layer.from) / (layer.to - layer.from), 0, 1);
       });
-      // Zum Ende hin abdunkeln – man "taucht" ins Auge ein
-      veilRef.current.style.opacity = Math.pow(progress, 3) * 0.85;
+      // Mit dem Zoom langsam abdunkeln, damit der Button vor dem Auge gut lesbar wird
+      photo.style.filter = `brightness(${(1 - (1 - MIN_BRIGHTNESS) * smoothstep(progress)).toFixed(3)})`;
 
       // Der Zoompunkt bleibt beim Skalieren fest (transform-origin) und wandert nur durch das Verschieben
-      const appear = clamp((scale - CTA_FROM) / (CTA_TO - CTA_FROM), 0, 1);
+      const appear = smoothstep(clamp((progress - CTA_FROM) / (CTA_TO - CTA_FROM), 0, 1));
       cta.style.left = `${focusX + (50 - focusX) * center}%`;
       cta.style.top = `${focusY + (50 - focusY) * center}%`;
       cta.style.opacity = appear;
-      cta.style.transform = `translate(-50%, -50%) scale(${0.6 + 0.4 * appear})`;
+      cta.style.transform = `translate(-50%, -50%) scale(${0.9 + 0.1 * appear})`;
       cta.style.pointerEvents = appear > 0.5 ? "auto" : "none";
       cta.tabIndex = appear > 0.5 ? 0 : -1;
     };
@@ -99,7 +103,7 @@ function BookingTeaser() {
     <section id="booking-teaser" ref={sceneRef}>
       <div className="booking-stage" ref={stageRef}>
         <h2>
-          <Link to="/contact">{title}</Link>
+          <Link to="/contact"><FlourishText>{title}</FlourishText></Link>
         </h2>
 
         {/* Ganzes Bild führt zur Anfrage; der runde Button ist der sichtbare Einstieg beim Zoomen */}
@@ -130,8 +134,6 @@ function BookingTeaser() {
               />
             ))}
           </div>
-          <div className="booking-veil" ref={veilRef}></div>
-
           <Link
             to="/contact"
             className="booking-cta"

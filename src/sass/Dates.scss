@@ -9,15 +9,6 @@
   overflow: hidden;
   @include card;
 
-  h2 {
-    text-align: center;
-
-    &::after {
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-
   .earlierDates,
   .laterDates {
     position: absolute;

@@ -39,7 +39,7 @@
   border-radius: 4px;
 }
 
-// Section-Überschrift: Righteous + 8-Farben-Streifen als Akzent
+// Section-Überschrift: Righteous, einheitlich linksbündig
 h2 {
   font-family: $font_display;
   position: relative;
@@ -50,16 +50,8 @@ h2 {
   line-height: 1.1;
   margin-bottom: 2rem;
   text-shadow: 3px 3px 0 $red_2;
-
-  &::after {
-    content: "";
-    display: block;
-    width: 120px;
-    height: 6px;
-    margin-top: 0.75rem;
-    border-radius: 3px;
-    background: $stripe_gradient;
-  }
+  // Unterstreichung: <FlourishText> (weißer Strich mit Spirale, wird beim Erscheinen gezeichnet)
+  text-align: left;
 }
 
 .shadow {

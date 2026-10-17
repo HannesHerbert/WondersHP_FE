@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import axios from "axios";
 import { mediaUrl } from "../../config.js";
 import "../../sass/HeroArea.scss";
+import FlourishText from "../Snippets/FlourishText";
 const defaultGroupPhoto = "/images/group-photo.jpg";
 
 function HeroArea() {
@@ -73,7 +74,7 @@ function HeroArea() {
           
           {(heroData?.title || heroData?.text) && (
             <motion.div className="hero-placeholder-text" variants={textVariants}>
-              {heroData.title && <h2>{heroData.title}</h2>}
+              {heroData.title && <h2><FlourishText>{heroData.title}</FlourishText></h2>}
               {heroData.text && <p>{heroData.text}</p>}
             </motion.div>
           )}

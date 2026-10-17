@@ -62,7 +62,7 @@
         pointer-events: none;
       }
 
-      // Farbstreifen an der Unterkante des Bildes
+      // Weiße Akzentlinie an der Unterkante des Bildes
       &::after {
         content: "";
         position: absolute;
@@ -70,7 +70,7 @@
         right: 0;
         bottom: 0;
         height: 6px;
-        background: $stripe_gradient;
+        background: $accent_line;
       }
     }
 
@@ -90,17 +90,12 @@
 
   .hero-placeholder-text {
     margin-top: 3rem;
-    text-align: right;
+    text-align: left;
     color: white;
     max-width: 620px;
 
     h2 {
-      text-align: right;
       margin-bottom: 1rem;
-
-      &::after {
-        margin-left: auto;
-      }
     }
 
     p {
@@ -127,13 +122,6 @@
       text-align: left;
       margin-top: 2rem;
 
-      h2 {
-        text-align: left;
-
-        &::after {
-          margin-left: 0;
-        }
-      }
     }
   }
 }

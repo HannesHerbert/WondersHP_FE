@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../../sass/Navigation.scss';
+import FlourishText from "../Snippets/FlourishText";
 
 const NAV_ITEMS = [
   { path: "/", label: "Home" },
@@ -50,7 +51,7 @@ function Navigation({viewScope}) {
               style={{ "--i": index }}
             >
               <Link to={item.path}>
-                <p>{item.label}</p>
+                <p><FlourishText drawOnView={false} strokeWidth={4}>{item.label}</FlourishText></p>
               </Link>
             </li>
           ))}

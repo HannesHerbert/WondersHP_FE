@@ -45,7 +45,10 @@ $shadow_card: 0 20px 50px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255
 $bp_md: 768px;
 $bp_sm: 480px;
 
-// 8-Farben-Streifen als Gradient (für Akzentlinien)
+// Einheitliche Akzentlinie (Header, Hero-Bild, Trenner, Buttons) – früher der 8-Farben-Streifen
+$accent_line: #ffffff;
+
+// 8-Farben-Streifen als Gradient
 $stripe_gradient: linear-gradient(90deg, $red_2 0 12.5%, $red_1 0 25%, $yellow_2 0 37.5%, $yellow_1 0 50%, $blue_4 0 62.5%, $blue_3 0 75%, $blue_2 0 87.5%, $blue_1 0 100%);
 
 @mixin glass($bg: $surface) {

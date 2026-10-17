@@ -1,5 +1,8 @@
+@import "variables.scss";
+
 #modal {
   position: fixed;
+  background: rgba(0, 0, 0, 0.55);
   min-width: 100vw;
   min-height: 100vh;
   z-index: 1100;
@@ -17,9 +20,13 @@
 
   .modal-container {
     min-width: fit-content;
-    max-width: 90vw;
+    max-width: min(92vw, 1100px);
     height: fit-content;
-    background-color: white;
+    background-color: #131318;
+    color: #fff;
+    border: 1px solid $surface_border;
+    border-radius: $radius_md;
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
 
@@ -27,12 +34,29 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 5px;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid $surface_border;
+
+      h3 {
+        font-family: $font_display;
+        font-weight: 400;
+        font-size: 1.3rem;
+      }
 
       .modal-toggle {
-        border: 1px solid black;
-        border-radius: 3px;
-        padding: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: #fff;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -43,6 +67,14 @@
 
     .modal-content {
       overflow: visible;
+      padding: 0.5rem 1rem 1rem;
+
+      &:not(:has(#gallery-viewer)) {
+        max-height: calc(90dvh - 70px);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+      }
 
       #songlist {
         max-height: 70vh;
@@ -56,7 +88,7 @@
         thead tr {
           position: sticky;
           top: -1px;
-          background-color: #f1f1f1;
+          background-color: #1d1d24;
           z-index: 1;
 
           >th {
@@ -71,14 +103,30 @@
 
         th,
         td {
-          padding: 8px;
+          padding: 10px 12px;
           text-align: left;
+          font-size: 0.9rem;
+        }
 
+        th {
+          font-size: 0.75rem;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.65);
+          cursor: pointer;
+        }
+
+        tbody tr {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.04);
+          }
         }
       }
 
       #image-select {
-        
+
 
         .image-list {
           display: flex;
@@ -92,12 +140,19 @@
               cursor: pointer;
 
               img {
-                filter: grayscale(05);
+                filter: brightness(1.1);
               }
             }
 
             img {
-              height: 200px;
+              height: 160px;
+              display: block;
+              border-radius: 10px;
+            }
+
+            &.selected img {
+              outline: 3px solid $yellow_2;
+              outline-offset: 2px;
             }
 
             .tick-icon {
@@ -108,8 +163,11 @@
               padding: .5rem;
               transition: all 0.3s;
               font-size: 20px;
-              color: green;
-              background-color: transparent;
+              margin: 6px;
+              padding: 2px;
+              border-radius: 50%;
+              color: $ink;
+              background-color: $yellow_2;
             }
           }
         }
@@ -128,7 +186,7 @@
           color: white;
 
           &:hover {
-            color: yellow; // Optionale Hover-Änderung für bessere Sichtbarkeit
+            color: $yellow_2;
           }
         }
 
@@ -156,9 +214,54 @@
         //   user-select: none;
         // }
 
+        .image-text {
+          padding-top: 0.6rem;
+          color: rgba(255, 255, 255, 0.75);
+          font-size: 0.9rem;
+        }
+
         img {
           width: auto;
-          height: 60vh;
+          max-width: 100%;
+          height: auto;
+          max-height: 70dvh;
+          display: block;
+          border-radius: 8px;
+        }
+      }
+
+      #create-event {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+
+        > div {
+          margin: 15px 0;
+        }
+
+        > div:has([type="checkbox"]) {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .input-group {
+          display: flex;
+          gap: 15px;
+
+          .input-group-general {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .input-group-address {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+
+        .create-event-actions {
+          display: block;
         }
       }
     }

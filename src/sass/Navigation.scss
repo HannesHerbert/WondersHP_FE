@@ -1,60 +1,69 @@
 @import "variables.scss";
 
+// ─── Desktop: 3D-gekippte Navigation links ──────────────────────────────────
 #navigation-desktop {
-  padding: 3rem;
   display: none;
   z-index: 100;
+  flex-shrink: 0;
+  padding: calc(#{$header_h} + 3rem) 1rem 0 clamp(1.5rem, 3vw, 3rem);
+
+  #burger-menu {
+    display: none;
+  }
 
   nav {
     ul {
-      perspective: 500px;
+      perspective: 600px;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
 
       .navLink {
-        list-style: none;
         transform-style: preserve-3d;
         transform-origin: left;
-        transform: rotateY(40deg);
-        transition: all 0.3s;
-
-        &:hover,
-        &.activeNav {
-          transform: rotateY(10deg);
-
-          >a>p:after {
-            content: '';
-            width: 100%;
-          }
-        }
+        transform: rotateY(32deg);
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 
         a {
-          font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-            "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+          display: inline-block;
           text-decoration: none;
-          font-size: 80px;
-          font-weight: 900;
-          // color: black;
-          // text-shadow: 2px 2px 0px #ffffff;
-          color: #ffffff;
-          text-shadow: 2px 2px 0px grey;
+          font-family: $font_display;
+          font-size: clamp(2.25rem, 1rem + 2.8vw, 4rem);
+          line-height: 1.15;
+          color: rgba(255, 255, 255, 0.72);
+          text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+          transition: color 0.3s ease, text-shadow 0.3s ease;
 
-          >p {
+          > p {
             position: relative;
-            font-family: 'Righteous', cursive;
+            padding-bottom: 0.15em;
 
-
-            &:after {
+            &::after {
               content: '';
-              width: 0;
               position: absolute;
               left: 0;
               bottom: 0;
-              height: 3px;
-              background-color: $red_1;
-              transition: all 0.3s ease-in-out;
-              z-index: 10000;
+              width: 0;
+              height: 5px;
+              border-radius: 3px;
+              background: $stripe_gradient;
+              transition: width 0.35s ease-in-out;
             }
+          }
+        }
 
+        &:hover,
+        &.activeNav {
+          transform: rotateY(8deg) translateX(6px);
 
+          a {
+            color: #ffffff;
+            text-shadow: 3px 3px 0 $red_2, 5px 5px 0 rgba(0, 0, 0, 0.5);
+          }
+
+          a > p::after {
+            width: 100%;
           }
         }
       }
@@ -62,80 +71,113 @@
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: #{$bp_md + 1}) {
   #navigation-desktop {
     display: flex;
   }
 }
 
+// ─── Mobile: Burger im Header + Overlay-Menü ────────────────────────────────
 #navigation-mobile {
   display: none;
+  flex-shrink: 0;
 
   #burger-menu {
-    width: 60px;
-    padding: 1rem;
+    position: relative;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 12px;
+    border: 1px solid $surface_border;
+    background: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
 
     .burger-layer {
-      height: 4px;
-      margin: 2px 0;
+      display: block;
+      height: 2px;
+      width: 100%;
       border-radius: 2px;
-      background-color: black;
-      border: 1px solid white;
-      transform-origin: calc(0% + 4px);
-      transition: all 0.3s;
+      background-color: #fff;
+      transition: transform 0.3s ease, opacity 0.2s ease;
     }
 
     &.active .burger-layer {
       &:nth-of-type(1) {
-        transform: rotateZ(45deg) translateY(-3px);
+        transform: translateY(7px) rotate(45deg);
       }
 
       &:nth-of-type(2) {
-        width: 0;
-        height: 0;
         opacity: 0;
       }
 
       &:nth-of-type(3) {
-        transform: rotateZ(-45deg) translateY(3px);
+        transform: translateY(-7px) rotate(-45deg);
       }
     }
   }
 
   nav {
-    position: absolute;
-    bottom: 0;
-    transform: translateY(100%);
-    transition: all 0.3s;
-    height: 0;
-    overflow: hidden;
-    background-color: #00000045;
+    position: fixed;
+    top: $header_h_sm;
+    left: 0;
+    right: 0;
+    height: calc(100dvh - #{$header_h_sm});
+    @include glass(rgba(0, 0, 0, 0.88));
+    border-width: 0;
+    padding: 2.5rem 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 
     &.expanded {
-      height: 150px;
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+
+      .navLink {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
-    >ul {
-      .navLink {
-        font-family: "Roboto";
-        margin-top: 10px;
-        font-size: 20px;
+    > ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
 
-        &.activeNav a {
-          text-decoration: underline;
-        }
+      .navLink {
+        opacity: 0;
+        transform: translateX(-16px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+        transition-delay: calc(var(--i) * 60ms);
 
         a {
+          display: block;
+          padding: 0.6rem 0;
+          font-family: $font_display;
+          font-size: 2.25rem;
           text-decoration: none;
-          color: white;
+          color: rgba(255, 255, 255, 0.75);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        &.activeNav a {
+          color: #fff;
+          text-shadow: 3px 3px 0 $red_2;
         }
       }
     }
   }
 }
 
-
-@media (max-width: 768px) {
+@media (max-width: $bp_md) {
   #navigation-mobile {
     display: block;
   }

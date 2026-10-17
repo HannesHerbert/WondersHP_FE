@@ -1,0 +1,194 @@
+@import "variables.scss";
+
+#event-management {
+
+    #events-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        > p {
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+
+        .event-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: $radius_md;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid $surface_border;
+            transition: background 0.2s ease, border-color 0.2s ease;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.06);
+                border-color: rgba($yellow_1, 0.3);
+            }
+
+            .dateElement {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                align-items: stretch;
+                gap: 1rem;
+                color: white;
+
+                .date {
+                    flex-shrink: 0;
+                    width: 64px;
+                    padding: 0.5rem 0;
+                    border-radius: 10px;
+                    background: linear-gradient(160deg, $red_1 0%, $red_2 100%);
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    font-size: 0.7rem;
+                    letter-spacing: 0.08em;
+
+                    >div {
+                        text-align: center;
+                    }
+
+                    >div:first-of-type {
+                        font-family: $font_display;
+                        font-size: 1.6rem;
+                        line-height: 1;
+                        letter-spacing: 0;
+                    }
+
+                    >div:nth-of-type(2) {
+                        font-weight: 700;
+                        color: $cream;
+                    }
+
+                    >div:last-of-type {
+                        opacity: 0.7;
+                    }
+                }
+
+                .location {
+                    flex: 1;
+                    min-width: 0;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    gap: 0.25rem;
+
+                    .place {
+                        font-family: $font_display;
+                        font-size: 1.2rem;
+                        overflow-wrap: anywhere;
+                    }
+
+                    .address {
+                        display: flex;
+                        font-size: 0.8rem;
+                        color: rgba(255, 255, 255, 0.65);
+
+                        >div:first-of-type {
+                            margin-right: 6px;
+                            color: $yellow_2;
+                        }
+                    }
+                }
+
+                .info {
+                    flex-shrink: 0;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    gap: 0.35rem;
+                    font-size: 0.8rem;
+
+                    >div {
+                        display: flex;
+                        align-items: center;
+
+                        svg {
+                            margin-right: 6px;
+                            color: $yellow_2;
+                        }
+                    }
+                }
+
+                a {
+                    text-decoration: none;
+                    color: white;
+
+                    &:hover {
+                        color: $yellow_1;
+                    }
+                }
+            }
+
+            .event-actions {
+                display: flex;
+                gap: 0.5rem;
+                flex-shrink: 0;
+
+                >span {
+                    width: 38px;
+                    height: 38px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    background: rgba(255, 255, 255, 0.06);
+                    border: 1px solid $surface_border;
+                    transition: background 0.2s ease, border-color 0.2s ease;
+
+                    .edit-icon,
+                    .delete-icon {
+                        font-size: 17px;
+                        color: #fff;
+                        transition: color 0.2s ease;
+                    }
+
+                    &:hover {
+                        background: $yellow_2;
+                        border-color: transparent;
+
+                        .edit-icon {
+                            color: $ink;
+                        }
+                    }
+
+                    &:last-child:hover {
+                        background: $red_1;
+
+                        .delete-icon {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: $bp_md) {
+    #event-management #events-list .event-row {
+        flex-direction: column;
+        align-items: stretch;
+
+        .dateElement {
+            flex-wrap: wrap;
+
+            .info {
+                flex-direction: row;
+                flex-basis: 100%;
+                gap: 1.25rem;
+            }
+        }
+
+        .event-actions {
+            justify-content: flex-end;
+            padding-top: 0.6rem;
+            border-top: 1px solid $surface_border;
+        }
+    }
+}

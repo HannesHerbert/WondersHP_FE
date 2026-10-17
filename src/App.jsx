@@ -13,8 +13,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminRoute from "./services/AdminRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import BackgroundStripes from "./components/Layout/BackgroundStripes";
-
-
+import Notification from "./components/Snippets/Notification";
 
 function App() {
 
@@ -24,6 +23,7 @@ function App() {
       <BrowserRouter>
 
         <KeyListener />
+        <Notification />
 
         <Routes>
 
@@ -41,10 +41,10 @@ function App() {
 
             <Route path="*" element={<Navigate to="/" replace />} />
 
-{/* TODO: AdminRoute aktivieren*/} 
-            {/* <Route element={<AdminRoute />}> */}
+            {/* Nur mit gültigem Login-Token erreichbar */}
+            <Route element={<AdminRoute />}>
               <Route path="/admin" element={<AdminDashboard />} />
-            {/* </Route> */}
+            </Route>
 
           </Route>
 

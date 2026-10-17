@@ -1,66 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../../sass/Navigation.scss';
 
+const NAV_ITEMS = [
+  { path: "/", label: "Home" },
+  { path: "/gallery", label: "Gallerie" },
+  { path: "/contact", label: "Kontakt" },
+  { path: "/news", label: "News" },
+  { path: "/admin", label: "Admin" },
+];
+
 function Navigation({viewScope}) {
   const location = useLocation();
-  const [isBurgerActive, setBurgerActive] = useState(false);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
 
+  // Menü schließen, sobald sich die Route ändert
+  useEffect(() => {
+    setIsNavExpanded(false);
+  }, [location.pathname]);
+
   const toggleBurgerMenu = () => {
-    setBurgerActive(!isBurgerActive);
     setIsNavExpanded(!isNavExpanded);
-    console.log('click');
   };
 
   const getNavClass = (path) => (location.pathname === path ? "activeNav" : "");
 
   return (
-    <div id={`navigation-${viewScope}`}>
+    <div id={`navigation-${viewScope}`} className={isNavExpanded ? 'open' : ''}>
 
-      <div id='burger-menu' className={isBurgerActive ? 'active' : ''} onClick={toggleBurgerMenu}>
-        <div className='burger-layer'></div>
-        <div className='burger-layer'></div>
-        <div className='burger-layer'></div>
-      </div>
+      <button
+        type="button"
+        id='burger-menu'
+        className={isNavExpanded ? 'active' : ''}
+        onClick={toggleBurgerMenu}
+        aria-label={isNavExpanded ? "Menü schließen" : "Menü öffnen"}
+        aria-expanded={isNavExpanded}
+      >
+        <span className='burger-layer'></span>
+        <span className='burger-layer'></span>
+        <span className='burger-layer'></span>
+      </button>
 
       <nav className={isNavExpanded ? 'expanded' : ''}>
-        <ul className="">
-          <li className={`navLink ${getNavClass("/")}`}>
-            <Link to="/">
-              <p className="">Home</p>
-            </Link>
-          </li>
-
-          <li className={`navLink ${getNavClass("/gallery")}`}>
-            <Link to="/gallery">
-              <p className="">Gallerie</p>
-            </Link>
-          </li>
-
-          <li className={`navLink ${getNavClass("/contact")}`}>
-            <Link to="/contact">
-              <p className="">Kontakt</p>
-            </Link>
-          </li>
-
-          <li className={`navLink ${getNavClass("/news")}`}>
-            <Link to="/news">
-              <p className="">News</p>
-            </Link>
-          </li>
-
-          <li className={`navLink ${getNavClass("/admin")}`}>
-            <Link to="/admin">
-              <p className="">Admin</p>
-            </Link>
-          </li>
-
-          {/* <li className={`navLink ${getNavClass("/impressum")}`}>
-            <Link to="/impressum">
-              <p className="">Impressum</p>
-            </Link>
-          </li> */}
+        <ul>
+          {NAV_ITEMS.map((item, index) => (
+            <li
+              key={item.path}
+              className={`navLink ${getNavClass(item.path)}`}
+              style={{ "--i": index }}
+            >
+              <Link to={item.path}>
+                <p>{item.label}</p>
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </div>

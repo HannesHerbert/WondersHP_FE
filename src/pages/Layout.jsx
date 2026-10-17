@@ -10,6 +10,7 @@ import AdminLogin from "./AdminLogin";
 import "../sass/Layout.scss";
 import Header from "../components/Layout/Header";
 import { Outlet, useLocation } from "react-router-dom";
+import { useState } from "react";
 import BackgroundStripes from "../components/Layout/BackgroundStripes";
 import Background from "../components/Layout/Background";
 import Navigation from "../components/Layout/Navigation";
@@ -37,6 +38,9 @@ function Layout() {
 
   const location = useLocation()
 
+  // Seiteninhalt erst nach dem Streifen-Intro laden
+  const [introDone, setIntroDone] = useState(false);
+
   const upperContentByPath = {
 
     // '/': <HeroArea />,
@@ -52,11 +56,11 @@ function Layout() {
     <div id="layout">
       {/* <Background/> */}
       {/* <BackgroundStripes /> */}
-      <BackgroundStripes_II />
+      <BackgroundStripes_II onIntroEnd={() => setIntroDone(true)} />
 
       <Modal />
 
-      <div id="layout-grid">
+      {introDone && <div id="layout-grid">
 
         <Header />
 
@@ -76,7 +80,7 @@ function Layout() {
 
         <Footer />
 
-      </div>
+      </div>}
 
 
     </div>

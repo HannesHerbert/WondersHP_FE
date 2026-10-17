@@ -4,17 +4,87 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import useAdminSettingsStore from "../../store/useAdminSettingsStore";
 import useAuthStore from "../../store/useAuthStore";
-
-
-
+import CreateEvent from "../ModalContent/CreateEvent";
+import useModalStore from "../../store/useModalStore";
+import DateElement from "../Home/DateElement";
+import '../../sass/EventManagement.scss';
+import { MdOutlineDeleteForever } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import useNotificationStore from "../../store/useNotificationStore";
 
 function EventManagement() {
+    const [eventsArr, setEventsArr] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const setModalContent = useModalStore((state) => state.setModalContent);
+    const setModalIsShown = useModalStore((state) => state.setModalIsShown);
+    let token = useAuthStore.getState().getToken();
+    const showNotification = useNotificationStore((state) => state.showNotification);
 
+    const getAllEvents = async () => {
+        try {
+            setIsLoading(true);
+            const res = await axios.get(`/api/public/events`);
+            const data = res.data.data || res.data;
+            setEventsArr(Array.isArray(data) ? data : []);  // Flexibel für API-Response
+        } catch (error) {
+            console.error('Fehler beim Laden der Events:', error);
+            setEventsArr([]);
+            showNotification("Fehler beim Laden der Events", "error");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-    async function updateMembers() {
+    // EINZIGER useEffect für Initial-Load
+    useEffect(() => {
+        getAllEvents();
+    }, []);
+
+    function toggleEventModal(eventObj) {
+
+        if (eventObj) {
+            console.log('EDITING EVENT: ', eventObj);
+
+            setModalContent(
+                "Veranstaltung bearbeiten",
+                <CreateEvent
+                    onConfirm={() => {
+                        setModalIsShown(false);
+                        getAllEvents();
+                    }}
+                    onCancel={() => setModalIsShown(false)}
+                    eventObj={eventObj}
+                />
+            );
+
+        } else {
+            console.log('CREATING NEW EVENT');
+
+            setModalContent(
+                "Neue Veranstaltung erstellen",
+                <CreateEvent
+                    onConfirm={() => {
+                        setModalIsShown(false);
+                        getAllEvents();
+                    }}
+                    onCancel={() => setModalIsShown(false)}
+                />
+            );
+        }
+
+        setModalIsShown(true);
+    }
+
+    if (isLoading) return <div>Lade Events...</div>;
+
+    async function deleteEvent(id) {
+
+        console.log(id);
+        const dateId = { id: id };
 
         try {
-            let res = await axios.put(`${import.meta.env.VITE_BASE_API_URL}/admin/update-members`, membersArrStore, {
+            let res = await axios.delete(`/api/admin/delete-event`, {
+                data: dateId,
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -22,65 +92,40 @@ function EventManagement() {
 
             console.log(res)
 
-        } catch (error) {
-            console.log(error);
-        }
-    };
+            getAllEvents();
+            showNotification("Event erfolgreich gelöscht", "success");
 
+        } catch (error) {
+            console.error('Fehler beim Löschen des Events:', error);
+            showNotification("Fehler beim Löschen des Events", "error");
+        }
+    }
+
+    const dateElems = (Array.isArray(eventsArr) ? eventsArr : []).map((event) => (
+
+        <div key={event.id || event.date} className="event-row">
+            <DateElement key={event.id || event.date} dateObj={event} />
+
+            <div className="event-actions">
+                <span title="Bearbeiten" onClick={() => toggleEventModal(event)}><FaEdit className="edit-icon" /></span>
+                <span title="Löschen" onClick={() => deleteEvent(event.id)}><MdOutlineDeleteForever className="delete-icon" /></span>
+            </div>
+        </div>
+
+    ));
 
     return (
         <div id="event-management">
-
-            <div className="member-name">
-
-                <label htmlFor="firstname-input">Vorname:</label>
-                <input type="text"
-                    id="firstname-input"
-                    name="firstname"
-                    value={member.firstname}
-                    ref={firstnameRef}
-                    onChange={updateMembersStore}
-                />
-
-                <label htmlFor="lastname-input">Nachname:</label>
-                <input type="text"
-                    id="lastname-input"
-                    name="lastname"
-                    value={member.lastname}
-                    ref={lastnameRef}
-                    onChange={updateMembersStore}
-                />
-
-                <label htmlFor="instrument-input">Instrument:</label>
-                <input type="text"
-                    id="instrument-input"
-                    name="instrument"
-                    value={member.instrument}
-                    ref={instrumentRef}
-                    onChange={updateMembersStore}
-                />
-
-                <label htmlFor="image-position-input">Bildposition:</label>
-                <select id="image-position-input"
-                    name="image-position"
-                    ref={imagePositionRef}
-                    onChange={updateMembersStore}
-                    value={member.image_position}>
-
-                    {POSITION_OPTS}
-
-                </select>
-
+            <div className="admin-modal-actions" style={{ justifyContent: 'flex-start', marginBottom: '2rem' }}>
+                <button className="admin-btn btn-secondary" onClick={getAllEvents}>Aktualisieren</button>
+                <button className="admin-btn btn-primary" onClick={() => toggleEventModal(null)}>Neue Veranstaltung erstellen</button>
             </div>
-
-
-            <div>
-                <button onClick={getAllMembers}>Aktualisieren</button>
-                <button onClick={updateMembers}>Speichern</button>
+            <div id="events-list">
+                {dateElems.length > 0 ? dateElems : <p>Keine Events gefunden</p>}
             </div>
-
         </div>
-    )
+    );
 }
 
-export default EventManagement
+
+export default EventManagement;

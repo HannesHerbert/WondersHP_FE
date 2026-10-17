@@ -1,91 +1,172 @@
-@mixin add-animation-delay($max-childs: 100) {
-  @for $i from 1 through $max-childs {
-    &:nth-child(#{$i}) {
-      animation-delay: $i * 0.1s;
-    }
-  }
-}
+@import "./variables.scss";
+
 
 #dates {
-  margin-top: 150px;
-  padding: 50px 0 20px 0;
+  margin-top: clamp(4rem, 8vw, 7rem);
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 4.5rem);
   color: white;
-  background-color: #00000045;
   position: relative;
+  overflow: hidden;
+  @include card;
+
+  h2 {
+    text-align: center;
+
+    &::after {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
 
   .earlierDates,
   .laterDates {
     position: absolute;
-    top: 50%;
+    top: 55%;
     transform: translateY(-50%);
-    font-size: 30px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 16px;
     cursor: pointer;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid $surface_border;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 
     &:hover {
-      color: yellow; // Optionale Hover-Änderung für bessere Sichtbarkeit
+      background: $yellow_2;
+      color: $ink;
     }
   }
 
   .earlierDates {
-    left: 10px;
+    left: clamp(0.5rem, 1.5vw, 1rem);
   }
 
   .laterDates {
-    right: 10px;
+    right: clamp(0.5rem, 1.5vw, 1rem);
+  }
+
+  .dates-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .dates-staggered-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .date-wrapper {
+    width: 100%;
+    max-width: calc(100% - 4rem);
+    /* Margin-left wird inline in Dates.jsx für den Treppen-Effekt gesetzt */
   }
 
   .dateElement {
-    width: fit-content;
+    width: 100%;
     display: flex;
-    margin: 20px auto;
-    // border: 1px solid white;
+    align-items: stretch;
+    gap: 1.25rem;
+    padding: 0.75rem;
     opacity: 0;
+    border-radius: $radius_md;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid $surface_border;
+    transition: background 0.25s ease, border-color 0.25s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba($yellow_1, 0.35);
+    }
 
     .date {
-      background-color: red;
-      padding: 5px 0;
-      width: 60px;
+      flex-shrink: 0;
+      width: 72px;
+      padding: 0.6rem 0;
+      border-radius: 10px;
+      background: linear-gradient(160deg, $red_1 0%, $red_2 100%);
+      box-shadow: 0 10px 20px -10px rgba($red_1, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
 
       > div {
         text-align: center;
       }
 
       > div:first-of-type {
-        font-size: 30px;
+        font-family: $font_display;
+        font-size: 2rem;
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      > div:nth-of-type(2) {
+        font-weight: 700;
+        color: $cream;
+      }
+
+      > div:last-of-type {
+        opacity: 0.7;
       }
     }
 
     .location {
-      margin: 0 10px;
+      flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-evenly;
+      justify-content: center;
+      gap: 0.35rem;
 
       .place {
-        text-align: center;
-        font-size: 30px;
+        font-family: $font_display;
+        font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);
+        line-height: 1.15;
+        overflow-wrap: anywhere;
       }
 
       .address {
         display: flex;
+        font-size: 0.85rem;
+        line-height: 1.45;
+        color: rgba(255, 255, 255, 0.7);
 
         > div:first-of-type {
-          margin-right: 5px;
+          margin-right: 6px;
+          padding-top: 2px;
+          color: $yellow_2;
         }
       }
     }
 
     .info {
+      flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-evenly;
-      margin-right: 20px;
+      justify-content: center;
+      gap: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 0.85rem;
 
       > div {
         display: flex;
+        align-items: center;
 
         svg {
-          margin-right: 5px;
+          margin-right: 6px;
+          color: $yellow_2;
         }
       }
     }
@@ -93,6 +174,10 @@
     a {
       text-decoration: none;
       color: white;
+
+      &:hover {
+        color: $yellow_1;
+      }
     }
 
     &.initial {
@@ -116,13 +201,55 @@
       animation: slideOutRight 0.3s forwards;
       opacity: 1;
     }
+  }
+}
 
-    @include add-animation-delay(100);
+@media screen and (max-width: $bp_md) {
+  #dates {
+    padding: 1.5rem 1rem 4.5rem;
 
-    // &:last-of-type {
-    //     animation-delay: 0.1s;
-    // }
-    
+    .dates-staggered-wrapper {
+      align-items: stretch;
+    }
+
+    .date-wrapper {
+      margin-left: 0 !important;
+      max-width: none;
+    }
+
+    // Pfeile unter die Liste statt seitlich
+    .earlierDates,
+    .laterDates {
+      top: auto;
+      bottom: 1rem;
+      transform: none;
+    }
+
+    .earlierDates {
+      left: calc(50% - 52px);
+    }
+
+    .laterDates {
+      right: calc(50% - 52px);
+    }
+
+    .dateElement {
+      flex-wrap: wrap;
+      gap: 0.9rem;
+
+      .date {
+        width: 64px;
+      }
+
+      .info {
+        flex-direction: row;
+        flex-basis: 100%;
+        justify-content: flex-start;
+        gap: 1.25rem;
+        padding: 0.6rem 0 0;
+        border-top: 1px solid $surface_border;
+      }
+    }
   }
 }
 

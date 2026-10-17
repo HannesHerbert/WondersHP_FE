@@ -24,46 +24,62 @@
 #app {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
 }
 
+::selection {
+  background: $yellow_2;
+  color: $ink;
+}
+
+:focus-visible {
+  outline: 2px solid $yellow_1;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+// Section-Überschrift: Righteous + 8-Farben-Streifen als Akzent
 h2 {
-  font-family: 'Righteous', cursive;
-  position: absolute;
-  top: -30px;
-  right: -20px;
-  // color: black;
+  font-family: $font_display;
+  position: relative;
   color: #ffffff;
-  font-size: 50px;
-  font-weight: 900;
-  text-shadow: 2px 2px 0px grey;
+  font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  text-shadow: 3px 3px 0 $red_2;
 
-  @media screen and (max-width: 760px) {
-    font-size: 25px;
-
-    left: 0;
-    top: -15px;
+  &::after {
+    content: "";
+    display: block;
+    width: 120px;
+    height: 6px;
+    margin-top: 0.75rem;
+    border-radius: 3px;
+    background: $stripe_gradient;
   }
 }
 
 .shadow {
   position: relative;
-  //   transform: rotateY(-20deg);
-  //     transform-style: preserve-3d;
-  //     perspective: 1000px;
 
   &:before {
     content: "";
-    // width: 100%;
-    // height: 100%;
-    // display: block;
     position: absolute;
-    top: -20px;
-    bottom: -20px;
-    right: -20px;
-    left: -20px;
+    inset: -20px;
     background-color: #ffffff55;
     backdrop-filter: invert(80%);
     z-index: -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

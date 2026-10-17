@@ -1,11 +1,13 @@
 import { useRef } from "react";
 import "../sass/NewUser.scss"
 import axios from "axios";
+import useAuthStore from "../store/useAuthStore.js";
 
 function NewUser() {
     const usernameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
+    const token = useAuthStore((state) => state.getToken());
 
     // Form Submitt
   async function submitHandler(evt) {
@@ -48,7 +50,9 @@ function NewUser() {
 
     // Sende Request an /register endpoint der API
     try {
-        const response = await axios.post(`${import.meta.env.VITE_BASE_API_URL}/admin/create-user`, registrationData);
+        const response = await axios.post(`/api/admin/create-user`, registrationData, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
 
         // // display eine 'SUCCESS' Meldung und navigiere zu Login
         // alertSuccessHandler(`Thank you for registration, ${registrationData.username}!`);

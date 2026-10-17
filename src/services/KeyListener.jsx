@@ -7,7 +7,7 @@ import { Logger } from 'sass';
 const KeyListener = () => {
     const [input, setInput] = useState('');
     const navigate = useNavigate();
-    const secretCode = import.meta.env.VITE_ADMIN_LOGIN_PW
+    const secretCode = import.meta.env.VITE_ADMIN_LOGIN_PW || 'admin';
     const timeoutDuration = 1000;
 
     useEffect(() => {

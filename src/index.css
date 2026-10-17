@@ -4,3 +4,22 @@
   box-sizing: border-box;
 }
 
+/* Hintergrund nur auf html – sonst verdeckt body die Streifen (z-index: -100) */
+html {
+  background-color: #000;
+}
+
+html,
+body {
+  color: #fff;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}

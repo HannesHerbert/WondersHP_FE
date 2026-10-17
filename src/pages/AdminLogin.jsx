@@ -4,6 +4,7 @@ import useAuthStore from "../store/useAuthStore.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../sass/AdminLogin.scss";
+import useNotificationStore from "../store/useNotificationStore.js";
 
 function AdminLogin() {
   const usernameRef = useRef();
@@ -14,35 +15,10 @@ function AdminLogin() {
 
   const token = useAuthStore((state) => state.getToken());
   const validateToken = useAuthStore((state) => state.validateToken);
-  const user = useAuthStore((state) => state.user)
-
-  // Notification Handler function
-  // const notificationHandler = useNotificationStore(state => state.notificationHandler);
-
-  // Wenn die Daten zum Server korrekt gesendet sind, wird ein Alert mit Success erzeugt
-  // function alertSuccessHandler(msg) {
-  //     notificationHandler('success', msg)
-  // }
-  // Wenn bei register ein Fehler, wird ein Alert mit Fehlermeldung erzeugt
-  // function alertFailHandler(msg) {
-  //     notificationHandler('fail', msg)
-  // }
+  const user = useAuthStore((state) => state.user);
+  const showNotification = useNotificationStore((state) => state.showNotification);
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (token && !isAuthenticated) {
-  //     validateToken();
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     console.log(user);
-      
-  //     navigate("/admin");
-  //   }
-  // }, [isAuthenticated]);
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -54,16 +30,16 @@ function AdminLogin() {
     };
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BASE_API_URL}/login/user`, loginData);
+            const response = await axios.post(`/api/login/user`, loginData);
 
             authenticate(response.data.user, response.data.token);
+            showNotification("Erfolgreich eingeloggt", "success");
 
             navigate("/admin");
 
         } catch (error) {
             console.log('ERROR:', error);
-            // Display eine Fehlermeldung
-            // alertFailHandler(error.response.data.message);
+            showNotification("Login fehlgeschlagen: " + (error.response?.data?.message || "Unbekannter Fehler"), "error");
         }
   };
 
@@ -89,13 +65,10 @@ function AdminLogin() {
             />
           </div>
 
-          {/* <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" placeholder="E-mail" ref={emailRef} required/> */}
-
           <div className="input-field">
             <label htmlFor="passwort">Passwort:</label>
             <input
-              type="text"
+              type="password"
               id="password"
               name="password"
               placeholder="Password"

@@ -1,38 +1,36 @@
 import useAuthStore from "../store/useAuthStore.js";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../sass/LoadingScreen.scss";
 
 
-
+// Schützt alle verschachtelten Routen: nur mit gültigem Token (vom Backend geprüft)
 function AdminRoute() {
 
-    const user = useAuthStore(state => state.user);
-    const isAuthenticated = useAuthStore(state => state.isAuthenticated());
     const validateToken = useAuthStore((state) => state.validateToken);
-    const location = useLocation();
+    const token = useAuthStore((state) => state.getToken());
     const [tokenIsValid, setTokenIsValid] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(Boolean(token));
 
-    const checkForValidToken = async() => {
-        const isValid = await validateToken()
-        setTokenIsValid(isValid);
-        setIsLoading(false);
-    }
-    
-    useEffect (() => {
-        checkForValidToken();
-    }, [])
-    
+    useEffect(() => {
+        // Ohne Token gar nicht erst beim Backend nachfragen
+        if (!token) return;
 
-    return (        
+        validateToken().then((isValid) => {
+            setTokenIsValid(isValid);
+            setIsLoading(false);
+        });
+    }, [token]);
+
+
+    return (
 
         isLoading ? (<div id="loading-screen"><p>LOADING</p></div>)
-        
+
         :
-        
-        (tokenIsValid ? <Outlet /> : <Navigate to='/' replace />)
-        
+
+        (tokenIsValid ? <Outlet /> : <Navigate to='/login' replace />)
+
     )
 }
 

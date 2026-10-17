@@ -19,7 +19,7 @@ function GalleryElementViewer({ currIdx }) {
 
     function getNextImage() {
         console.log('give next image');
-        if (currElemIdx === galleryElements.length - 1) {
+        if (currElemIdx === galleryElements?.length - 1) {
             setCurrElemIdx(0);
             return;
         } else {setCurrElemIdx(currElemIdx + 1);}
@@ -28,7 +28,7 @@ function GalleryElementViewer({ currIdx }) {
     function getPreviousImage() {
         console.log('give previous image');
         if (currElemIdx === 0) {
-            setCurrElemIdx(galleryElements.length - 1);
+            setCurrElemIdx(galleryElements?.length - 1);
             return;
         } else {setCurrElemIdx(currElemIdx - 1);}
     }
@@ -38,7 +38,7 @@ function GalleryElementViewer({ currIdx }) {
     }, [currElemIdx]);
 
     let element =   <div>
-                        <img src={imageUrl} alt={imageTitle} />
+                        <img src={imageUrl || null} alt={imageTitle} />
                         <div className="image-text">
                             <p>{imageTitle}</p>
                         </div>
@@ -50,7 +50,7 @@ function GalleryElementViewer({ currIdx }) {
 
             <div className="previous-image" onClick={getPreviousImage}><FaArrowLeft /></div>
 
-            <img src={imageUrl} alt="{imageUrl}" />
+            <img src={imageUrl || null} alt={imageTitle} />
             <div className="image-text">
                 <p>{imageTitle}</p>
             </div>

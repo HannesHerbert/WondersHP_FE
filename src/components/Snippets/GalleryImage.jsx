@@ -23,7 +23,7 @@ function GalleryImage({ imageIndex, imageUrl, imageTitle }) {
 
     return (
         <div className="gallery-image-wrapper"  onClick={toggleImageViewModal}>
-            <img src={imageUrl} alt="{imageUrl}" />
+            <img src={imageUrl || null} alt={imageTitle} />
             <div className="image-text">
                 <p>{imageTitle}</p>
             </div>

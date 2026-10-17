@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="c"><rect width="64" height="64" rx="14"/></clipPath>
+    <radialGradient id="b" cx="38%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".5" stop-color="#c9c9cf"/>
+      <stop offset="1" stop-color="#55555d"/>
+    </radialGradient>
+  </defs>
+  <g clip-path="url(#c)">
+    <rect width="64" height="64" fill="#0a0a0c"/>
+    <!-- Regenbogen: Viertelbogen, der nach rechts in Streifen ausläuft -->
+    <g fill="none" stroke-width="6.4">
+      <path stroke="#a0100e" d="M0.2 62A29.8 29.8 0 0 1 30 32.2H64"/>
+      <path stroke="#ca7810" d="M6.6 62A23.4 23.4 0 0 1 30 38.6H64"/>
+      <path stroke="#469291" d="M13 62A17 17 0 0 1 30 45H64"/>
+      <path stroke="#044a67" d="M19.4 62A10.6 10.6 0 0 1 30 51.4H64"/>
+    </g>
+    <!-- Disco-Sonne -->
+    <circle cx="30" cy="62" r="7" fill="url(#b)"/>
+    <!-- Glitzer -->
+    <path fill="#f4d799" d="M46 5Q46 15 56 15Q46 15 46 25Q46 15 36 15Q46 15 46 5Z"/>
+  </g>
+</svg>

@@ -1,0 +1,156 @@
+@import "variables.scss";
+
+/* --- Wiederverwendbare Dashboard- & Modal-Klassen --- */
+
+.admin-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  width: 100%;
+
+  .admin-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .admin-input,
+  .admin-select,
+  .admin-textarea {
+    font: inherit;
+    font-size: 0.95rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 0.7rem 0.9rem;
+    border-radius: 10px;
+    width: 100%;
+    color-scheme: dark;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.24);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $yellow_2;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba($yellow_2, 0.25);
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  .admin-select option {
+    background: #15151a;
+    color: #fff;
+  }
+
+  .admin-input[type="file"] {
+    padding: 0.5rem;
+    cursor: pointer;
+
+    &::file-selector-button {
+      font: inherit;
+      font-size: 0.85rem;
+      margin-right: 0.8rem;
+      padding: 0.45rem 0.9rem;
+      border: none;
+      border-radius: 999px;
+      color: $ink;
+      background: $yellow_1;
+      cursor: pointer;
+    }
+  }
+
+  .admin-textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.55;
+  }
+}
+
+.admin-btn {
+  font: inherit;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  transition: transform 0.2s ease, filter 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &.btn-primary {
+    color: $ink;
+    background: linear-gradient(135deg, $yellow_1, $yellow_2);
+    box-shadow: 0 10px 22px -12px rgba($yellow_2, 0.9);
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+  }
+
+  &.btn-secondary {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.16);
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  &.btn-danger {
+    color: #fff;
+    background: linear-gradient(135deg, $red_1, $red_2);
+    box-shadow: 0 10px 22px -12px rgba($red_1, 0.9);
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.15);
+    }
+  }
+}
+
+.admin-modal-content {
+  color: white;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: min(520px, 84vw);
+}
+
+.admin-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: $bp_sm) {
+  .admin-modal-actions .admin-btn {
+    flex: 1 1 auto;
+  }
+}

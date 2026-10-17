@@ -1,0 +1,32 @@
+@import "variables.scss";
+
+.wonders-logo {
+  display: block;
+  height: 100%;
+  width: auto;
+  overflow: visible;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+
+  .logo-script {
+    font-family: $font_script;
+  }
+
+  .logo-block {
+    font-family: $font_display;
+  }
+
+  .logo-sparkle {
+    animation: logo-twinkle 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes logo-twinkle {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) rotate(45deg);
+  }
+}

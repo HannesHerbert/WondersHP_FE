@@ -4,10 +4,12 @@ import { RxTrackPrevious, RxPlay, RxTrackNext, RxPause } from "react-icons/rx";
 import { PiMusicNotesLight } from "react-icons/pi";
 import { SlVolume1, SlVolume2, SlVolumeOff } from "react-icons/sl";
 import { LuListMusic } from "react-icons/lu";
+import { HiOutlineMusicalNote } from "react-icons/hi2";
 import "../../sass/AudioPlayer.scss";
-import useMe from "../../assets/audio/use me.mp3";
-import superstition from "../../assets/audio/superstition.mp3";
-import aintNobody from "../../assets/audio/Aint nobody.mp3";
+import { mediaUrl } from "../../config.js";
+const useMe = mediaUrl("/media/audio/use me.mp3");
+const superstition = mediaUrl("/media/audio/superstition.mp3");
+const aintNobody = mediaUrl("/media/audio/Aint nobody.mp3");
 
 function AudioPlayer() {
   const [audioFiles, setAudioFiles] = useState([
@@ -24,10 +26,52 @@ function AudioPlayer() {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isInit, setIsInit] = useState(true);
-  const [volume, setVolume] = useState(0.5);
+  // const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(0);
+
   const [mouseXDurationBar, setMouseXDurationBar] = useState(0);
   const [mouseXVolumeBar, setMouseXVolumeBar] = useState(0);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
+
+  const [isDraggingTime, setIsDraggingTime] = useState(false);
+  const [isDraggingVolume, setIsDraggingVolume] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (evt) => {
+      if (isDraggingTime && timeBarRef.current) {
+        const elemDimensions = timeBarRef.current.getBoundingClientRect();
+        let clickedRatio = (evt.clientX - elemDimensions.x) / elemDimensions.width;
+        clickedRatio = Math.max(0, Math.min(1, clickedRatio));
+        if (audioRef.current) {
+          audioRef.current.currentTime = duration * clickedRatio;
+        }
+      }
+      if (isDraggingVolume && volumeBarRef.current) {
+        const elemDimensions = volumeBarRef.current.getBoundingClientRect();
+        let clickedRatio = (evt.clientX - elemDimensions.x) / elemDimensions.width;
+        clickedRatio = Math.max(0, Math.min(1, clickedRatio));
+        setVolume(clickedRatio);
+        if (audioRef.current) {
+          audioRef.current.volume = clickedRatio;
+        }
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDraggingTime(false);
+      setIsDraggingVolume(false);
+    };
+
+    if (isDraggingTime || isDraggingVolume) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDraggingTime, isDraggingVolume, duration]);
 
   const getSongTitle = (songPath) => {
     const lastSlashIndex = songPath.lastIndexOf("/");
@@ -35,7 +79,7 @@ function AudioPlayer() {
     return songPath.slice(lastSlashIndex + 1, lastDotIndex);
   };
 
-  const AUDIO_LIST = audioFiles.map((file, index) => {
+  const AUDIO_LIST = (audioFiles || []).map((file, index) => {
     const songTitle = getSongTitle(file);
     return (
       <li
@@ -64,9 +108,20 @@ function AudioPlayer() {
     setIsPlaying(!isPlaying);
   };
 
+  const playAudio = () => {
+    if (audioRef.current) {
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log("Audio play interrupted:", error);
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     if (isPlaying) {
-      audioRef.current.play();
+      playAudio();
     } else {
       audioRef.current.pause();
     }
@@ -78,7 +133,7 @@ function AudioPlayer() {
       setIsInit(false);
     } else {
       setIsPlaying(true);
-      audioRef.current.play();
+      playAudio();
     }
   }, [currAudioIndex]);
 
@@ -105,16 +160,18 @@ function AudioPlayer() {
   const changePlayTime = (evt) => {
     setIsPlaying(true);
     const elemDimensions = evt.currentTarget.getBoundingClientRect();
-    const clickedRatio =
+    let clickedRatio =
       (evt.clientX - elemDimensions.x) / elemDimensions.width;
+    clickedRatio = Math.max(0, Math.min(1, clickedRatio));
     audioRef.current.currentTime = duration * clickedRatio;
   };
 
   const handleVolumeChange = (evt) => {
     // const newVolume = parseFloat(event.target.value);
     const elemDimensions = evt.currentTarget.getBoundingClientRect();
-    const clickedRatio =
+    let clickedRatio =
       (evt.clientX - elemDimensions.x) / elemDimensions.width;
+    clickedRatio = Math.max(0, Math.min(1, clickedRatio));
     setVolume(clickedRatio);
     audioRef.current.volume = clickedRatio;
   };
@@ -142,28 +199,47 @@ function AudioPlayer() {
       <audio
         muted={isAudioMuted}
         ref={audioRef}
-        src={audioFiles[currAudioIndex]}
+        src={audioFiles[currAudioIndex] || null}
         onLoadedMetadata={handleLoadedMetadata}
         onTimeUpdate={handleTimeUpdate}
         onEnded={() => changeAudio(1)}
       />
 
+      <div className="audio-player-header">
+
+        <div className="note-icon">
+          <span><HiOutlineMusicalNote /></span>
+        </div>
+
+        <div className="song-info">
+          <div className="song-title">{getSongTitle(audioFiles[currAudioIndex])}</div>
+          <div className="song-interpret">Interpret-Info</div>
+        </div>
+
+      </div>
+
       <div className="duration-display">
-        <span>
-          {formatTime(currentTime)} - {formatTime(duration)}
-        </span>
 
         <div
           ref={timeBarRef}
           className="time-bar"
           title={mouseXDurationBar}
-          onClick={(evt) => changePlayTime(evt)}
+          onMouseDown={(evt) => {
+            evt.preventDefault();
+            setIsDraggingTime(true);
+            changePlayTime(evt);
+          }}
           onMouseMove={handleMouseMoveOnTimeBar}
         >
           <div
             className="time-bar-inner"
             style={{ width: (currentTime / duration) * 100 + "%" }}
           ></div>
+        </div>
+
+        <div className="current-time">
+          <span>{formatTime(currentTime)}</span>
+          <span>{formatTime(duration)}</span>
         </div>
       </div>
 
@@ -200,7 +276,11 @@ function AudioPlayer() {
               ref={volumeBarRef}
               className="volume-bar"
               title={`${mouseXVolumeBar}%`}
-              onClick={(evt) => handleVolumeChange(evt)}
+              onMouseDown={(evt) => {
+                evt.preventDefault();
+                setIsDraggingVolume(true);
+                handleVolumeChange(evt);
+              }}
               onMouseMove={handleMouseMoveOnVolumeBar}
             >
               <div

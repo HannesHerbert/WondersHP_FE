@@ -1,24 +1,14 @@
-import { create } from "zustand";
-import axios from "axios";
+import { create } from 'zustand';
 
-
-const useNotificationStore = create( set => ({
-
-    type: null,
-
-    message: '',
-
-    showNotification: false,
-    setShowNotification: (prop) => {
-        set({ showNotification: prop })
-    },
-
-    notificationHandler: (type, message) => {
-        set({ type: type }); 
-        set({ message: message }); 
-        set({ showNotification: true }); 
-    },
-  
+const useNotificationStore = create((set) => ({
+  notification: null,
+  showNotification: (message, type = 'success', duration = 3000) => {
+    set({ notification: { message, type } });
+    setTimeout(() => {
+      set({ notification: null });
+    }, duration);
+  },
+  hideNotification: () => set({ notification: null }),
 }));
-  
+
 export default useNotificationStore;

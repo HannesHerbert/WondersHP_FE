@@ -3,6 +3,7 @@ import "../sass/AdminDashboard.scss";
 import MembersManagement from "../components/AdminDashboard/MembersManagement";
 import MediaManagement from "../components/AdminDashboard/MediaManagement";
 import EventManagement from "../components/AdminDashboard/EventManagement";
+import BandManagement from "../components/AdminDashboard/BandManagement";
 
 function AdminDashboard() {
     const [activeNav, setActiveNav] = useState('members');
@@ -14,14 +15,14 @@ function AdminDashboard() {
             element: <MembersManagement />,
         },
         {
-            title: 'Bilder/Videos',
+            title: 'Medien',
             value: 'images',
             element: <MediaManagement />,
         },
         {
             title: 'Band',
             value: 'band',
-            element: <div>Inhalt für Band</div>,
+            element: <BandManagement />,
         },
 
         {
@@ -40,7 +41,7 @@ function AdminDashboard() {
     //     console.log(activeNav);
     // }, [activeNav]);
 
-    const navElements = adminNavs.map((nav, index) => (
+    const navElements = (adminNavs || []).map((nav, index) => (
         <li 
             key={index} 
             value={nav.value} 

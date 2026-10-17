@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { FaMapMarkerAlt, FaRegClock, FaArrowCircleRight } from "react-icons/fa";
 
-function DateElement({ dateObj, animationClass }) {
+function DateElement({ dateObj, animationClass, delay = 0 }) {
   const months = {
     1: "JAN",
     2: "FEB",
@@ -23,23 +23,25 @@ function DateElement({ dateObj, animationClass }) {
   const month = months[+dateArr[1]];
   const year = dateArr[0];
 
-  const address = dateObj.address;
 
   return (
-    <div className={`dateElement ${animationClass}`}>
+    <div 
+      className={`dateElement ${animationClass ? animationClass : ""}`}
+      style={{ animationDelay: `${delay}s` }}
+    >
       <div className="date">
         <div>{day}</div>
         <div>{month}</div>
         <div>{year}</div>
       </div>
       <div className="location">
-        <div className="place">{dateObj.location}</div>
+        <div className="place">{dateObj.venue}</div>
         <div className="address">
           <div><FaMapMarkerAlt /></div>
           <div>
-            {address.street} {address.number}
+            {dateObj.street} {dateObj.number}
             <br />
-            {address.postalCode} {address.city}
+            {dateObj.postalCode} {dateObj.city}
           </div>
         </div>
       </div>

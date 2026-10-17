@@ -204,3 +204,70 @@
     z-index: -10;
   }
 }
+
+// ─── Intro: Streifen laufen nacheinander ein ────────────────────────────────
+// Erst wächst der Wand-Streifen von oben nach unten, danach sein Boden-Streifen
+// von hinten nach vorn. --i (0–7) kommt aus dem JSX und versetzt die Streifen.
+$intro_stagger: 0.15s;
+$intro_wall: 0.8s;
+$intro_floor: 0.6s;
+// Das obere Stück der Wand liegt durch die Perspektive außerhalb des Bildschirms,
+// daher startet die Wand bei diesem Anteil statt bei 0 (sonst sichtbare Pause)
+$intro_wall_hidden: 0.375;
+
+#background-stripes {
+  .stripes-z .stripe {
+    transform-origin: top;
+    animation: stripe-wall-in $intro_wall cubic-bezier(0.5, 0, 0.75, 0) both;
+    animation-delay: calc(var(--i) * #{$intro_stagger});
+  }
+
+  // Boden-Ebene: das untere Element-Ende liegt hinten an der Wand
+  .stripes-y .stripe {
+    transform-origin: bottom;
+    animation: stripe-floor-in $intro_floor cubic-bezier(0.25, 1, 0.5, 1) both;
+    animation-delay: calc(var(--i) * #{$intro_stagger} + #{$intro_wall});
+  }
+}
+
+@keyframes stripe-wall-in {
+  from { transform: scaleY($intro_wall_hidden); visibility: hidden; }
+  1% { visibility: visible; }
+  to { transform: scaleY(1); }
+}
+
+@keyframes stripe-floor-in {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #background-stripes .stripe {
+    animation: none !important;
+  }
+}
+
+// Vignette für bessere Lesbarkeit der Inhalte über den Streifen
+#background-stripes::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.85) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 35%);
+}
+
+@media (max-width: $bp_md) {
+  #background-stripes {
+    padding: 0;
+
+    .stripes-container-r {
+      width: 100%;
+    }
+
+    &::after {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.55) 100%);
+    }
+  }
+}

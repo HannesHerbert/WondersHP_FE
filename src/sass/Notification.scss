@@ -1,0 +1,24 @@
+@import "variables.scss";
+
+.notification-container {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 5000;
+  padding: 0.75rem 1.5rem;
+  border-radius: $border_radius_sm;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+
+  &.success {
+    background-color: #16a34a; /* Tailwind green-600 */
+  }
+
+  &.error {
+    background-color: $red_1; /* Use project red */
+  }
+}

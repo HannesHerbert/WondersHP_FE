@@ -1,53 +1,141 @@
 @import "variables.scss";
+@import "Repetitives.scss";
 
 #admin-dashboard {
-    padding: 8rem 4rem;
-    // border: 1px solid red;
-    min-height: 100vh;
-    height: fit-content;
-    // width: auto;
-    // margin-left: auto;
-    padding: $page_vertical_padding $page_horizontal_padding;
+    color: #fff;
 
     h2 {
-        color: #ffffff;
-        text-align: center;
+        margin-bottom: 1.5rem;
     }
 
     .dashboard-container {
-        border: 1px solid green;
-        background-color: #00000045;
+        display: flex;
+        flex-direction: column;
+        @include card;
+        overflow: hidden;
 
         .dashboard-header {
+            padding: 0.75rem;
+            border-bottom: 1px solid $surface_border;
+            background: rgba(0, 0, 0, 0.25);
 
+            // Tabs als Segment-Control, auf Mobile horizontal scrollbar
             ul {
                 display: flex;
+                gap: 0.35rem;
                 list-style: none;
-                justify-content: flex-end;
+                overflow-x: auto;
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
 
                 li {
-                    color: #ffffff;
-                    padding: 1rem 2rem;
-                    border-top: 1px solid #ffffff00;
-                    border-left: 1px solid #ffffff00;
-                    border-right: 1px solid #ffffff00;
-                    border-bottom: 1px solid #ffffff;
-                    transform: translateY(1px);
+                    flex: 1 0 auto;
+                    text-align: center;
+                    padding: 0.7rem 1.2rem;
+                    border-radius: 999px;
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    color: rgba(255, 255, 255, 0.65);
+                    cursor: pointer;
+                    user-select: none;
+                    white-space: nowrap;
+                    transition: background 0.2s ease, color 0.2s ease;
 
+                    &:hover {
+                        color: #fff;
+                        background: rgba(255, 255, 255, 0.07);
+                    }
 
                     &.active {
-                        border-top: 1px solid #ffffff;
-                        border-left: 1px solid #ffffff;
-                        border-right: 1px solid #ffffff;
-                        border-bottom: 1px solid #444444;
-
+                        color: $ink;
+                        background: linear-gradient(135deg, $yellow_1, $yellow_2);
+                        box-shadow: 0 8px 18px -10px rgba($yellow_2, 0.9);
                     }
                 }
             }
         }
 
         .dashboard-content {
-            border: 1px solid #ffffff
+            padding: clamp(1rem, 3vw, 2rem);
+            overflow-x: auto;
         }
+    }
+}
+
+@media (max-width: $bp_md) {
+    #admin-dashboard .dashboard-container .dashboard-header ul li {
+        flex: 0 0 auto;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+
+// ─── Buchungs-Teaser (Tab „Band“) ───────────────────────────────────────────
+.booking-teaser-management {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid $surface_border;
+    color: #fff;
+
+    .admin-section-title {
+        margin-bottom: 1.5rem;
+        font-family: $font_display;
+        font-weight: 400;
+        font-size: 1.4rem;
+    }
+
+    .admin-form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .booking-focus-preview {
+        position: relative;
+        margin-top: 1rem;
+        max-width: 560px;
+        aspect-ratio: 16 / 9;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: crosshair;
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .booking-focus-marker {
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        border: 2px solid $yellow_1;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 0, 0, 0.8);
+        pointer-events: none;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: $yellow_1;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .admin-hint {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
     }
 }

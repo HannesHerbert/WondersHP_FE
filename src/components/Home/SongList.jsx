@@ -284,7 +284,7 @@ function SongList() {
         </thead>
 
         <tbody>
-          {songList.map((song, index) => (
+          {(songList || []).map((song, index) => (
             <tr key={index}>
               <td>{song.song_name}</td>
               <td>{song.artist}</td>

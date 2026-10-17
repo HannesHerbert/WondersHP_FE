@@ -19,3 +19,44 @@ $grid_border: 1px;
 
 $page_horizontal_padding: 4rem;
 $page_vertical_padding: 6rem;
+
+$multi_textshadow: 3px -2px 0px #760712, 4px -4px 0px #A0100E, 6px -6px 0px #CA7810, 8px -8px 0px #CBA27C, 10px -10px 0px #469291, 12px -12px 0px #2E7380, 14px -14px 0px #044A67, 16px -15px 0px #022F4E;
+
+// ─── Modern Design Tokens ────────────────────────────────────────────────────
+$cream: #f4d799;
+$ink: #0a0a0c;
+
+$font_display: 'Righteous', 'Arial Black', sans-serif;
+$font_script: 'Pacifico', cursive;
+$font_body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+$header_h: 84px;
+$header_h_sm: 64px;
+$footer_h: 52px;
+
+$radius_md: 14px;
+$radius_lg: 22px;
+
+$surface: rgba(10, 10, 14, 0.62);
+$surface_strong: rgba(10, 10, 14, 0.82);
+$surface_border: rgba(255, 255, 255, 0.09);
+$shadow_card: 0 20px 50px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+
+$bp_md: 768px;
+$bp_sm: 480px;
+
+// 8-Farben-Streifen als Gradient (für Akzentlinien)
+$stripe_gradient: linear-gradient(90deg, $red_2 0 12.5%, $red_1 0 25%, $yellow_2 0 37.5%, $yellow_1 0 50%, $blue_4 0 62.5%, $blue_3 0 75%, $blue_2 0 87.5%, $blue_1 0 100%);
+
+@mixin glass($bg: $surface) {
+  background: $bg;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid $surface_border;
+}
+
+@mixin card {
+  @include glass;
+  border-radius: $radius_lg;
+  box-shadow: $shadow_card;
+}

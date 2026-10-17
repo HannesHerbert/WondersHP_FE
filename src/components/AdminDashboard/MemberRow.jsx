@@ -19,7 +19,7 @@ function MemberRow({ member }) {
   const imagePositionRef = useRef();
   const descriptionRef = useRef();
 
-  const POSITION_OPTS = imagePositionVals.map((option, index) => {
+  const POSITION_OPTS = (imagePositionVals || []).map((option, index) => {
     return (
       <option key={option.class} value={option.value}>{option.label}</option>
     )
@@ -27,7 +27,7 @@ function MemberRow({ member }) {
 
 
   function updateMemberImage(memberId, imageId) {
-    const updatedMembers = membersArrStore.map((mem) =>
+    const updatedMembers = (membersArrStore || []).map((mem) =>
       mem.id === memberId ? { ...mem, image_id: imageId
        } : mem
     );
@@ -57,21 +57,21 @@ function MemberRow({ member }) {
 
   function updateMembersStore() {
 
-    const newImagePosition = parseInt(imagePositionRef.current.value);
-    const oldImagePosition = member.image_position;
+    const newImagePosition = parseInt(imagePositionRef.current.value) || 1;
+    const oldImagePosition = member.image_position || 1;
 
     // Falls sich die Position nicht geändert hat, normale Update-Logik
     if (newImagePosition === oldImagePosition) {
       const updatedMember = {
         ...member,
-        firstname: firstnameRef.current.value,
-        lastname: lastnameRef.current.value,
-        instrument: instrumentRef.current.value,
+        firstname: firstnameRef.current.value || "",
+        lastname: lastnameRef.current.value || "",
+        instrument: instrumentRef.current.value || "",
         image_position: newImagePosition,
-        description: descriptionRef.current.value
+        description: descriptionRef.current.value || ""
       };
 
-      const updatedMembersArr = membersArrStore.map((mem) =>
+      const updatedMembersArr = (membersArrStore || []).map((mem) =>
         mem.id === member.id ? updatedMember : mem
       );
 
@@ -80,18 +80,18 @@ function MemberRow({ member }) {
     }
 
     // Position hat sich geändert → Swap-Logik
-    const updatedMembersArr = membersArrStore.map((mem) => {
+    const updatedMembersArr = (membersArrStore || []).map((mem) => {
       if (mem.id === member.id) {
         // Aktuelles Member bekommt neue Position
         return {
           ...mem,
-          firstname: firstnameRef.current.value,
-          lastname: lastnameRef.current.value,
-          instrument: instrumentRef.current.value,
+          firstname: firstnameRef.current.value || "",
+          lastname: lastnameRef.current.value || "",
+          instrument: instrumentRef.current.value || "",
           image_position: newImagePosition,
-          description: descriptionRef.current.value
+          description: descriptionRef.current.value || ""
         };
-      } else if (mem.image_position === newImagePosition) {
+      } else if (mem.image_position === newImagePosition && Boolean(mem.isGuest) === Boolean(member.isGuest)) {
         // Member mit Ziel-Position bekommt alte Position
         return {
           ...mem,
@@ -105,17 +105,31 @@ function MemberRow({ member }) {
   }
 
 
+  // Wechsel zwischen Stammbesetzung und Special Guest: nächste freie Position der Zielgruppe
+  function toggleGuest(event) {
+    const isGuest = event.target.checked;
+    const group = (membersArrStore || []).filter((mem) => mem.id !== member.id && Boolean(mem.isGuest) === isGuest);
+    const taken = group.map((mem) => mem.image_position);
+
+    let image_position = 1;
+    while (taken.includes(image_position) && (isGuest || image_position < 4)) image_position++;
+
+    setMembersArrStore((membersArrStore || []).map((mem) =>
+      mem.id === member.id ? { ...mem, isGuest, image_position } : mem
+    ));
+  }
+
+
   return (
-    <div className="member-row">
+    <div className={`member-row${member.isGuest ? " is-guest" : ""}`}>
       <div className="member-image">
 
         <Image imageObject={{
-          images: member.images,
+          images: member.images || { sm: '', md: '', lg: '' },
           altText: `${member.firstname} ${member.lastname}`,
-          className: "member-image"
+          className: "member-img-element"
         }} />
 
-        <img src={member.images.sm} alt="" />
         <span title="Bild ändern" onClick={toggleImageSelectModal}>
           <FaEdit />
         </span>
@@ -125,51 +139,94 @@ function MemberRow({ member }) {
 
         <div className="member-name">
 
-          <label htmlFor="firstname-input">Vorname:</label>
-          <input type="text"
-            id="firstname-input"
-            name="firstname"
-            value={member.firstname}
-            ref={firstnameRef}
-            onChange={updateMembersStore}
-          />
+          <div className="admin-form-group">
+            <label className="admin-label" htmlFor="firstname-input">Vorname:</label>
+            <input type="text"
+              className="admin-input"
+              id="firstname-input"
+              name="firstname"
+              value={member.firstname}
+              ref={firstnameRef}
+              onChange={updateMembersStore}
+            />
+          </div>
 
-          <label htmlFor="lastname-input">Nachname:</label>
-          <input type="text"
-            id="lastname-input"
-            name="lastname"
-            value={member.lastname}
-            ref={lastnameRef}
-            onChange={updateMembersStore}
-          />
+          <div className="admin-form-group">
+            <label className="admin-label" htmlFor="lastname-input">Nachname:</label>
+            <input type="text"
+              className="admin-input"
+              id="lastname-input"
+              name="lastname"
+              value={member.lastname}
+              ref={lastnameRef}
+              onChange={updateMembersStore}
+            />
+          </div>
 
-          <label htmlFor="instrument-input">Instrument:</label>
-          <input type="text"
-            id="instrument-input"
-            name="instrument"
-            value={member.instrument}
-            ref={instrumentRef}
-            onChange={updateMembersStore}
-          />
+          <div className="admin-form-group">
+            <label className="admin-label" htmlFor="instrument-input">Instrument:</label>
+            <input type="text"
+              className="admin-input"
+              id="instrument-input"
+              name="instrument"
+              value={member.instrument}
+              ref={instrumentRef}
+              onChange={updateMembersStore}
+            />
+          </div>
 
-          <label htmlFor="image-position-input">Bildposition:</label>
-          <select id="image-position-input"
-            name="image-position"
-            ref={imagePositionRef}
-            onChange={updateMembersStore}
-            value={member.image_position}>
+          {member.isGuest ? (
+            <div className="admin-form-group">
+              <label className="admin-label" htmlFor={`guest-order-${member.id}`}>Reihenfolge (Gast):</label>
+              <input type="number"
+                min="1"
+                className="admin-input"
+                id={`guest-order-${member.id}`}
+                name="image-position"
+                ref={imagePositionRef}
+                onChange={updateMembersStore}
+                value={member.image_position}
+              />
+            </div>
+          ) : (
+            <div className="admin-form-group">
+              <label className="admin-label" htmlFor="image-position-input">Bildposition:</label>
+              <select id="image-position-input"
+                className="admin-select"
+                name="image-position"
+                ref={imagePositionRef}
+                onChange={updateMembersStore}
+                value={member.image_position}>
+                {POSITION_OPTS}
+              </select>
+            </div>
+          )}
 
-            {POSITION_OPTS}
-
-          </select>
+          <div className="admin-form-group guest-toggle">
+            <label className="admin-label" htmlFor={`guest-${member.id}`}>
+              <input type="checkbox"
+                id={`guest-${member.id}`}
+                checked={Boolean(member.isGuest)}
+                onChange={toggleGuest}
+              />
+              Special Guest (programmabhängig)
+            </label>
+          </div>
 
         </div>
 
         <div className="member-description">
-          <textarea value={member.description}
-            ref={descriptionRef}
-            onChange={updateMembersStore}>
-          </textarea>
+          <div className="admin-form-group" style={{ height: '100%' }}>
+            <textarea value={member.description}
+              className="admin-textarea"
+              style={{ height: '100%' }}
+              ref={descriptionRef}
+              onChange={updateMembersStore}>
+            </textarea>
+            <small className="admin-hint">
+              HTML erlaubt, z.B. Links: {'<a href="allflavours.de">All Flavours</a>'} · fett: {'<b>…</b>'} · kursiv: {'<i>…</i>'}
+            </small>
+          </div>
         </div>
 
       </div>

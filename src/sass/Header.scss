@@ -1,46 +1,59 @@
+@import "variables.scss";
+
 #header {
   z-index: 1000;
-  background-color: #00000045;
-  display: flex;
-  padding: 0 1rem;
-  height: 5vh;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $header_h;
+  @include glass(rgba(0, 0, 0, 0.55));
+  border-width: 0 0 1px 0;
 
-  >div:first-of-type {
+  // 8-Farben-Linie unten am Header
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 3px;
+    background: $stripe_gradient;
+    opacity: 0.9;
+  }
+
+  .header-inner {
+    height: 100%;
     width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-left: 1rem;
+    justify-content: space-between;
+    padding: 0 clamp(1rem, 3vw, 2.5rem);
+    gap: 1rem;
+  }
 
-    #name {
-      font-family: "Righteous", cursive;
-      font-weight: 400;
-      font-size: 25px;
-      color: #cba27c;
-      width: fit-content;
-      text-shadow: 5px 5px 3px #000000;
-      text-align: right;
+  #name {
+    height: 100%;
+    padding: 6px 0 8px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 1;
+    min-width: 0;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.03) rotate(-1deg);
     }
   }
 }
 
-@media screen and (max-width: 450px) {
+@media (max-width: $bp_md) {
+  #header {
+    height: $header_h_sm;
 
-
-  #name {
-    width: 70% !important;
-    font-size: 15px;
-
-
-    >span:nth-of-type(1) {
-      // display: block;
-    }
-
-    >span:nth-of-type(2) {
-      // display: block;
-      text-align: right;
+    #name {
+      padding: 6px 0 7px;
     }
   }
-
 }

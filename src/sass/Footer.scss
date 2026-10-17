@@ -1,39 +1,87 @@
-#footer {
-  height: 10vh;
-  background-color: #00000045;
-  color: #fff;
-  z-index: 1000;
+@import "variables.scss";
 
-  grid-row: 3;
-  text-align: center;
+#footer {
+  z-index: 1000;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-height: $footer_h;
+  @include glass(rgba(0, 0, 0, 0.6));
+  border-width: 1px 0 0 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.8rem;
 
   .footer-content {
-    font-size: 10px;
+    min-height: $footer_h;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
-    height: 100%;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding: 0.5rem clamp(1rem, 3vw, 2.5rem);
 
-    div:first-of-type {
+    > div {
       display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
 
-      >span {
-        margin: 0 20px;
-      }
+  .footer-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: $yellow_2;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $yellow_1;
+    }
+  }
+
+  .footer-cta a {
+    font-family: $font_display;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, $red_1, $red_2);
+    box-shadow: 0 6px 18px -6px rgba($red_1, 0.8);
+
+    &:hover {
+      color: $cream;
+      filter: brightness(1.15);
+    }
+  }
+}
+
+@media (max-width: $bp_md) {
+  #footer {
+    font-size: 0.72rem;
+
+    min-height: 0;
+
+    .footer-content {
+      min-height: 0;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.25rem 1rem;
+      padding: 0.55rem 1rem calc(0.55rem + env(safe-area-inset-bottom));
     }
 
-    div:nth-of-type(3) {
-      display: flex;
-
-      >*:not(a:last-of-type) {
-        margin-right: 20px
-      }
-    }
-
-    a {
-      text-decoration: none;
-      color: #fff
+    // Kontakt ist auf Mobile über das Menü erreichbar
+    .footer-content > .footer-cta {
+      display: none;
     }
   }
 }

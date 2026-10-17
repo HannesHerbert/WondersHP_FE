@@ -15,7 +15,7 @@ function Documents() {
       };
 
       const openPDF = () => {
-        window.open("/src/assets/documents/Techrider.pdf", "_blank");
+        window.open("/documents/Techrider.pdf", "_blank");
       };
 
 
@@ -24,17 +24,17 @@ function Documents() {
 
             <a onClick={handleOpenModal}>
                 <div>
-                    <img src="/src/assets/images/next-arrow-svgrepo-com.svg" alt="" />
+                    <img src="/images/next-arrow-svgrepo-com.svg" alt="" />
                 </div>
                 
                 <p>Hier gehts zu unserem Repertoire</p>
             </a>
 
             <a  onClick={openPDF}
-            // href='/src/assets/documents/Techrider.pdf' download='Techrider.pdf'
+            // href='/documents/Techrider.pdf' download='Techrider.pdf'
             >
                 <div>
-                    <img src="/src/assets/images/next-arrow-svgrepo-com.svg" alt="" />
+                    <img src="/images/next-arrow-svgrepo-com.svg" alt="" />
                 </div>
                 
                 <p>Hier gehts zu unserem Techrider</p>

@@ -2,239 +2,88 @@ import "../../sass/Dates.scss";
 import { useState, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import DateElement from "./DateElement";
+import axios from "axios";
 
 function Dates() {
 
+  const [eventsArr, setEventsArr] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currDateIndex, setCurrDateIndex] = useState(0);
-  const [prevDateIndex, setPrevDateIndex] = useState(0);
   const [datesElements, setDatesElements] = useState([]);
   const [animationClass, setAnimationClass] = useState("initial");
+
   const shownDates = 3;
-  
-  const dates = [
-    {
-      date: "2024-01-13",
-      time: "21:00",
-      location: "Tonellis",
-      link: null,
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-02-13",
-      time: "21:00",
-      location: "Stadtfest Leipzig",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-03-13",
-      time: "21:00",
-      location: "Tonellis",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-04-13",
-      time: "21:00",
-      location: "Tonellis",
-      link: null,
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-05-13",
-      time: "21:00",
-      location: "Tonellis",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-06-13",
-      time: "21:00",
-      location: "Tonellis",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-07-28",
-      time: "21:00",
-      location: "Tonellis",
-      link: null,
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-08-28",
-      time: "21:00",
-      location: "Tonellis",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-10-28",
-      time: "21:00",
-      location: "Tonellis",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-11-28",
-      time: "21:00",
-      location: "Tonellis",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2024-12-28",
-      time: "21:00",
-      location: "Tonellis",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2025-01-28",
-      time: "21:00",
-      location: "Tonellis",
-      link: "https://www.tonellis.de/",
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    },
-    {
-      date: "2025-03-23",
-      time: "21:00",
-      location: "Tonellis",
-      link: null,
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    }, {
-      date: "2025-04-23",
-      time: "21:00",
-      location: "Tonellis",
-      link: null,
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    }, {
-      date: "2025-05-23",
-      time: "21:00",
-      location: "Tonellis",
-      link: null,
-      address: {
-        street: "Neumarkt",
-        number: "9",
-        postalCode: "04109",
-        city: "Leipzig",
-      },
-    }
-  ];
 
+  const getAllEvents = async () => {
+        try {
+            setIsLoading(true);
+            console.log("Requesting URL:", `/api/public/events`);
+            const res = await axios.get(`/api/public/events`);
+            const data = res.data.data || res.data;
+            
+            if (Array.isArray(data)) {
+              // Sort events by date ascending
+              const sortedEvents = data.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+              setEventsArr(sortedEvents);
+            } else {
+              setEventsArr([]);
+            }
+        } catch (error) {
+            console.error('Fehler beim Laden der Events:', error);
+            setEventsArr([]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
+  // EINZIGER useEffect für Initial-Load
   useEffect(() => {
-    const today = new Date();
-    const futureDates = dates
-      .map((event, index) => ({
-        ...event,
-        index,
-        fullDate: new Date(`${event.date}T${event.time}`),
-      }))
-      .filter((event) => event.fullDate > today)
-      .sort((a, b) => a.fullDate - b.fullDate);
-    const nextDateIndex = futureDates[0]?.index || 0;
-    setCurrDateIndex(nextDateIndex);
+    getAllEvents();
   }, []);
 
 
   useEffect(() => {
-    let currDates
-    if (currDateIndex !== null) {
-      if(currDateIndex < 0) {
-        currDates = dates.slice(0, currDateIndex + shownDates);
-      } else {
-        currDates = dates.slice(currDateIndex, currDateIndex + shownDates);
-      }
-      const dateElems = currDates.map((date) => (
-        <DateElement
-          key={date.date}
-          dateObj={date}
-          animationClass={animationClass}
-        />
+    if (!Array.isArray(eventsArr) || eventsArr.length === 0) return;
+    const today = new Date();
+    
+    // Find the index of the first event that is in the future or today
+    const nextDateIndex = eventsArr.findIndex(event => new Date(`${event.date}T${event.time}`) >= today);
+    
+    // If all events are in the past, show the last ones
+    if (nextDateIndex === -1) {
+      setCurrDateIndex(Math.max(0, eventsArr.length - shownDates));
+    } else {
+      setCurrDateIndex(nextDateIndex);
+    }
+  }, [eventsArr]);
+
+
+  useEffect(() => {
+    let slicedDates = [];
+    if (currDateIndex !== null && Array.isArray(eventsArr)) {
+      slicedDates = eventsArr.slice(currDateIndex, currDateIndex + shownDates);
+      
+      const dateElems = slicedDates.map((date, index) => (
+        <div key={date.id || date.date} className="date-wrapper" style={{ marginLeft: `${index * 2}rem` }}>
+          <DateElement
+            dateObj={date}
+            animationClass={animationClass}
+            delay={index * 0.1}
+          />
+        </div>
       ));
 
       setDatesElements(dateElems);
     }
-  }, [currDateIndex, animationClass]);
+  }, [animationClass, eventsArr, currDateIndex]);
 
   const handleNext = () => {
-    if (currDateIndex + shownDates < dates.length) {
+    if (currDateIndex + shownDates < eventsArr?.length) {
       setAnimationClass("slideOutLeft");
       setTimeout(() => {
         setCurrDateIndex(currDateIndex + shownDates);
         setAnimationClass("slideInRight");
-      },  300 + (shownDates - 1) * 100);
+      }, 500);
     }
   };
 
@@ -242,10 +91,10 @@ function Dates() {
     if (currDateIndex > 0) {
       setAnimationClass("slideOutRight");
       setTimeout(() => {
-        setCurrDateIndex(currDateIndex - shownDates);
+        setCurrDateIndex(Math.max(currDateIndex - shownDates, 0));
         setAnimationClass("slideInLeft");
-      }, 300 + (shownDates - 1) * 100);
-    }    
+      }, 500);
+    }
   };
 
   return (
@@ -258,13 +107,17 @@ function Dates() {
         </div>
       )}
 
-      {currDateIndex + shownDates < dates.length && (
+      {currDateIndex + shownDates < eventsArr?.length && (
         <div className="laterDates" onClick={handleNext}>
           <FaArrowRight />
         </div>
       )}
 
-      <div className="dates-container">{datesElements}</div>
+      <div className="dates-container">
+        <div className="dates-staggered-wrapper">
+          {datesElements}
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,30 +1,90 @@
-#members-management {
+@import "variables.scss";
 
+#members-management {
 
     .member-row {
         display: flex;
-        height: 200px;
-        margin-bottom: 2rem;
+        gap: 1.25rem;
+        margin-bottom: 1.25rem;
+        padding: 1rem;
+        border-radius: $radius_md;
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid $surface_border;
+        transition: border-color 0.2s ease;
+
+        &:hover {
+            border-color: rgba($yellow_1, 0.3);
+        }
+
+        // Special Guests optisch absetzen
+        &.is-guest {
+            border-style: dashed;
+            border-color: rgba($yellow_2, 0.45);
+        }
+
+        .guest-toggle {
+            grid-column: 1 / -1;
+
+            .admin-label {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                cursor: pointer;
+            }
+
+            input {
+                accent-color: $yellow_2;
+                width: 1rem;
+                height: 1rem;
+            }
+        }
 
         .member-image {
             position: relative;
+            flex: 0 0 200px;
+            aspect-ratio: 1 / 1;
+            align-self: flex-start;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: $ink;
+            border-radius: 10px;
+            overflow: hidden;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+
+            picture {
+                width: 100%;
+                height: 100%;
+                display: flex;
+            }
 
             img {
-                height: 50%;
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
             }
 
             >span {
                 position: absolute;
-                right: 0;
-                top: 0;
-                padding: .5rem;
-                transition: all 0.3s;
-                font-size: 20px;
+                right: 0.5rem;
+                top: 0.5rem;
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: 15px;
+                color: #fff;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(6px);
+                transition: background 0.2s ease, color 0.2s ease;
+                cursor: pointer;
 
                 &:hover {
-                    cursor: pointer;
-                    background-color: #ffffff;
-                    color: red;
+                    background: $yellow_2;
+                    color: $ink;
                 }
             }
         }
@@ -32,29 +92,68 @@
         .member-informations {
             color: #ffffff;
             display: flex;
+            gap: 1.25rem;
             flex: 1;
+            min-width: 0;
 
             .member-name {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                margin: 0 1rem;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0 0.9rem;
+                align-content: start;
+                flex: 1;
+                min-width: 0;
+
+                .admin-form-group {
+                    margin-bottom: 0.8rem;
+                }
             }
 
             .member-description {
                 display: flex;
-                flex: 1;
+                flex: 1.4;
+                min-width: 0;
 
-                >textarea {
-                    padding: 5px;
-                    height: 100%;
-                    font-size: .6rem;
-                    display: flex;
-                    flex: 1;
+                .admin-form-group {
+                    margin-bottom: 0;
+                }
 
+                .admin-textarea {
+                    min-height: 180px;
+                }
+
+                .admin-hint {
+                    display: block;
+                    margin-top: 0.4rem;
+                    font-size: 0.75rem;
+                    color: rgba(255, 255, 255, 0.5);
                 }
             }
         }
     }
+}
 
+@media (max-width: 1100px) {
+    #members-management .member-row .member-informations {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: $bp_md) {
+    #members-management .member-row {
+        flex-direction: column;
+
+        .member-image {
+            flex: 0 0 auto;
+            width: 100%;
+            max-width: 280px;
+            align-self: center;
+        }
+    }
+}
+
+@media (max-width: $bp_sm) {
+    #members-management .member-row .member-informations .member-name {
+        grid-template-columns: 1fr;
+    }
 }

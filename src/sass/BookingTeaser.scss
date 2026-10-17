@@ -1,0 +1,159 @@
+@import "./variables.scss";
+
+// Hohe Szene, in der die Bühne stehen bleibt (sticky) – die Scrollstrecke treibt den Zoom
+#booking-teaser {
+  margin-top: clamp(4rem, 8vw, 7rem);
+  height: 260vh;
+
+  .booking-stage {
+    position: sticky;
+    // Bezieht sich auf den Innenabstand von #content-outlet (der schon Platz für den Header lässt)
+    top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h2 {
+    text-align: center;
+
+    &::after {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover,
+      &:focus-visible {
+        color: $cream;
+      }
+    }
+  }
+
+  .booking-frame {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    // 16:9, aber nie höher als der sichtbare Bereich zwischen Header, Überschrift und Footer
+    width: min(100%, calc((100dvh - #{$header_h} - #{$footer_h} - 13rem) * 16 / 9));
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: $radius_lg;
+    background: $ink;
+    box-shadow: $shadow_card;
+    isolation: isolate;
+  }
+
+  .booking-photo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+
+    > img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .booking-detail {
+      position: absolute;
+      display: block;
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  // Runder Button über dem Zoompunkt – Lage, Größe und Sichtbarkeit setzt BookingTeaser.jsx beim Scrollen
+  .booking-cta {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(96px, 13vw, 150px);
+    aspect-ratio: 1;
+    padding: 0.75rem;
+    border-radius: 50%;
+    text-align: center;
+    text-decoration: none;
+    font-family: $font_display;
+    font-size: clamp(0.9rem, 0.6rem + 0.8vw, 1.2rem);
+    line-height: 1.15;
+    color: $cream;
+    background: rgba(10, 10, 14, 0.55);
+    border: 2px solid rgba($yellow_1, 0.9);
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.25), 0 12px 30px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+    pointer-events: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    // Sanfter Puls-Ring, damit der Button als Ziel auffällt
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      border: 2px solid rgba($yellow_1, 0.7);
+      animation: booking-cta-pulse 2.2s ease-out infinite;
+      pointer-events: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: $ink;
+      background: $yellow_1;
+    }
+  }
+
+  .booking-veil {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes booking-cta-pulse {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(1.35); opacity: 0; }
+}
+
+@media (max-width: $bp_md) {
+  #booking-teaser {
+    height: 200vh;
+
+
+    .booking-frame {
+      border-radius: $radius_md;
+    }
+  }
+}
+
+// Ohne Bewegung: kein Zoom, keine Scrollstrecke
+@media (prefers-reduced-motion: reduce) {
+  #booking-teaser {
+    height: auto;
+
+    .booking-stage {
+      position: static;
+    }
+
+    .booking-cta {
+      transform: translate(-50%, -50%);
+
+      &::after {
+        animation: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "name": "React MySQL App",
+  "description": "A full-stack React application using JSX, Sass, Express, and MySQL.",
+  "requestFramePermissions": []
+}

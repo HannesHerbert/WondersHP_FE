@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { mediaUrl } from "../../config.js";
 
 
 function Image({ imageObject }) {
 
   const { images, altText, className } = imageObject;
-  // const baseUrl = import.meta.env.BASE_URL.substring(1, import.meta.env.BASE_URL.length - 1);/media/images
-  const baseUrl = import.meta.env.VITE_MEDIA_DIR;
+  const baseUrl = mediaUrl(`/media/images/`);
+
+  if (!images || !images.sm || !images.md || !images.lg) {
+    return <div className={`placeholder-image ${className || ''}`}>Kein Bild</div>;
+  }
 
   return (
     <picture>

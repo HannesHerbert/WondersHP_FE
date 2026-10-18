@@ -48,6 +48,20 @@
   }
 }
 
+// Eigenes Logo aus dem Dashboard: passt sich der Header-Höhe an
+#header .header-logo-image {
+  display: block;
+  height: 100%;
+  max-width: min(260px, 55vw);
+  object-fit: contain;
+}
+
+#header .header-logo-placeholder {
+  display: block;
+  width: 200px;
+  height: 100%;
+}
+
 // Rechte Seite: Social-Media-Icons (+ Burger auf dem Handy)
 #header .header-actions {
   display: flex;

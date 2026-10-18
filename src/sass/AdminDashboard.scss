@@ -171,3 +171,173 @@
         color: rgba(255, 255, 255, 0.5);
     }
 }
+
+
+// ─── Content (Bereichsauswahl + Editoren) ───────────────────────────────────
+#content-management {
+    color: #fff;
+
+    .content-picker {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        max-width: 360px;
+        margin-bottom: 1.75rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid $surface_border;
+
+        .admin-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .admin-select {
+            font: inherit;
+            font-size: 1rem;
+            color: #fff;
+            color-scheme: dark;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            padding: 0.7rem 0.9rem;
+            border-radius: 10px;
+
+            &:focus {
+                outline: none;
+                border-color: $yellow_2;
+            }
+        }
+    }
+
+    .admin-hint {
+        display: block;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    // Bereiche, die früher unter "Band" mit Trennlinie darüber standen, beginnen hier oben
+    .content-section > .booking-teaser-management {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+    }
+
+    .content-section > .booking-teaser-management > .admin-section-title {
+        display: none;
+    }
+}
+
+.image-picker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+
+    .image-picker-preview {
+        width: 160px;
+        aspect-ratio: 4 / 3;
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid $surface_border;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.8rem;
+        text-align: center;
+        padding: 0.25rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    // Logo-Vorschau: breit wie im Header, auf dunklem Header-Grund
+    .image-picker-preview.logo-preview {
+        width: min(280px, 100%);
+        aspect-ratio: auto;
+        height: 84px;
+        padding: 6px 12px 8px;
+        background: rgba(0, 0, 0, 0.55);
+
+        svg {
+            height: 100%;
+            width: auto;
+            max-width: 100%;
+        }
+    }
+
+    .image-picker-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+.track-editor {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+
+    .track-editor-row {
+        display: grid;
+        grid-template-columns: 1.6rem minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .track-editor-no {
+        text-align: right;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.45);
+    }
+
+    .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.65);
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ff8a80;
+        }
+    }
+}
+
+.content-editor .admin-modal-actions .admin-btn,
+.content-editor .admin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+@media (max-width: 760px) {
+    .track-editor .track-editor-row {
+        grid-template-columns: 1.4rem minmax(0, 1fr) auto;
+
+        > select,
+        > input {
+            grid-column: 2;
+        }
+
+        > .icon-btn {
+            grid-column: 3;
+            grid-row: 1;
+        }
+    }
+}

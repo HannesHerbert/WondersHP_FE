@@ -1,0 +1,170 @@
+@import "./variables.scss";
+
+// Dashboard → Repertoire: eine Liste aus Titel + Interpret
+#repertoire-management {
+  color: #fff;
+
+  .repertoire-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .sort-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-right: auto;
+  }
+
+  .repertoire-summary,
+  .repertoire-empty {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+  }
+
+  .repertoire-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .song-row {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1.2fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.03);
+
+    // Ungespeicherte Änderungen sichtbar machen
+    &.dirty {
+      border-color: rgba($yellow_1, 0.5);
+    }
+  }
+
+  .song-no {
+    text-align: right;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  .song-input {
+    width: 100%;
+    min-width: 0;
+    font: inherit;
+    font-size: 0.92rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.45rem 0.65rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $yellow_2;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  .song-title {
+    font-weight: 600;
+  }
+
+  .song-artist {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .song-actions {
+    display: flex;
+    gap: 0.15rem;
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.65);
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    &:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+
+    &.danger:hover {
+      color: #ff8a80;
+    }
+  }
+
+  .repertoire-add {
+    margin-top: 2rem;
+
+    h3 {
+      font-family: $font_display;
+      font-weight: 400;
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .song-row {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  #repertoire-management .song-row {
+    grid-template-columns: 1.6rem minmax(0, 1fr) auto;
+
+    .song-title {
+      grid-column: 2;
+    }
+
+    .song-artist {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .song-actions {
+      grid-column: 3;
+      grid-row: 1 / span 2;
+      flex-direction: column;
+    }
+  }
+
+  #repertoire-management .repertoire-add .song-row {
+    grid-template-columns: 1fr;
+
+    > * {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
+}

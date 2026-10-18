@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Navigation from "./Navigation";
-import Logo from "./Logo";
+import HeaderLogo from "./HeaderLogo";
 import SocialLinks from "./SocialLinks";
 import "../../sass/Header.scss"
 
@@ -10,7 +10,7 @@ function Header() {
       <div className="header-inner">
 
         <Link to="/" id="name" aria-label="Zur Startseite">
-          <Logo />
+          <HeaderLogo />
         </Link>
 
         <div className="header-actions">

@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { mediaUrl } from "../../config.js";
 
-// Video aus dem Backend (Dashboard → Medien); gezeigt wird das erste hochgeladene Video
+// Video aus dem Dashboard (Content → Medien); ohne Auswahl das erste hochgeladene Video
 function VideoPlayer() {
   const [video, setVideo] = useState(null);
 
   useEffect(() => {
-    axios.get("/api/public/videos")
-      .then((res) => setVideo(res.data.data?.[0] || null))
+    axios.get("/api/public/media-content")
+      .then((res) => setVideo(res.data.data?.video || null))
       .catch((error) => console.error("Fehler beim Laden des Videos:", error));
   }, []);
 

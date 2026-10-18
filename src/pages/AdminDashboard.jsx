@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import "../sass/AdminDashboard.scss";
-import MembersManagement from "../components/AdminDashboard/MembersManagement";
 import MediaManagement from "../components/AdminDashboard/MediaManagement";
-import EventManagement from "../components/AdminDashboard/EventManagement";
-import BandManagement from "../components/AdminDashboard/BandManagement";
+import ContentManagement from "../components/AdminDashboard/ContentManagement";
 import FlourishText from "../components/Snippets/FlourishText";
 import ContactRequestsManagement from "../components/AdminDashboard/ContactRequestsManagement";
+import RepertoireManagement from "../components/AdminDashboard/RepertoireManagement";
 import axios from "axios";
 import useAuthStore from "../store/useAuthStore";
 
 function AdminDashboard() {
-    const [activeNav, setActiveNav] = useState('members');
+    const [activeNav, setActiveNav] = useState('content');
     // Zahl ungelesener Kontaktanfragen für den Tab
     const [newRequests, setNewRequests] = useState(0);
     const token = useAuthStore((state) => state.getToken());
@@ -23,25 +22,14 @@ function AdminDashboard() {
 
     const adminNavs = [
         {
-            title: 'Mitglieder',
-            value: 'members',
-            element: <MembersManagement />,
+            title: 'Content',
+            value: 'content',
+            element: <ContentManagement />,
         },
         {
             title: 'Medien',
             value: 'images',
             element: <MediaManagement />,
-        },
-        {
-            title: 'Band',
-            value: 'band',
-            element: <BandManagement />,
-        },
-
-        {
-            title: 'Termine',
-            value: 'events',
-            element: <EventManagement />,
         },
         {
             title: 'Anfragen',
@@ -50,9 +38,9 @@ function AdminDashboard() {
             element: <ContactRequestsManagement onNewCountChange={setNewRequests} />,
         },
         {
-            title: 'Songliste',
-            value: 'songs',
-            element: <div>Inhalt für Songliste</div>
+            title: 'Repertoire',
+            value: 'repertoire',
+            element: <RepertoireManagement />,
         },
     ];
 

@@ -5,13 +5,6 @@ import { SlVolume1, SlVolume2, SlVolumeOff } from "react-icons/sl";
 import "../../sass/AudioPlayer.scss";
 import { mediaUrl } from "../../config.js";
 
-// Hörproben (Dateien im Backend unter storage/audio) – alles Coversongs, daher mit Original
-const TRACKS = [
-  { file: "use me.mp3", title: "Use Me", original: "Bill Withers" },
-  { file: "superstition.mp3", title: "Superstition", original: "Stevie Wonder" },
-  { file: "Aint nobody.mp3", title: "Ain't Nobody", original: "Rufus & Chaka Khan" },
-].map((track) => ({ ...track, src: mediaUrl(`/media/audio/${track.file}`) }));
-
 const formatTime = (seconds) => {
   if (!Number.isFinite(seconds)) return "0:00";
   const mins = Math.floor(seconds / 60);
@@ -29,28 +22,30 @@ function AudioPlayer() {
   const [isMuted, setIsMuted] = useState(false);
   const [durations, setDurations] = useState({});
   const [cover, setCover] = useState(null);
+  // Demotitel und Cover kommen aus dem Dashboard (Content → Medien)
+  const [tracks, setTracks] = useState([]);
 
-  const track = TRACKS[index];
+  const track = tracks[index];
 
-  // Cover der Plattenhülle: erstes Bild der Galerie (Bandfoto)
   useEffect(() => {
-    axios.get("/api/public/gallery")
+    axios.get("/api/public/media-content")
       .then((res) => {
-        const first = res.data.data?.[0];
-        if (first?.images?.md) setCover(mediaUrl(`/media/images/${first.images.md}`));
+        const { cover: coverImage, tracks: list } = res.data.data || {};
+        if (coverImage?.images?.md) setCover(mediaUrl(`/media/images/${coverImage.images.md}`));
+        setTracks((list || []).map((t) => ({ ...t, src: mediaUrl(t.url) })));
       })
-      .catch(() => {});
+      .catch(() => setTracks([]));
   }, []);
 
   // Längen aller Titel für die Trackliste vorab lesen (nur Metadaten)
   useEffect(() => {
-    TRACKS.forEach((t) => {
+    tracks.forEach((t) => {
       const probe = new Audio();
       probe.preload = "metadata";
       probe.src = t.src;
       probe.onloadedmetadata = () => setDurations((d) => ({ ...d, [t.file]: probe.duration }));
     });
-  }, []);
+  }, [tracks]);
 
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = volume;
@@ -74,7 +69,7 @@ function AudioPlayer() {
     }
   };
 
-  const changeTrack = (direction) => setIndex((i) => (i + direction + TRACKS.length) % TRACKS.length);
+  const changeTrack = (direction) => setIndex((i) => (i + direction + tracks.length) % tracks.length);
 
   const selectTrack = (i) => {
     if (i === index) {
@@ -90,6 +85,8 @@ function AudioPlayer() {
     if (audioRef.current) audioRef.current.currentTime = time;
     setCurrentTime(time);
   };
+
+  if (!track) return null;
 
   const VolumeIcon = isMuted || volume === 0 ? SlVolumeOff : volume > 0.5 ? SlVolume2 : SlVolume1;
   const progress = duration ? (currentTime / duration) * 100 : 0;
@@ -180,7 +177,7 @@ function AudioPlayer() {
         </div>
 
         <ol className="tracklist">
-          {TRACKS.map((t, i) => (
+          {tracks.map((t, i) => (
             <li key={t.file}>
               <button
                 type="button"

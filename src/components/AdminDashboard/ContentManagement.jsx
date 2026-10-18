@@ -5,6 +5,7 @@ import MembersManagement from "./MembersManagement";
 import MediaContentManagement from "./MediaContentManagement";
 import EventManagement from "./EventManagement";
 import BookingTeaserManagement from "./BookingTeaserManagement";
+import FooterContentManagement from "./FooterContentManagement";
 
 // Reihenfolge wie auf der Seite von oben nach unten
 const SECTIONS = [
@@ -14,6 +15,7 @@ const SECTIONS = [
   { key: "media", label: "Medien", hint: "Plattencover, Demotitel und Video", Component: MediaContentManagement },
   { key: "events", label: "Spieltermine", hint: "Termine anlegen und bearbeiten", Component: EventManagement },
   { key: "booking", label: "Buchungsteaser", hint: "Überschrift, Bild und Zoompunkt", Component: BookingTeaserManagement },
+  { key: "footer", label: "Footer", hint: "E-Mail, Telefon, Datenschutz und Impressum", Component: FooterContentManagement },
 ];
 
 // Dashboard → Content: ein Bereich der Seite auswählen und bearbeiten

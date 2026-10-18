@@ -8,7 +8,9 @@
   gap: clamp(1rem, 3vw, 2.5rem);
   align-items: end;
 
-  video {
+  video,
+  .video-embed-frame,
+  .video-embed-consent {
     width: 100%;
     display: block;
     aspect-ratio: 16 / 9;

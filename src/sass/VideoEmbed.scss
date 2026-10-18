@@ -1,0 +1,84 @@
+@import "./variables.scss";
+
+// YouTube-Video: Vorschaubild mit Hinweis, Player erst nach Klick (Zwei-Klick-Lösung)
+.video-embed-frame,
+.video-embed-consent {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: #000;
+}
+
+.video-embed-consent {
+  position: relative;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-embed-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 1rem;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.7));
+
+    p {
+      max-width: 34ch;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+
+      svg {
+        vertical-align: -0.15em;
+        color: #ff4e45;
+      }
+
+      a {
+        color: $cream;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+    }
+  }
+
+  .video-embed-play {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 2px solid rgba($cream, 0.9);
+    background: rgba(10, 10, 14, 0.6);
+    color: $cream;
+    font-size: 1.4rem;
+    padding-left: 0.25rem; // optisch mittig
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      background: $yellow_1;
+      color: $ink;
+      transform: scale(1.05);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $yellow_1;
+      outline-offset: 4px;
+    }
+  }
+}

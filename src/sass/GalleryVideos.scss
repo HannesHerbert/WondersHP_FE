@@ -1,0 +1,152 @@
+@import "./variables.scss";
+
+// Video-Karussell oben auf der Galerieseite
+$slide_ms: 450ms;
+$slide_ease: cubic-bezier(0.65, 0, 0.35, 1);
+
+#gallery-videos {
+  position: relative;
+  width: min(100%, 900px);
+  margin: 0 0 3rem auto;
+
+  // Platz für die Pfeile neben dem Video
+  &.has-more {
+    padding: 0 3.25rem;
+  }
+
+  .gv-stage {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    border-radius: $radius_lg;
+  }
+
+  // Alle Slides liegen in derselben Rasterzelle übereinander
+  .gv-slide {
+    grid-area: 1 / 1;
+    margin: 0;
+
+    video,
+    .video-embed-frame,
+    .video-embed-consent {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: $radius_lg;
+    }
+
+    figcaption {
+      padding: 0.9rem 0.25rem 0;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.95rem;
+      line-height: 1.55;
+
+      h3 {
+        font-family: $font_display;
+        font-weight: 400;
+        font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+        color: $cream;
+        margin-bottom: 0.25rem;
+      }
+    }
+
+    &.out {
+      pointer-events: none;
+    }
+
+    // Gleiche Bewegung für hinaus und herein – nur die Richtung wechselt
+    &.out.to-left { animation: gv-out-left $slide_ms $slide_ease both; }
+    &.out.to-right { animation: gv-out-right $slide_ms $slide_ease both; }
+    &.in.from-right { animation: gv-in-right $slide_ms $slide_ease both; }
+    &.in.from-left { animation: gv-in-left $slide_ms $slide_ease both; }
+  }
+
+  .gv-arrow {
+    position: absolute;
+    top: calc(50% - 2.5rem);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(10, 10, 14, 0.7);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+    &.prev { left: 0; }
+    &.next { right: 0; }
+
+    &:hover,
+    &:focus-visible {
+      color: $ink;
+      background: $yellow_1;
+      border-color: $yellow_1;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $yellow_1;
+      outline-offset: 3px;
+    }
+  }
+
+  .gv-counter {
+    margin-top: 0.5rem;
+    text-align: right;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.65);
+  }
+}
+
+@keyframes gv-out-left {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-60%); opacity: 0; }
+}
+
+@keyframes gv-out-right {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(60%); opacity: 0; }
+}
+
+@keyframes gv-in-right {
+  from { transform: translateX(60%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes gv-in-left {
+  from { transform: translateX(-60%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: $bp_sm) {
+  #gallery-videos.has-more {
+    padding: 0;
+
+    .gv-arrow {
+      top: auto;
+      bottom: -0.25rem;
+      width: 38px;
+      height: 38px;
+
+      &.prev { left: 0; }
+      &.next { left: 46px; right: auto; }
+    }
+
+    .gv-counter {
+      min-height: 38px;
+      line-height: 38px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #gallery-videos .gv-slide.in,
+  #gallery-videos .gv-slide.out {
+    animation-duration: 1ms;
+  }
+}

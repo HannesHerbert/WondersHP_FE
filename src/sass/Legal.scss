@@ -1,0 +1,62 @@
+@import "./variables.scss";
+
+// Rechtstexte (Datenschutz, später Impressum): gut lesbar auf dunklem Glas
+#legal {
+  max-width: 760px !important;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  color: rgba(255, 255, 255, 0.85);
+  @include card;
+
+  .legal-body > p:first-child {
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
+
+  h3,
+  h4 {
+    font-family: $font_display;
+    font-weight: 400;
+    font-size: clamp(1.15rem, 1rem + 0.5vw, 1.4rem);
+    color: $cream;
+    margin: 1.75rem 0 0.5rem;
+  }
+
+  h4 {
+    font-size: 1.05rem;
+  }
+
+  ul,
+  ol {
+    margin: 0.5rem 0 0 1.25rem;
+    line-height: 1.7;
+  }
+
+  p {
+    line-height: 1.7;
+    max-width: 70ch;
+
+    & + p {
+      margin-top: 0.75rem;
+    }
+  }
+
+  a {
+    color: $cream;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  // Platzhalter vor dem Livegang ausfüllen (<mark> im Text)
+  mark {
+    padding: 0 0.3em;
+    border-radius: 4px;
+    background: rgba($yellow_2, 0.25);
+    color: $cream;
+    outline: 1px dashed rgba($yellow_2, 0.8);
+  }
+}

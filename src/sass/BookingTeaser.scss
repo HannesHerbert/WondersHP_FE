@@ -66,6 +66,41 @@
     }
   }
 
+  // Dezentes Funkeln am Zoompunkt, bis der Button erscheint (Lage/Deckkraft setzt BookingTeaser.jsx)
+  .booking-sparkle {
+    position: absolute;
+    z-index: 1;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+
+    .spark {
+      position: absolute;
+      // Globale Regel svg { max-width: 100% } würde den Stern auf die 0-px-Breite des Ankers stauchen
+      max-width: none;
+      fill: #fff;
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 10px rgba($cream, 0.6));
+      transform-origin: center;
+      animation: booking-twinkle 2.6s ease-in-out infinite;
+    }
+
+    // Großer Stern leicht rechts oberhalb der Pupille (Lichtreflex), kleiner versetzt daneben
+    .spark.main {
+      width: 26px;
+      height: 26px;
+      left: -2px;
+      top: -22px;
+    }
+
+    .spark.small {
+      width: 12px;
+      height: 12px;
+      left: 16px;
+      top: -6px;
+      animation-delay: 1.3s;
+    }
+  }
+
   // Runder Button über dem Zoompunkt – Lage, Größe und Sichtbarkeit setzt BookingTeaser.jsx beim Scrollen
   .booking-cta {
     position: absolute;
@@ -113,6 +148,13 @@
 
 }
 
+@keyframes booking-twinkle {
+  0%, 100% { transform: scale(0.25) rotate(0deg); opacity: 0; }
+  12% { transform: scale(1) rotate(20deg); opacity: 1; }
+  28% { transform: scale(0.45) rotate(45deg); opacity: 0.35; }
+  45% { transform: scale(0.25) rotate(60deg); opacity: 0; }
+}
+
 @keyframes booking-cta-pulse {
   from { transform: scale(1); opacity: 0.8; }
   to { transform: scale(1.35); opacity: 0; }
@@ -144,6 +186,10 @@
       &::after {
         animation: none;
       }
+    }
+
+    .booking-sparkle {
+      display: none;
     }
   }
 }

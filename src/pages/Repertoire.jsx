@@ -29,9 +29,7 @@ function Repertoire() {
     <section id="repertoire">
       <header className="rep-head">
         <h2><FlourishText>Repertoire</FlourishText></h2>
-        <p className="rep-intro">
-          Soul, Funk und Disco von Bill Withers bis Bruno Mars – {songs.length || "viele"} Songs, die wir live spielen.
-        </p>
+        <p className="rep-intro">Soul, Funk und Disco von Bill Withers bis Stevie Wonder.</p>
       </header>
 
       {status === "error" && <p className="rep-message">Das Repertoire konnte gerade nicht geladen werden.</p>}

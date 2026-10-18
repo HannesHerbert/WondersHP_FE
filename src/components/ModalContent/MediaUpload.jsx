@@ -7,7 +7,9 @@ import useNotificationStore from "../../store/useNotificationStore.js";
 import useAuthStore from "../../store/useAuthStore.js";
 import "../../sass/MediaUpload.scss";
 
-const MAX_BYTES = 100 * 1024 * 1024;
+// Gleiche Grenze wie im Backend (MAX_UPLOAD_MB); vorab prüfen spart einen langen Upload, der dann abgelehnt wird
+const MAX_MB = Number(import.meta.env.VITE_MAX_UPLOAD_MB || 500);
+const MAX_BYTES = MAX_MB * 1024 * 1024;
 const FULL_CROP = { unit: "%", x: 0, y: 0, width: 100, height: 100 };
 
 /** Größter mittiger Ausschnitt im gewünschten Seitenverhältnis */
@@ -28,6 +30,7 @@ function MediaUpload({ onUploadSuccess }) {
     const [ratioH, setRatioH] = useState("");
     const [crop, setCrop] = useState(FULL_CROP);
     const [isUploading, setIsUploading] = useState(false);
+    const [progress, setProgress] = useState(0);
 
     const setModalIsShown = useModalStore((state) => state.setModalIsShown);
     const showNotification = useNotificationStore((state) => state.showNotification);
@@ -73,7 +76,7 @@ function MediaUpload({ onUploadSuccess }) {
         }
         // Größe vorab prüfen, sonst bricht der Reverse-Proxy mit 413 ab
         if (file.size > MAX_BYTES) {
-            showNotification("Die Datei ist zu groß. Bitte wähle eine Datei unter 100 MB.", "error");
+            showNotification(`Die Datei ist zu groß. Bitte wähle eine Datei unter ${MAX_MB} MB.`, "error");
             return;
         }
 
@@ -88,10 +91,14 @@ function MediaUpload({ onUploadSuccess }) {
         }
 
         try {
+            setProgress(0);
             await axios.post(`/api/admin/upload-media`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`,
+                },
+                onUploadProgress: (event) => {
+                    if (event.total) setProgress(Math.round((event.loaded / event.total) * 100));
                 },
             });
             showNotification("Upload erfolgreich!", "success");
@@ -114,6 +121,7 @@ function MediaUpload({ onUploadSuccess }) {
             <div className="admin-form-group">
                 <label className="admin-label" htmlFor="upload-file">Datei auswählen</label>
                 <input id="upload-file" type="file" ref={fileInputRef} className="admin-input" onChange={selectFile} />
+                <small className="admin-hint">Bilder und Videos bis {MAX_MB} MB.</small>
             </div>
 
             {previewUrl && (
@@ -181,7 +189,7 @@ function MediaUpload({ onUploadSuccess }) {
 
             <div className="admin-modal-actions">
                 <button onClick={uploadMedia} disabled={isUploading} className="admin-btn btn-primary">
-                    {isUploading ? "Wird hochgeladen..." : "Hochladen"}
+                    {isUploading ? (progress < 100 ? `Wird hochgeladen … ${progress} %` : "Wird verarbeitet …") : "Hochladen"}
                 </button>
             </div>
         </div>

@@ -24,6 +24,7 @@ function BookingTeaser() {
   const photoRef = useRef(null);
   const detailRefs = useRef([]);
   const ctaRef = useRef(null);
+  const sparkleRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function BookingTeaser() {
       // Ohne Zoom: Button gleich sichtbar über dem Zoompunkt
       cta.style.opacity = 1;
       cta.style.pointerEvents = "auto";
+      if (sparkleRef.current) sparkleRef.current.style.opacity = 0;
       return;
     }
 
@@ -78,6 +80,14 @@ function BookingTeaser() {
       cta.style.transform = `translate(-50%, -50%) scale(${0.9 + 0.1 * appear})`;
       cta.style.pointerEvents = appear > 0.5 ? "auto" : "none";
       cta.tabIndex = appear > 0.5 ? 0 : -1;
+
+      // Funkeln am Zoompunkt, solange der Button noch nicht zu sehen ist – blendet aus, sobald er kommt
+      const sparkle = sparkleRef.current;
+      if (sparkle) {
+        sparkle.style.left = cta.style.left;
+        sparkle.style.top = cta.style.top;
+        sparkle.style.opacity = 1 - clamp(appear * 4, 0, 1);
+      }
     };
 
     const onScroll = () => {
@@ -134,6 +144,17 @@ function BookingTeaser() {
               />
             ))}
           </div>
+          {/* Dezentes Funkeln am Zoompunkt (z.B. funkelndes Auge) */}
+          <span
+            className="booking-sparkle"
+            ref={sparkleRef}
+            aria-hidden="true"
+            style={{ left: `${focusX}%`, top: `${focusY}%` }}
+          >
+            <svg className="spark main" viewBox="0 0 24 24"><path d="M12 0 C12.8 8 16 11.2 24 12 C16 12.8 12.8 16 12 24 C11.2 16 8 12.8 0 12 C8 11.2 11.2 8 12 0 Z" /></svg>
+            <svg className="spark small" viewBox="0 0 24 24"><path d="M12 0 C12.8 8 16 11.2 24 12 C16 12.8 12.8 16 12 24 C11.2 16 8 12.8 0 12 C8 11.2 11.2 8 12 0 Z" /></svg>
+          </span>
+
           <Link
             to="/contact"
             className="booking-cta"

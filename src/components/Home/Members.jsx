@@ -14,19 +14,9 @@ const MOVE_MS = 550;
 const COLLAPSE_DELAY_MS = 250;
 const ease = (t) => 1 - Math.pow(1 - t, 3);
 
-const getMembersNameSquared = (array) => {
-  let maxNameLength = 0;
-  (array || []).forEach((member) => {
-    const nameLength = (member.firstname?.length || 0) + (member.lastname?.length || 0);
-    if (nameLength > maxNameLength) maxNameLength = nameLength;
-  });
-
-  let i = 0;
-  while (true) {
-    i++;
-    if (maxNameLength + 1 < i * i) return i * i;
-  }
-};
+// Längster Vor- bzw. Nachname bestimmt die Schriftgröße, damit alle Namen in ihre Ecke passen
+const longestNamePart = (members) =>
+  Math.max(4, ...members.flatMap((m) => [m.firstname?.length || 0, m.lastname?.length || 0]));
 
 const px = (rect) => ({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
 
@@ -131,16 +121,13 @@ function Members() {
     return () => cancelAnimationFrame(frame);
   }, [targetKey]);
 
-  const membersNamesLength = getMembersNameSquared(membersArr);
-  const nameGridSide = Math.sqrt(membersNamesLength);
+  const longestName = longestNamePart(membersArr);
   const frame = stateRef.current && buildFrame(stateRef.current.shape, stateRef.current.params);
 
   const membersElements = frame && membersArr.map((member) => {
     const parts = frame.tiles[member.id];
     if (!parts) return null;
 
-    const fullNameLength = (member.firstname?.length || 0) + (member.lastname?.length || 0);
-    const emptyDivsCount = membersNamesLength - fullNameLength;
     const isExpanded = member.id === expandedId;
     const isHidden = !visible.includes(member);
     const color = member.isGuest
@@ -181,33 +168,17 @@ function Members() {
 
         {/* Overlay und Name: zu im eigenen Ausschnitt, offen im Nachbar-Ausschnitt */}
         <div className="image-overlay" style={{ clipPath: parts.overlayClip }}></div>
+        {/* Vor- und Nachname untereinander, links unten in der Ecke */}
         <div
           className="member-name"
           style={{
             ...px(parts.name),
-            "--name-box": `${100 / nameGridSide}%`,
-            "--name-font": `${(parts.nameSize / nameGridSide) * 0.8}px`,
+            // ca. 16 % der Box, bei langen Namen kleiner (Righteous ≈ 0,62 em je Zeichen)
+            "--name-font": `${Math.min(parts.nameSize * 0.16, (parts.nameSize * 0.84) / (longestName * 0.62))}px`,
           }}
         >
-          {(member.firstname || "").split("").map((letter, i) => (
-            <div key={`firstname-${i}`} className="name-box">
-              {letter}
-            </div>
-          ))}
-
-          {Array(emptyDivsCount > 0 ? emptyDivsCount : 0)
-            .fill(null)
-            .map((_, i) => (
-              <div key={`empty-${i}`} className="name-box">
-                _
-              </div>
-            ))}
-
-          {(member.lastname || "").split("").map((letter, i) => (
-            <div key={`lastname-${i}`} className="name-box">
-              {letter}
-            </div>
-          ))}
+          <span className="member-firstname">{member.firstname}</span>
+          {member.lastname && <span className="member-lastname">{member.lastname}</span>}
         </div>
         <div className="member-description" style={px(parts.description)}>
           <div className="description-text" dangerouslySetInnerHTML={{ __html: descriptionsHtml[member.id] }}></div>

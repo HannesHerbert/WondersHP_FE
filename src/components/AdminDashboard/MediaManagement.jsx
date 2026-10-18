@@ -6,7 +6,8 @@ import useNotificationStore from "../../store/useNotificationStore.js";
 import useAuthStore from "../../store/useAuthStore.js";
 import MediaUpload from "../ModalContent/MediaUpload.jsx";
 import EditImageModal from "../ModalContent/EditImageModal.jsx";
-import { FaEdit, FaTrash, FaFileAlt, FaMusic, FaVideo, FaImage } from "react-icons/fa";
+import EditVideoModal from "../ModalContent/EditVideoModal.jsx";
+import { FaEdit, FaTrash, FaFileAlt, FaMusic, FaVideo, FaImage, FaCheck, FaYoutube } from "react-icons/fa";
 import "../../sass/MediaManagement.scss";
 
 const SECTIONS = [
@@ -92,6 +93,54 @@ function MediaManagement() {
     setModalIsShown(true);
   }
 
+  // Sichtbarkeit in der öffentlichen Galerie direkt umschalten (Bilder und Videos)
+  async function toggleGallery(kind, item) {
+    const isPublic = !item.isPublic;
+    try {
+      await axios.put(`/api/admin/${kind}/${item.id}`, { isPublic }, { headers });
+      const update = (list) => list.map((x) => (x.id === item.id ? { ...x, isPublic } : x));
+      if (kind === 'image') setImages(update);
+      else setVideos(update);
+      showNotification(isPublic ? `„${item.title}“ erscheint in der Galerie` : `„${item.title}“ aus der Galerie genommen`, "success");
+    } catch (error) {
+      showNotification("Sichtbarkeit konnte nicht geändert werden", "error");
+    }
+  }
+
+  function openEditVideoModal(video) {
+    setModalContent("Video bearbeiten", <EditVideoModal video={video} onConfirm={fetchVideos} />);
+    setModalIsShown(true);
+  }
+
+  async function deleteVideo(video) {
+    if (!window.confirm(`Video „${video.title}“ wirklich löschen?`)) return;
+    try {
+      await axios.delete(`/api/admin/video/${video.id}`, { headers });
+      showNotification("Video gelöscht", "success");
+      fetchVideos();
+    } catch (error) {
+      showNotification("Fehler beim Löschen des Videos", "error");
+    }
+  }
+
+  const [youtube, setYoutube] = useState({ url: '', title: '', isPublic: true });
+  const [isAddingYoutube, setIsAddingYoutube] = useState(false);
+
+  async function addYouTubeVideo(event) {
+    event.preventDefault();
+    setIsAddingYoutube(true);
+    try {
+      const res = await axios.post('/api/admin/video-youtube', youtube, { headers });
+      showNotification(`„${res.data.data.title}“ hinzugefügt`, "success");
+      setYoutube({ url: '', title: '', isPublic: youtube.isPublic });
+      fetchVideos();
+    } catch (error) {
+      showNotification(error.response?.data?.message || "YouTube-Video konnte nicht hinzugefügt werden", "error");
+    } finally {
+      setIsAddingYoutube(false);
+    }
+  }
+
   async function deleteImage(id) {
     if (!window.confirm("Möchtest du dieses Bild wirklich löschen?")) return;
     try {
@@ -125,11 +174,24 @@ function MediaManagement() {
       {activeSection === 'images' && (
         <section className="media-section">
           {images.length === 0 && <p className="empty-hint">Keine Bilder vorhanden.</p>}
+          {images.length > 0 && (
+            <p className="gallery-count">
+              {images.filter((i) => i.isPublic).length} von {images.length} Bildern in der Galerie. Klick auf „In Galerie“ zum Umschalten.
+            </p>
+          )}
           <div className="image-gallery">
             {images.map((img) => (
               <div key={img.id} className="gallery-item">
                 <img src={mediaUrl(`/media/images/${img.sourceUrlSM}`)} alt={img.title} className="gallery-image" />
-                {img.isPublic && <span className="gallery-badge" title="Wird in der öffentlichen Galerie gezeigt">Galerie</span>}
+                <button
+                  type="button"
+                  className={`gallery-toggle${img.isPublic ? ' on' : ''}`}
+                  aria-pressed={Boolean(img.isPublic)}
+                  onClick={() => toggleGallery('image', img)}
+                  title={img.isPublic ? 'Aus der Galerie nehmen' : 'In der Galerie zeigen'}
+                >
+                  {img.isPublic ? <FaCheck size={10} /> : null} In Galerie
+                </button>
                 <div className="gallery-item-title"><p>{img.title}</p></div>
                 <div className="gallery-item-actions">
                   <button onClick={() => openEditModal(img)} className="action-btn edit-btn" title="Bearbeiten"><FaEdit size={12} /></button>
@@ -145,15 +207,69 @@ function MediaManagement() {
       {activeSection === 'videos' && (
         <section className="media-section">
           {videos.length === 0 && <p className="empty-hint">Keine Videos vorhanden.</p>}
-          <div className="video-list">
+          {videos.length > 0 && (
+            <p className="gallery-count">
+              {videos.filter((v) => v.isPublic).length} von {videos.length} Videos in der Galerie. Bei mehreren lässt sich dort durchblättern.
+            </p>
+          )}
+          {/* YouTube-Video per Adresse hinzufügen – verhält sich danach wie ein hochgeladenes Video */}
+          <form className="youtube-add" onSubmit={addYouTubeVideo}>
+            <FaYoutube className="youtube-add-icon" aria-hidden="true" />
+            <input
+              type="url"
+              required
+              className="youtube-input"
+              placeholder="YouTube-Adresse, z.B. https://youtu.be/…"
+              aria-label="YouTube-Adresse"
+              value={youtube.url}
+              onChange={(e) => setYoutube({ ...youtube, url: e.target.value })}
+            />
+            <input
+              type="text"
+              className="youtube-input"
+              placeholder="Titel (optional, sonst von YouTube)"
+              aria-label="Titel"
+              value={youtube.title}
+              onChange={(e) => setYoutube({ ...youtube, title: e.target.value })}
+            />
+            <label className="youtube-public">
+              <input type="checkbox" checked={youtube.isPublic} onChange={(e) => setYoutube({ ...youtube, isPublic: e.target.checked })} />
+              In Galerie
+            </label>
+            <button type="submit" className="admin-btn btn-secondary" disabled={isAddingYoutube}>
+              {isAddingYoutube ? 'Wird geladen …' : 'Hinzufügen'}
+            </button>
+          </form>
+
+          {/* Gleiche Kacheln und Knöpfe wie bei den Bildern; Titel unter der Kachel, damit die Steuerung frei bleibt */}
+          <div className="image-gallery video-gallery">
             {videos.map((vid) => (
-              <div key={vid.id} className="video-item">
-                <video src={mediaUrl(vid.sourceUrl)} controls className="video-preview" />
-                <div className="video-item-info">
-                  <p className="item-title">{vid.title}</p>
-                  {vid.description && <p className="item-description">{vid.description}</p>}
+              <figure key={vid.id} className="video-tile">
+                <div className="gallery-item">
+                  {vid.provider === 'youtube' ? (
+                    <a className="youtube-tile" href={vid.sourceUrl} target="_blank" rel="noopener noreferrer" title="Auf YouTube öffnen">
+                      {vid.posterUrl && <img src={mediaUrl(vid.posterUrl)} alt="" className="gallery-image" />}
+                      <span className="youtube-badge"><FaYoutube aria-hidden="true" /> YouTube</span>
+                    </a>
+                  ) : (
+                    <video src={mediaUrl(vid.sourceUrl)} controls preload="metadata" className="gallery-image" />
+                  )}
+                  <button
+                    type="button"
+                    className={`gallery-toggle${vid.isPublic ? ' on' : ''}`}
+                    aria-pressed={Boolean(vid.isPublic)}
+                    onClick={() => toggleGallery('video', vid)}
+                    title={vid.isPublic ? 'Aus der Galerie nehmen' : 'In der Galerie zeigen'}
+                  >
+                    {vid.isPublic ? <FaCheck size={10} /> : null} In Galerie
+                  </button>
+                  <div className="gallery-item-actions">
+                    <button onClick={() => openEditVideoModal(vid)} className="action-btn edit-btn" title="Bearbeiten" aria-label={`${vid.title} bearbeiten`}><FaEdit size={12} /></button>
+                    <button onClick={() => deleteVideo(vid)} className="action-btn delete-btn" title="Löschen" aria-label={`${vid.title} löschen`}><FaTrash size={12} /></button>
+                  </div>
                 </div>
-              </div>
+                <figcaption className="video-tile-title">{vid.title}</figcaption>
+              </figure>
             ))}
           </div>
         </section>

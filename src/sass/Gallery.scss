@@ -2,17 +2,6 @@
 
 #gallery {
 
-  #top-video-wrapper {
-    width: min(100%, 900px);
-    margin: 0 0 3rem auto;
-    border-radius: $radius_lg;
-    overflow: hidden;
-
-    #video-player {
-      width: 100%;
-    }
-  }
-
   .gallery-separator {
     border: 0;
     height: 4px;

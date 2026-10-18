@@ -35,3 +35,11 @@ export function sanitizeRichText(html) {
   const source = String(html || "").replace(/\bhref_\s*=/gi, "href=");
   return DOMPurify.sanitize(source, { ALLOWED_TAGS, ALLOWED_ATTR });
 }
+
+// Rechtstexte (Datenschutz, Impressum): zusätzlich Zwischenüberschriften und <mark> für Platzhalter
+const LEGAL_TAGS = [...ALLOWED_TAGS, "h3", "h4", "mark"];
+
+export function sanitizeLegalText(html) {
+  installHooks();
+  return DOMPurify.sanitize(String(html || ""), { ALLOWED_TAGS: LEGAL_TAGS, ALLOWED_ATTR });
+}

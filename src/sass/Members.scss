@@ -75,20 +75,23 @@ $members_fade: 0.3s;
       .member-name {
         opacity: 0;
         display: flex;
-        flex-wrap: wrap;
-        align-content: flex-start;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        gap: 0.05em;
+        padding: 8%;
+        box-sizing: border-box;
         z-index: 100;
+        font-family: $font_display;
+        font-size: var(--name-font, 32px);
+        line-height: 1.05;
+        color: #fff;
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55), 0 0 18px rgba(0, 0, 0, 0.5);
+        pointer-events: none;
 
-        .name-box {
-          width: var(--name-box, 25%);
-          height: var(--name-box, 25%);
-          font-size: var(--name-font, 40px);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-transform: capitalize;
-          font-family: $font_display;
-          text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+        .member-lastname {
+          font-size: 0.78em;
+          color: $cream;
         }
       }
 

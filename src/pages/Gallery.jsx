@@ -2,7 +2,7 @@ import "../sass/Gallery.scss"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import GalleryImage from "../components/Snippets/GalleryImage";
-import VideoPlayer from "../components/Home/VideoPlayer";
+import GalleryVideos from "../components/Gallery/GalleryVideos";
 import useGalleryStore from "../store/useGalleryStore.js";
 
 // Bilder kommen aus dem Backend: alle Bilder, die im Dashboard für die Galerie freigegeben sind
@@ -31,9 +31,7 @@ function Gallery() {
   return (
     <section id="gallery">
 
-      <div id="top-video-wrapper">
-        <VideoPlayer />
-      </div>
+      <GalleryVideos />
 
       <hr className="gallery-separator" />
 

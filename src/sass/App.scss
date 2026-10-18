@@ -75,3 +75,16 @@ h2 {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+// Aufgeklappte Auswahllisten: dunkler Grund + helle Schrift überall (sonst erbt die Liste
+// die weiße Feldschrift und steht auf dem hellen System-Hintergrund)
+select {
+  color-scheme: dark;
+}
+
+select option,
+select optgroup {
+  background-color: #15151a;
+  color: #fff;
+}

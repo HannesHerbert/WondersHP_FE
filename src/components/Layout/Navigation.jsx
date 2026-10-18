@@ -9,7 +9,6 @@ const NAV_ITEMS = [
   { path: "/gallery", label: "Gallerie" },
   { path: "/repertoire", label: "Repertoire" },
   { path: "/contact", label: "Kontakt" },
-  { path: "/news", label: "News" },
   // Nur mit gültigem Login sichtbar
   { path: "/admin", label: "Admin", requiresAuth: true },
 ];

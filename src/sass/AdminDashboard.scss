@@ -102,7 +102,7 @@
         display: block;
         margin: 0.25rem 0 1rem;
         font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.65);
     }
 }
 
@@ -168,7 +168,7 @@
         display: block;
         margin-top: 0.5rem;
         font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.65);
     }
 }
 
@@ -214,7 +214,7 @@
     .admin-hint {
         display: block;
         font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.65);
     }
 
     // Bereiche, die früher unter "Band" mit Trennlinie darüber standen, beginnen hier oben
@@ -245,7 +245,7 @@
         justify-content: center;
         background: rgba(0, 0, 0, 0.35);
         border: 1px solid $surface_border;
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.65);
         font-size: 0.8rem;
         text-align: center;
         padding: 0.25rem;
@@ -297,7 +297,7 @@
     .track-editor-no {
         text-align: right;
         font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.45);
+        color: rgba(255, 255, 255, 0.65);
     }
 
     .icon-btn {
@@ -339,5 +339,40 @@
             grid-column: 3;
             grid-row: 1;
         }
+    }
+}
+
+
+// Content → Footer
+.footer-editor {
+    .footer-editor-contact {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 0 1rem;
+    }
+
+    .footer-editor-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .footer-editor-preview {
+        font-size: 0.8rem;
+        color: $cream;
+    }
+
+    .legal-textarea {
+        min-height: 320px;
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 0.82rem;
+        line-height: 1.55;
+    }
+
+    .admin-hint {
+        display: block;
+        margin-bottom: 1rem;
+        line-height: 1.6;
     }
 }

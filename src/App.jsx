@@ -11,6 +11,7 @@ import Gallery from "./pages/Gallery";
 import Repertoire from "./pages/Repertoire";
 import Contact from "./pages/Contact";
 import Impressum from "./pages/Impressum";
+import Datenschutz from "./pages/Datenschutz";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRoute from "./services/AdminRoute";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -41,6 +42,8 @@ function App() {
             <Route path="/contact" element={<Contact />} />
 
             <Route path="/impressum" element={<Impressum />} />
+
+            <Route path="/datenschutz" element={<Datenschutz />} />
 
             <Route path="/login" element={<AdminLogin />} />
 

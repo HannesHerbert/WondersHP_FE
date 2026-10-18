@@ -1,11 +1,7 @@
+import LegalPage from "../components/Snippets/LegalPage";
 
 function Impressum() {
-    return (
-      <div id="impressum">
-        <ul></ul>
+  return <LegalPage page="impressum" title="Impressum" />;
+}
 
-      </div>
-    );
-  }
-  
-  export default Impressum;
+export default Impressum;

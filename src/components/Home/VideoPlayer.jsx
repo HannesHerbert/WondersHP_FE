@@ -1,7 +1,7 @@
 import "../../sass/VideoPlayer.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { mediaUrl } from "../../config.js";
+import VideoEmbed from "../Snippets/VideoEmbed";
 
 // Video aus dem Dashboard (Content → Medien); ohne Auswahl das erste hochgeladene Video
 function VideoPlayer() {
@@ -20,7 +20,7 @@ function VideoPlayer() {
 
   return (
     <figure id="video-player">
-      <video src={mediaUrl(video.sourceUrl)} controls preload="metadata" playsInline />
+      <VideoEmbed video={video} />
       <figcaption className="video-info">
         <h3>{video.title}</h3>
         {description && <p>{description}</p>}

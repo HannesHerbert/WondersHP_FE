@@ -202,7 +202,8 @@ export function buildFrame(shape, params) {
     const s = shape.squareness;
     return {
       image: lerpBox(squareAround(inner, reach), asSquare, s),
-      name: lerpBox(squareAround(inner, radius / Math.SQRT2), asSquare, s),
+      // Fast der ganze Inkreis-Durchmesser: Namen bleiben im Dreieck lesbar groß
+      name: lerpBox(squareAround(inner, radius * 0.92), asSquare, s),
     };
   };
 

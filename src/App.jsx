@@ -8,6 +8,7 @@ import Background from "./components/Layout/Background";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
+import Repertoire from "./pages/Repertoire";
 import Contact from "./pages/Contact";
 import Impressum from "./pages/Impressum";
 import AdminLogin from "./pages/AdminLogin";
@@ -34,6 +35,8 @@ function App() {
             <Route index element={<Home/>}/>
 
             <Route path="/gallery" element={<Gallery />} />
+
+            <Route path="/repertoire" element={<Repertoire />} />
 
             <Route path="/contact" element={<Contact />} />
 

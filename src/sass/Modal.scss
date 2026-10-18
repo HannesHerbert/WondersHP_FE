@@ -184,19 +184,25 @@
           font-size: 30px;
           cursor: pointer;
           color: white;
+          // Button-Reset
+          display: flex;
+          padding: 0.4rem;
+          background: none;
+          border: 0;
 
-          &:hover {
+          &:hover,
+          &:focus-visible {
             color: $yellow_2;
           }
         }
 
         .previous-image {
-          transform: translateX(-150%);
+          transform: translate(-150%, -50%);
         }
 
         .next-image {
           right: 0;
-          transform: translateX(150%);
+          transform: translate(150%, -50%);
         }
 
         // .previous-image,

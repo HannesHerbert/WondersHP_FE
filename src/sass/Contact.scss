@@ -15,12 +15,6 @@
       flex-direction: column;
       gap: 1.1rem;
 
-      > div:first-of-type {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-      }
-
       .contact-field {
         label {
           display: block;
@@ -57,10 +51,22 @@
         }
       }
 
-      div:has(iframe) {
-        width: fit-content;
-        max-width: 100%;
-        margin: auto;
+      // Honeypot: aus dem sichtbaren Bereich geschoben (nicht display:none – manche Bots prüfen das)
+      .contact-hp {
+        position: absolute;
+        left: -10000px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+
+      .contact-error {
+        margin: 0;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        background: rgba($red_1, 0.18);
+        border: 1px solid rgba($red_1, 0.6);
+        color: #fff;
       }
 
       button {
@@ -82,13 +88,42 @@
           transform: translateY(-2px);
           filter: brightness(1.15);
         }
+
+        &:disabled {
+          cursor: wait;
+          opacity: 0.7;
+          transform: none;
+        }
       }
     }
-  }
-}
 
-@media (max-width: $bp_sm) {
-  #contact #contact-form form > div:first-of-type {
-    grid-template-columns: 1fr;
+    .contact-success {
+      h3 {
+        font-family: $font_display;
+        font-weight: 400;
+        font-size: 1.6rem;
+        color: $cream;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        color: rgba(255, 255, 255, 0.75);
+        margin-bottom: 1.5rem;
+      }
+
+      button {
+        padding: 0.7rem 1.4rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: transparent;
+        color: #fff;
+        font: inherit;
+        cursor: pointer;
+
+        &:hover {
+          border-color: $cream;
+        }
+      }
+    }
   }
 }

@@ -5,9 +5,21 @@ import MediaManagement from "../components/AdminDashboard/MediaManagement";
 import EventManagement from "../components/AdminDashboard/EventManagement";
 import BandManagement from "../components/AdminDashboard/BandManagement";
 import FlourishText from "../components/Snippets/FlourishText";
+import ContactRequestsManagement from "../components/AdminDashboard/ContactRequestsManagement";
+import axios from "axios";
+import useAuthStore from "../store/useAuthStore";
 
 function AdminDashboard() {
     const [activeNav, setActiveNav] = useState('members');
+    // Zahl ungelesener Kontaktanfragen für den Tab
+    const [newRequests, setNewRequests] = useState(0);
+    const token = useAuthStore((state) => state.getToken());
+
+    useEffect(() => {
+        axios.get('/api/admin/contact-requests', { headers: { Authorization: `Bearer ${token}` } })
+            .then((res) => setNewRequests((res.data.data || []).filter((r) => r.status === 'new').length))
+            .catch(() => {});
+    }, []);
 
     const adminNavs = [
         {
@@ -32,15 +44,17 @@ function AdminDashboard() {
             element: <EventManagement />,
         },
         {
+            title: 'Anfragen',
+            value: 'requests',
+            badge: newRequests,
+            element: <ContactRequestsManagement onNewCountChange={setNewRequests} />,
+        },
+        {
             title: 'Songliste',
             value: 'songs',
             element: <div>Inhalt für Songliste</div>
         },
     ];
-
-    // useEffect(() => {
-    //     console.log(activeNav);
-    // }, [activeNav]);
 
     const navElements = (adminNavs || []).map((nav, index) => (
         <li 
@@ -50,6 +64,7 @@ function AdminDashboard() {
             className={activeNav === nav.value ? 'active' : ''}
         >
             {nav.title}
+            {nav.badge > 0 && <span className="dashboard-tab-badge" aria-label={`${nav.badge} ungelesen`}>{nav.badge}</span>}
         </li>
     ));
 

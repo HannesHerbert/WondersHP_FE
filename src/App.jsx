@@ -3,6 +3,7 @@ import "./sass/App.scss";
 import axios from "axios";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import KeyListener from "./services/KeyListener";
+import AuthSession from "./services/AuthSession";
 import Background from "./components/Layout/Background";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
@@ -23,6 +24,7 @@ function App() {
       <BrowserRouter>
 
         <KeyListener />
+        <AuthSession />
         <Notification />
 
         <Routes>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Navigation from "./Navigation";
 import Logo from "./Logo";
+import SocialLinks from "./SocialLinks";
 import "../../sass/Header.scss"
 
 function Header() {
@@ -12,7 +13,10 @@ function Header() {
           <Logo />
         </Link>
 
-        <Navigation viewScope="mobile" />
+        <div className="header-actions">
+          <SocialLinks />
+          <Navigation viewScope="mobile" />
+        </div>
 
       </div>
     </header>

@@ -6,6 +6,7 @@ import useModalStore from "../../store/useModalStore";
 import ImageSelect from "../ModalContent/ImageSelect";
 import Image from "../Snippets/Image";
 import BookingTeaserManagement from "./BookingTeaserManagement";
+import SocialLinksManagement from "./SocialLinksManagement";
 
 function BandManagement() {
   const [heroData, setHeroData] = useState({ title: "", text: "", image_id: null, images: null });
@@ -121,6 +122,8 @@ function BandManagement() {
           Speichern
         </button>
       </div>
+
+      <SocialLinksManagement />
 
       <BookingTeaserManagement />
     </div>

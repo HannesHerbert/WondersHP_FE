@@ -240,7 +240,7 @@ function Members() {
           onClick={toggleGuests}
           aria-expanded={guestsShown}
         >
-          <span>{guestsShown ? "Special Guests ausblenden" : `Special Guests (${guests.length})`}</span>
+          <span>{guestsShown ? "Special Guests ausblenden" : "Special Guests anzeigen"}</span>
           <span className="members-cta-icon" aria-hidden="true">+</span>
         </button>
       )}

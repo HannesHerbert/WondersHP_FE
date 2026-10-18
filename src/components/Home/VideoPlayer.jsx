@@ -1,33 +1,31 @@
 import "../../sass/VideoPlayer.scss";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { mediaUrl } from "../../config.js";
 
-
+// Video aus dem Backend (Dashboard → Medien); gezeigt wird das erste hochgeladene Video
 function VideoPlayer() {
+  const [video, setVideo] = useState(null);
 
-//TODO: möglicherweise einstellbarer Video-Pfad im BE
+  useEffect(() => {
+    axios.get("/api/public/videos")
+      .then((res) => setVideo(res.data.data?.[0] || null))
+      .catch((error) => console.error("Fehler beim Laden des Videos:", error));
+  }, []);
+
+  if (!video) return null;
+
+  // Beschreibung nur zeigen, wenn sie mehr sagt als der Titel
+  const description = video.description && video.description !== video.title ? video.description : null;
 
   return (
-    <div id="video-player">
-
-
-      <video controls />
-
-      <div className="corner top left"></div>
-      <div className="corner top right"></div>
-      <div className="corner bottom left"></div>
-      <div className="corner bottom right"></div>
-
-      <div className="video-info">
-        <h3>Use Me</h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-          sollicitudin, nunc sit amet varius facilisis, nisl nunc consectetur
-          nisi, euismod aliquam nisl nunc euismod nisi. Donec sollicitudin,
-          nunc sit amet varius facilisis, nisl nunc consectetur nisi, euismod
-          aliquam nisl nunc euismod nisi.
-        </p>
-      </div>
-
-    </div>
+    <figure id="video-player">
+      <video src={mediaUrl(video.sourceUrl)} controls preload="metadata" playsInline />
+      <figcaption className="video-info">
+        <h3>{video.title}</h3>
+        {description && <p>{description}</p>}
+      </figcaption>
+    </figure>
   );
 }
 

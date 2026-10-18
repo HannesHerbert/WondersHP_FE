@@ -129,6 +129,7 @@ function MediaManagement() {
             {images.map((img) => (
               <div key={img.id} className="gallery-item">
                 <img src={mediaUrl(`/media/images/${img.sourceUrlSM}`)} alt={img.title} className="gallery-image" />
+                {img.isPublic && <span className="gallery-badge" title="Wird in der öffentlichen Galerie gezeigt">Galerie</span>}
                 <div className="gallery-item-title"><p>{img.title}</p></div>
                 <div className="gallery-item-actions">
                   <button onClick={() => openEditModal(img)} className="action-btn edit-btn" title="Bearbeiten"><FaEdit size={12} /></button>

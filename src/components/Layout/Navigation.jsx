@@ -2,18 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../../sass/Navigation.scss';
 import FlourishText from "../Snippets/FlourishText";
+import useAuthStore from "../../store/useAuthStore.js";
 
 const NAV_ITEMS = [
   { path: "/", label: "Home" },
   { path: "/gallery", label: "Gallerie" },
   { path: "/contact", label: "Kontakt" },
   { path: "/news", label: "News" },
-  { path: "/admin", label: "Admin" },
+  // Nur mit gültigem Login sichtbar
+  { path: "/admin", label: "Admin", requiresAuth: true },
 ];
 
 function Navigation({viewScope}) {
   const location = useLocation();
   const [isNavExpanded, setIsNavExpanded] = useState(false);
+  const isLoggedIn = useAuthStore((state) => state.user !== null);
+  const items = NAV_ITEMS.filter((item) => !item.requiresAuth || isLoggedIn);
 
   // Menü schließen, sobald sich die Route ändert
   useEffect(() => {
@@ -44,7 +48,7 @@ function Navigation({viewScope}) {
 
       <nav className={isNavExpanded ? 'expanded' : ''}>
         <ul>
-          {NAV_ITEMS.map((item, index) => (
+          {items.map((item, index) => (
             <li
               key={item.path}
               className={`navLink ${getNavClass(item.path)}`}

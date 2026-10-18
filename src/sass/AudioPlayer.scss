@@ -1,217 +1,296 @@
 @import "./variables.scss";
 
+// Hörproben als Schallplatte: Hülle mit Bandfoto, Vinyl rutscht beim Abspielen heraus und dreht sich.
+// Das ist der eine auffällige Moment im Medienbereich – alles andere bleibt ruhig.
+$record_size: clamp(150px, 20vw, 230px);
+$vinyl_ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 
 #audio-player {
-  background: linear-gradient(160deg, $blue_3 0%, $blue_2 100%);
-  padding: clamp(14px, 2.5vw, 24px) clamp(16px, 3vw, 30px);
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  gap: 0.75rem;
-  border-radius: $radius_md;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+  color: #fff;
 
-  audio {
-    background-color: green;
-    border-radius: 0;
+  // ─── Platte ─────────────────────────────────────────────────────────────
+  .record {
+    position: relative;
+    width: calc(#{$record_size} * 1.32);
+    height: $record_size;
+    flex-shrink: 0;
   }
 
-  .audio-player-header {
+  .sleeve {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: $record_size;
+    border-radius: 4px;
+    background: $red_2 center / cover no-repeat;
+    box-shadow: 10px 14px 30px -8px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    z-index: 2;
+  }
+
+  .vinyl {
+    position: absolute;
+    top: 4%;
+    left: 18%;
+    width: calc(#{$record_size} * 0.92);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    // Rillen + Lichtreflex
+    background:
+      conic-gradient(from 30deg, transparent 0 12%, rgba(255, 255, 255, 0.09) 16%, transparent 22% 62%, rgba(255, 255, 255, 0.06) 66%, transparent 72%),
+      repeating-radial-gradient(circle, #111 0 1px, #1c1c1f 1.5px 3px),
+      #111;
+    box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.9);
     display: flex;
-    margin-bottom: 10px;
-
-    .note-icon {
-
-      >span {
-        background-color: $blue_1;
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        box-shadow: inset 0 0 0 2px rgba($yellow_1, 0.25);
-        font-size: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: $yellow_1;
-      }
-    }
-
-    .song-info {
-      margin-left: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-align: right;
-
-      .song-title {
-        font-family: $font_display;
-        font-size: 1.15rem;
-        font-weight: 400;
-        color: $cream;
-      }
-
-      .song-interpret {
-        font-size: 14px;
-        color: $yellow_1;
-      }
-    }
-
-    .curr-time-info {
-      margin-left: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-
-      >div {
-        font-size: 10px;
-      }
-    }
+    align-items: center;
+    justify-content: center;
+    transition: left 0.7s $vinyl_ease;
+    animation: vinyl-spin 2.2s linear infinite;
+    animation-play-state: paused;
+    z-index: 1;
   }
 
-
-  .duration-display {
-
-
-    .time-bar {
-      background: rgba($blue_1, 0.6);
-      flex-grow: 1;
-      height: 6px;
-      border-radius: 999px;
-      overflow: hidden;
-      cursor: pointer;
-      margin-bottom: 6px;
-
-      .time-bar-inner {
-        background: linear-gradient(90deg, $red_1, $yellow_2, $yellow_1);
-        height: 100%;
-        border-radius: 999px;
-        position: relative;
-      }
-    }
-
-    .current-time {
-      font-size: 10px;
-      color: $yellow_1;
-      display: flex;
-      justify-content: space-between;
-      letter-spacing: 3px;
-    }
-  }
-
-  .controls {
-    margin: 0 0 10px 0;
+  .vinyl-label {
+    width: 36%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: $red_1;
+    color: $cream;
+    font-family: $font_display;
+    font-size: clamp(0.55rem, 0.4rem + 0.4vw, 0.8rem);
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.25);
+    position: relative;
 
-    >div:first-of-type {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-
-      >div {
-        border-radius: 50%;
-        border: 1px solid rgba($yellow_1, 0.4);
-        background: rgba($blue_1, 0.5);
-        transition: transform 0.2s ease, background 0.2s ease;
-
-        &:hover {
-          transform: scale(1.08);
-          background: $blue_1;
-        }
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: $yellow_1;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
-      >div:nth-child(2) {
-        width: 52px;
-        height: 52px;
-        font-size: 1.2rem;
-        background: $yellow_2;
-        color: $ink;
-        border-color: transparent;
-
-        &:hover {
-          background: $yellow_1;
-        }
-      }
-
-      >div:nth-child(1),
-      >div:nth-child(3) {
-        width: 40px;
-        height: 40px;
-      }
-    }
-
-    >div:nth-of-type(2) {
-
-      .volume-control {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-
-        >.volume-toggle {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          border: 1px solid rgba($yellow_1, 0.4);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 11px;
-          color: $yellow_1;
-
-          &:hover {
-            cursor: pointer;
-          }
-        }
-
-        >.volume-bar {
-          background: rgba($blue_1, 0.6);
-          margin-left: 10px;
-          flex-grow: 1;
-          height: 4px;
-          border-radius: 999px;
-          overflow: hidden;
-          cursor: pointer;
-
-          .volume-bar-inner {
-            background-color: $yellow_1;
-            height: 100%;
-            position: relative;
-          }
-        }
-      }
+    // Mittelloch
+    &::after {
+      content: "";
+      position: absolute;
+      width: 9%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #050505;
     }
   }
 
-  .songlist {
-    list-style: none;
+  &.is-playing .vinyl {
+    left: 38%;
+    animation-play-state: running;
+  }
 
+  // ─── Bedienung ──────────────────────────────────────────────────────────
+  .deck {
+    min-width: 0;
+  }
 
-    >li {
-      color: $yellow_1;
-      font-size: 0.8rem;
-      border-radius: 6px;
-      padding: 6px 8px;
-      margin: 0 -5px;
+  .track-title {
+    font-family: $font_display;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.4rem);
+    line-height: 1.1;
+    color: $cream;
+  }
+
+  .track-meta {
+    margin-top: 0.35rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .seek {
+    margin-top: 1.4rem;
+  }
+
+  .seek-times {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  // Schieberegler: gefüllter Anteil über --fill
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, $yellow_2 var(--fill, 0%), rgba(255, 255, 255, 0.18) var(--fill, 0%));
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: $cream;
+      border: 0;
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.35);
+    }
+
+    &::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: $cream;
+      border: 0;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $yellow_1;
+      outline-offset: 6px;
+    }
+  }
+
+  .transport {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .transport-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: transparent;
+    color: #fff;
+    font-size: 1.15rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+
+    &.play {
+      width: 56px;
+      height: 56px;
+      font-size: 1.5rem;
+      border: 0;
+      background: $yellow_2;
+      color: $ink;
 
       &:hover {
-        cursor: pointer;
-        background-color: rgba($yellow_1, 0.2);
-        color: $blue_2;
+        background: $yellow_1;
+      }
+    }
+
+    &.small {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      font-size: 1rem;
+    }
+  }
+
+  .volume {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: auto;
+    width: min(150px, 35%);
+  }
+
+  // ─── Trackliste (echte Reihenfolge → nummeriert) ────────────────────────
+  .tracklist {
+    list-style: none;
+    margin-top: 1.6rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.6rem minmax(0, 1fr) 3rem;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.7rem 0.25rem;
+      border: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.75);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #fff;
       }
 
       &.current {
-        font-weight: 900;
+        color: $cream;
+
+        .track-no {
+          color: $yellow_2;
+        }
       }
     }
+
+    .track-no,
+    .track-length {
+      font-size: 0.85rem;
+      font-variant-numeric: tabular-nums;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .track-length {
+      text-align: right;
+    }
+
+    .track-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .track-name {
+      font-family: $font_display;
+      font-size: 1.05rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .track-original {
+      margin-top: 0.1rem;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+@keyframes vinyl-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 760px) {
+  #audio-player {
+    grid-template-columns: 1fr;
+
+    .record {
+      justify-self: center;
+    }
+
+    .tracklist button {
+      grid-template-columns: 1.4rem minmax(0, 1fr) 2.6rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #audio-player .vinyl {
+    animation: none;
+    transition: none;
   }
 }

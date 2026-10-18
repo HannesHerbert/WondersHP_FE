@@ -1,61 +1,49 @@
 import { useState, useEffect } from "react";
-import useModalStore from "../../store/useModalStore.js";
 import useGalleryStore from "../../store/useGalleryStore.js";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { mediaUrl } from "../../config.js";
 
-
+/** Großansicht im Modal: größte Bildvariante, blättern per Pfeil (auch Tastatur ← →) */
 function GalleryElementViewer({ currIdx }) {
 
     const galleryElements = useGalleryStore((state) => state.galleryElements);
-    // const currElemIdx = useGalleryStore((state) => state.currElementIndex);
-    // const setCurrElemIdx = useGalleryStore((state) => state.setCurrGalleryElementIndex());
-
     const [currElemIdx, setCurrElemIdx] = useState(currIdx);
+    const count = galleryElements?.length || 0;
 
-    console.log('GEV: ', galleryElements, currElemIdx);
-
-    const imageUrl = galleryElements[currElemIdx].src;
-    const imageTitle = galleryElements[currElemIdx].title;
-
-    function getNextImage() {
-        console.log('give next image');
-        if (currElemIdx === galleryElements?.length - 1) {
-            setCurrElemIdx(0);
-            return;
-        } else {setCurrElemIdx(currElemIdx + 1);}
-    }
-
-    function getPreviousImage() {
-        console.log('give previous image');
-        if (currElemIdx === 0) {
-            setCurrElemIdx(galleryElements?.length - 1);
-            return;
-        } else {setCurrElemIdx(currElemIdx - 1);}
-    }
+    const showNext = () => setCurrElemIdx((idx) => (idx + 1) % count);
+    const showPrevious = () => setCurrElemIdx((idx) => (idx - 1 + count) % count);
 
     useEffect(() => {
-        console.log('Current Element Index: ', currElemIdx);
-    }, [currElemIdx]);
+        const onKey = (event) => {
+            if (event.key === "ArrowRight") showNext();
+            if (event.key === "ArrowLeft") showPrevious();
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [count]);
 
-    let element =   <div>
-                        <img src={imageUrl || null} alt={imageTitle} />
-                        <div className="image-text">
-                            <p>{imageTitle}</p>
-                        </div>
-                    </div>;
+    const element = galleryElements[currElemIdx];
+    if (!element) return null;
 
+    const baseUrl = mediaUrl("/media/images/");
+    const { images, title } = element;
 
     return (
         <div id="gallery-viewer">
 
-            <div className="previous-image" onClick={getPreviousImage}><FaArrowLeft /></div>
+            <button type="button" className="previous-image" onClick={showPrevious} aria-label="Vorheriges Bild"><FaArrowLeft /></button>
 
-            <img src={imageUrl || null} alt={imageTitle} />
+            <img
+                src={baseUrl + images.lg}
+                srcSet={`${baseUrl + images.md} 800w, ${baseUrl + images.lg} 1920w`}
+                sizes="90vw"
+                alt={title}
+            />
             <div className="image-text">
-                <p>{imageTitle}</p>
+                <p>{title}</p>
             </div>
 
-            <div className="next-image" onClick={getNextImage}><FaArrowRight /></div>
+            <button type="button" className="next-image" onClick={showNext} aria-label="Nächstes Bild"><FaArrowRight /></button>
 
         </div>
     )

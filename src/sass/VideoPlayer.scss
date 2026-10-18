@@ -1,64 +1,42 @@
 @import "./variables.scss";
 
-
-
+// Ruhiger Gegenpol zur Platte: großes Bild, Titel daneben
 #video-player {
-  background: linear-gradient(160deg, $blue_3 0%, $blue_2 100%);
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  border-radius: $radius_md;
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.8);
-  position: relative;
-
-  .corner {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    border-radius: 2px;
-
-    &.top {
-      border-top: 2px solid $yellow_1;
-      top: 5px;
-    }
-
-    &.bottom {
-      border-bottom: 2px solid $yellow_1;
-      bottom: 5px;
-    }
-
-    &.left {
-      border-left: 2px solid $yellow_1;
-      left: 5px;
-    }
-
-    &.right {
-      border-right: 2px solid $yellow_1;
-      right: 5px;
-    }
-  }
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: end;
 
   video {
     width: 100%;
     display: block;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    background: $ink;
     aspect-ratio: 16 / 9;
+    border-radius: $radius_md;
+    background: #000;
+    box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.9);
   }
 
   .video-info {
-    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
     line-height: 1.6;
-    color: rgba($cream, 0.85);
-    padding: 0 6px 6px;
+    max-width: 38ch;
 
     h3 {
       font-family: $font_display;
       font-weight: 400;
-      font-size: 1.25rem;
+      font-size: clamp(1.2rem, 1rem + 0.7vw, 1.6rem);
+      line-height: 1.2;
       color: $cream;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.4rem;
     }
+  }
+}
+
+@media (max-width: 900px) {
+  #video-player {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
 }

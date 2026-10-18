@@ -1,298 +1,204 @@
-import ReactAudioPlayer from "react-audio-player";
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import { RxTrackPrevious, RxPlay, RxTrackNext, RxPause } from "react-icons/rx";
-import { PiMusicNotesLight } from "react-icons/pi";
 import { SlVolume1, SlVolume2, SlVolumeOff } from "react-icons/sl";
-import { LuListMusic } from "react-icons/lu";
-import { HiOutlineMusicalNote } from "react-icons/hi2";
 import "../../sass/AudioPlayer.scss";
 import { mediaUrl } from "../../config.js";
-const useMe = mediaUrl("/media/audio/use me.mp3");
-const superstition = mediaUrl("/media/audio/superstition.mp3");
-const aintNobody = mediaUrl("/media/audio/Aint nobody.mp3");
+
+// Hörproben (Dateien im Backend unter storage/audio) – alles Coversongs, daher mit Original
+const TRACKS = [
+  { file: "use me.mp3", title: "Use Me", original: "Bill Withers" },
+  { file: "superstition.mp3", title: "Superstition", original: "Stevie Wonder" },
+  { file: "Aint nobody.mp3", title: "Ain't Nobody", original: "Rufus & Chaka Khan" },
+].map((track) => ({ ...track, src: mediaUrl(`/media/audio/${track.file}`) }));
+
+const formatTime = (seconds) => {
+  if (!Number.isFinite(seconds)) return "0:00";
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${mins}:${secs}`;
+};
 
 function AudioPlayer() {
-  const [audioFiles, setAudioFiles] = useState([
-    useMe,
-    superstition,
-    aintNobody,
-  ]);
-
-  const [currAudioIndex, setCurrAudioIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
-  const timeBarRef = useRef(null);
-  const volumeBarRef = useRef(null);
-  const [duration, setDuration] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [isInit, setIsInit] = useState(true);
-  // const [volume, setVolume] = useState(0.5);
-  const [volume, setVolume] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.8);
+  const [isMuted, setIsMuted] = useState(false);
+  const [durations, setDurations] = useState({});
+  const [cover, setCover] = useState(null);
 
-  const [mouseXDurationBar, setMouseXDurationBar] = useState(0);
-  const [mouseXVolumeBar, setMouseXVolumeBar] = useState(0);
-  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const track = TRACKS[index];
 
-  const [isDraggingTime, setIsDraggingTime] = useState(false);
-  const [isDraggingVolume, setIsDraggingVolume] = useState(false);
+  // Cover der Plattenhülle: erstes Bild der Galerie (Bandfoto)
+  useEffect(() => {
+    axios.get("/api/public/gallery")
+      .then((res) => {
+        const first = res.data.data?.[0];
+        if (first?.images?.md) setCover(mediaUrl(`/media/images/${first.images.md}`));
+      })
+      .catch(() => {});
+  }, []);
+
+  // Längen aller Titel für die Trackliste vorab lesen (nur Metadaten)
+  useEffect(() => {
+    TRACKS.forEach((t) => {
+      const probe = new Audio();
+      probe.preload = "metadata";
+      probe.src = t.src;
+      probe.onloadedmetadata = () => setDurations((d) => ({ ...d, [t.file]: probe.duration }));
+    });
+  }, []);
 
   useEffect(() => {
-    const handleMouseMove = (evt) => {
-      if (isDraggingTime && timeBarRef.current) {
-        const elemDimensions = timeBarRef.current.getBoundingClientRect();
-        let clickedRatio = (evt.clientX - elemDimensions.x) / elemDimensions.width;
-        clickedRatio = Math.max(0, Math.min(1, clickedRatio));
-        if (audioRef.current) {
-          audioRef.current.currentTime = duration * clickedRatio;
-        }
-      }
-      if (isDraggingVolume && volumeBarRef.current) {
-        const elemDimensions = volumeBarRef.current.getBoundingClientRect();
-        let clickedRatio = (evt.clientX - elemDimensions.x) / elemDimensions.width;
-        clickedRatio = Math.max(0, Math.min(1, clickedRatio));
-        setVolume(clickedRatio);
-        if (audioRef.current) {
-          audioRef.current.volume = clickedRatio;
-        }
-      }
-    };
+    if (audioRef.current) audioRef.current.volume = volume;
+  }, [volume]);
 
-    const handleMouseUp = () => {
-      setIsDraggingTime(false);
-      setIsDraggingVolume(false);
-    };
-
-    if (isDraggingTime || isDraggingVolume) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-    }
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDraggingTime, isDraggingVolume, duration]);
-
-  const getSongTitle = (songPath) => {
-    const lastSlashIndex = songPath.lastIndexOf("/");
-    const lastDotIndex = songPath.lastIndexOf(".");
-    return songPath.slice(lastSlashIndex + 1, lastDotIndex);
-  };
-
-  const AUDIO_LIST = (audioFiles || []).map((file, index) => {
-    const songTitle = getSongTitle(file);
-    return (
-      <li
-        key={index}
-        onClick={() => setCurrAudioIndex(index)}
-        className={index === currAudioIndex ? "current" : ""}
-      >
-        {songTitle}
-      </li>
-    );
-  });
-
-  const changeAudio = (direction) => {
-    let newAudioIndex;
-    if (currAudioIndex + direction === -1) {
-      newAudioIndex = audioFiles.length - 1;
-    } else if (currAudioIndex + direction > audioFiles.length - 1) {
-      newAudioIndex = 0;
-    } else {
-      newAudioIndex = currAudioIndex + direction;
-    }
-    setCurrAudioIndex(newAudioIndex);
-  };
-
-  const setPlayMode = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const playAudio = () => {
-    if (audioRef.current) {
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.log("Audio play interrupted:", error);
-        });
-      }
-    }
-  };
-
+  // Bei Titelwechsel weiterspielen, wenn gerade gespielt wird
   useEffect(() => {
-    if (isPlaying) {
-      playAudio();
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) audio.play().catch(() => setIsPlaying(false));
+  }, [index]);
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) {
+      audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
     } else {
-      audioRef.current.pause();
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    if (isInit === true) {
-      audioRef.current.volume = volume;
-      setIsInit(false);
-    } else {
-      setIsPlaying(true);
-      playAudio();
-    }
-  }, [currAudioIndex]);
-
-  const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration);
+      audio.pause();
+      setIsPlaying(false);
     }
   };
 
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime);
+  const changeTrack = (direction) => setIndex((i) => (i + direction + TRACKS.length) % TRACKS.length);
+
+  const selectTrack = (i) => {
+    if (i === index) {
+      togglePlay();
+      return;
     }
-  };
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60)
-      .toString()
-      .padStart(2, "0");
-    return `${mins}:${secs}`;
-  };
-
-  const changePlayTime = (evt) => {
     setIsPlaying(true);
-    const elemDimensions = evt.currentTarget.getBoundingClientRect();
-    let clickedRatio =
-      (evt.clientX - elemDimensions.x) / elemDimensions.width;
-    clickedRatio = Math.max(0, Math.min(1, clickedRatio));
-    audioRef.current.currentTime = duration * clickedRatio;
+    setIndex(i);
   };
 
-  const handleVolumeChange = (evt) => {
-    // const newVolume = parseFloat(event.target.value);
-    const elemDimensions = evt.currentTarget.getBoundingClientRect();
-    let clickedRatio =
-      (evt.clientX - elemDimensions.x) / elemDimensions.width;
-    clickedRatio = Math.max(0, Math.min(1, clickedRatio));
-    setVolume(clickedRatio);
-    audioRef.current.volume = clickedRatio;
+  const seek = (event) => {
+    const time = Number(event.target.value);
+    if (audioRef.current) audioRef.current.currentTime = time;
+    setCurrentTime(time);
   };
 
-  const handleMouseMoveOnTimeBar = (evt) => {
-    const elemDimensions = evt.currentTarget.getBoundingClientRect();
-    const mouseX = evt.clientX - elemDimensions.left;
-    const percentage = formatTime((mouseX / elemDimensions.width) * duration);
-    setMouseXDurationBar(percentage);
-  };
-
-  const handleMouseMoveOnVolumeBar = (evt) => {
-    const elemDimensions = evt.currentTarget.getBoundingClientRect();
-    const mouseX = evt.clientX - elemDimensions.left;
-    const percentage = Math.trunc((mouseX / elemDimensions.width) * 100);
-    setMouseXVolumeBar(percentage);
-  };
-
-  const toggleAudioMuted = () => {
-    setIsAudioMuted(!isAudioMuted);
-  };
+  const VolumeIcon = isMuted || volume === 0 ? SlVolumeOff : volume > 0.5 ? SlVolume2 : SlVolume1;
+  const progress = duration ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div id="audio-player">
+    <div id="audio-player" className={isPlaying ? "is-playing" : ""}>
       <audio
-        muted={isAudioMuted}
         ref={audioRef}
-        src={audioFiles[currAudioIndex] || null}
-        onLoadedMetadata={handleLoadedMetadata}
-        onTimeUpdate={handleTimeUpdate}
-        onEnded={() => changeAudio(1)}
+        src={track.src}
+        muted={isMuted}
+        preload="metadata"
+        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+        onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+        onEnded={() => changeTrack(1)}
+        onPause={() => setIsPlaying(false)}
+        onPlay={() => setIsPlaying(true)}
       />
 
-      <div className="audio-player-header">
-
-        <div className="note-icon">
-          <span><HiOutlineMusicalNote /></span>
+      {/* Plattenhülle mit Vinyl: rutscht beim Abspielen heraus und dreht sich */}
+      <div className="record" aria-hidden="true">
+        <div className="vinyl">
+          <span className="vinyl-label">Wonders</span>
         </div>
-
-        <div className="song-info">
-          <div className="song-title">{getSongTitle(audioFiles[currAudioIndex])}</div>
-          <div className="song-interpret">Interpret-Info</div>
-        </div>
-
+        <div className="sleeve" style={cover ? { backgroundImage: `url("${cover}")` } : undefined}></div>
       </div>
 
-      <div className="duration-display">
+      <div className="deck">
+        <h3 className="track-title">{track.title}</h3>
+        <p className="track-meta">Jody Cooper &amp; the Wonders – Original: {track.original}</p>
 
-        <div
-          ref={timeBarRef}
-          className="time-bar"
-          title={mouseXDurationBar}
-          onMouseDown={(evt) => {
-            evt.preventDefault();
-            setIsDraggingTime(true);
-            changePlayTime(evt);
-          }}
-          onMouseMove={handleMouseMoveOnTimeBar}
-        >
-          <div
-            className="time-bar-inner"
-            style={{ width: (currentTime / duration) * 100 + "%" }}
-          ></div>
+        <div className="seek">
+          <input
+            type="range"
+            min="0"
+            max={duration || 0}
+            step="0.1"
+            value={currentTime}
+            onChange={seek}
+            aria-label="Position im Titel"
+            aria-valuetext={`${formatTime(currentTime)} von ${formatTime(duration)}`}
+            style={{ "--fill": `${progress}%` }}
+          />
+          <div className="seek-times">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
         </div>
 
-        <div className="current-time">
-          <span>{formatTime(currentTime)}</span>
-          <span>{formatTime(duration)}</span>
-        </div>
-      </div>
-
-      <div className="controls">
-        <div>
-          <div onClick={() => changeAudio(-1)}>
+        <div className="transport">
+          <button type="button" className="transport-btn" onClick={() => changeTrack(-1)} aria-label="Vorheriger Titel">
             <RxTrackPrevious />
-          </div>
-
-          <div onClick={() => setPlayMode()}>
+          </button>
+          <button
+            type="button"
+            className="transport-btn play"
+            onClick={togglePlay}
+            aria-label={isPlaying ? "Pause" : "Abspielen"}
+          >
             {isPlaying ? <RxPause /> : <RxPlay />}
-          </div>
-
-          <div onClick={() => changeAudio(1)}>
+          </button>
+          <button type="button" className="transport-btn" onClick={() => changeTrack(1)} aria-label="Nächster Titel">
             <RxTrackNext />
-          </div>
-        </div>
+          </button>
 
-        <div>
-          <div className="volume-control">
-            <div className="volume-toggle" onClick={() => toggleAudioMuted()}>
-              {isAudioMuted ? (
-                <SlVolumeOff />
-              ) : volume > 0.5 ? (
-                <SlVolume2 />
-              ) : volume > 0 ? (
-                <SlVolume1 />
-              ) : (
-                <SlVolumeOff />
-              )}
-            </div>
-
-            <div
-              ref={volumeBarRef}
-              className="volume-bar"
-              title={`${mouseXVolumeBar}%`}
-              onMouseDown={(evt) => {
-                evt.preventDefault();
-                setIsDraggingVolume(true);
-                handleVolumeChange(evt);
-              }}
-              onMouseMove={handleMouseMoveOnVolumeBar}
+          <div className="volume">
+            <button
+              type="button"
+              className="transport-btn small"
+              onClick={() => setIsMuted((m) => !m)}
+              aria-label={isMuted ? "Ton an" : "Stumm schalten"}
             >
-              <div
-                className="volume-bar-inner"
-                style={{ width: volume * 100 + "%" }}
-              ></div>
-            </div>
+              <VolumeIcon />
+            </button>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={isMuted ? 0 : volume}
+              onChange={(e) => {
+                setVolume(Number(e.target.value));
+                setIsMuted(false);
+              }}
+              aria-label="Lautstärke"
+              style={{ "--fill": `${(isMuted ? 0 : volume) * 100}%` }}
+            />
           </div>
         </div>
-      </div>
 
-      <ul className="songlist">{AUDIO_LIST}</ul>
+        <ol className="tracklist">
+          {TRACKS.map((t, i) => (
+            <li key={t.file}>
+              <button
+                type="button"
+                className={i === index ? "current" : ""}
+                onClick={() => selectTrack(i)}
+                aria-current={i === index ? "true" : undefined}
+              >
+                <span className="track-no">{i + 1}</span>
+                <span className="track-text">
+                  <span className="track-name">{t.title}</span>
+                  <span className="track-original">Original: {t.original}</span>
+                </span>
+                <span className="track-length">{durations[t.file] ? formatTime(durations[t.file]) : ""}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   );
 }

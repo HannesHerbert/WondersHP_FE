@@ -7,6 +7,7 @@ import useAuthStore from "../../store/useAuthStore.js";
 function EditImageModal({ image, onConfirm }) {
     const [title, setTitle] = useState(image.title || "");
     const [description, setDescription] = useState(image.description || "");
+    const [isPublic, setIsPublic] = useState(Boolean(image.isPublic));
     const [isSaving, setIsSaving] = useState(false);
     
     const setModalIsShown = useModalStore((state) => state.setModalIsShown);
@@ -18,7 +19,8 @@ function EditImageModal({ image, onConfirm }) {
         try {
             const response = await axios.put(`/api/admin/image/${image.id}`, {
                 title,
-                description
+                description,
+                isPublic
             }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -57,6 +59,17 @@ function EditImageModal({ image, onConfirm }) {
                 ></textarea>
             </div>
             
+            <div className="admin-form-group">
+                <label className="admin-label" style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
+                    <input
+                        type="checkbox"
+                        checked={isPublic}
+                        onChange={(e) => setIsPublic(e.target.checked)}
+                    />
+                    In Galerie anzeigen
+                </label>
+            </div>
+
             <div className="admin-modal-actions">
                 <button 
                     onClick={() => setModalIsShown(false)}

@@ -1,0 +1,54 @@
+@import "./variables.scss";
+
+// Upload-Dialog: Bildausschnitt + Seitenverhältnis
+.media-upload {
+  .crop-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .ratio-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(255, 255, 255, 0.7);
+
+    input {
+      width: 5.5rem;
+      text-align: center;
+    }
+
+    .ratio-reset {
+      padding: 0.45rem 0.9rem;
+    }
+  }
+
+  .crop-area {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.35);
+
+    .ReactCrop {
+      max-width: 100%;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      max-height: 55vh;
+    }
+  }
+
+  .admin-hint {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}

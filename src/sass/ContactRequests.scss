@@ -1,0 +1,219 @@
+@import "./variables.scss";
+
+// Dashboard → Anfragen: Liste der Kontaktanfragen, aufklappbar, mit Status
+#contact-requests {
+  color: #fff;
+
+  .requests-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .requests-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+
+    button {
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid $surface_border;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      font: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+
+      .count {
+        margin-left: 0.3rem;
+        font-variant-numeric: tabular-nums;
+        opacity: 0.6;
+      }
+
+      &:hover {
+        color: #fff;
+      }
+
+      &.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+    }
+  }
+
+  .requests-empty {
+    color: rgba(255, 255, 255, 0.6);
+    padding: 2rem 0;
+  }
+
+  .requests-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .request {
+    border-radius: $radius_md;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid $surface_border;
+    overflow: hidden;
+
+    // Ungelesene Anfragen sichtbar absetzen
+    &.status-new {
+      border-color: rgba($yellow_1, 0.45);
+
+      .request-name {
+        color: $cream;
+      }
+    }
+
+    &.open {
+      background: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  .request-summary {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 6.5rem minmax(10rem, 14rem) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid $yellow_1;
+      outline-offset: -2px;
+    }
+  }
+
+  .request-status {
+    justify-self: start;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .status-new .request-status {
+    background: $yellow_1;
+    color: $ink;
+  }
+
+  .status-answered .request-status {
+    background: rgba($blue_4, 0.35);
+    color: #fff;
+  }
+
+  .request-from {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .request-name {
+    font-weight: 600;
+  }
+
+  .request-email,
+  .request-date {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .request-email,
+  .request-preview {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .request-preview {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.9rem;
+  }
+
+  .request-date {
+    white-space: nowrap;
+  }
+
+  .request-body {
+    padding: 0 1rem 1rem;
+    border-top: 1px solid $surface_border;
+  }
+
+  .request-message {
+    margin: 1rem 0;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    max-width: 75ch;
+  }
+
+  .request-answered {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 1rem;
+  }
+
+  .request-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .admin-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      text-decoration: none;
+    }
+  }
+}
+
+// Zähler ungelesener Anfragen am Dashboard-Tab
+.dashboard-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  margin-left: 0.4rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  background: $yellow_1;
+  color: $ink;
+}
+
+@media (max-width: 900px) {
+  #contact-requests .request-summary {
+    grid-template-columns: 1fr auto;
+    gap: 0.4rem 1rem;
+
+    .request-status {
+      grid-column: 1;
+    }
+
+    .request-date {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .request-from,
+    .request-preview {
+      grid-column: 1 / -1;
+    }
+  }
+}

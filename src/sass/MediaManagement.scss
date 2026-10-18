@@ -243,3 +243,27 @@
     }
   }
 }
+
+
+// Markierung für Bilder, die in der öffentlichen Galerie erscheinen
+#media-management,
+.media-section {
+  .gallery-item {
+    position: relative;
+  }
+
+  .gallery-badge {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    z-index: 2;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: $ink;
+    background: $yellow_1;
+    pointer-events: none;
+  }
+}

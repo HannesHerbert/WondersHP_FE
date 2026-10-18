@@ -88,11 +88,14 @@
     }
   }
 
+  // Gleicher Hintergrund wie die anderen Textelemente (dunkles Glas)
   .hero-placeholder-text {
     margin-top: 3rem;
     text-align: left;
     color: white;
     max-width: 620px;
+    padding: clamp(1.25rem, 3vw, 2rem) clamp(1.5rem, 3.5vw, 2.5rem);
+    @include card;
 
     h2 {
       margin-bottom: 1rem;

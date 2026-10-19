@@ -215,42 +215,22 @@ export function buildFrame(shape, params) {
     return xs.length ? [Math.min(...xs), Math.max(...xs)] : null;
   };
 
-  /** Größtes Rechteck in der Form, das Bild und Name (plus Fuge) frei lässt */
-  const textRect = (obstacles) => {
-    // Die Form beginnt oben am Container und ist shape.height hoch
-    const topY = 0;
-    const bottomY = shape.height;
-    // Raster plus die Fugen an der Mittellinie, damit die Hälften exakt getroffen werden
-    const ys = [
-      ...Array.from({ length: 25 }, (_, i) => lerp(topY + pad, bottomY - pad, i / 24)),
-      center.y - half,
-      center.y + half,
-    ].sort((a, b) => a - b);
-    let best = { left: center.x, top: center.y, width: 0, height: 0 };
+  /**
+   * Freie waagerechte Abschnitte im Band y0–y1: Form minus belegte Bereiche (plus Fuge und Rand `margin`).
+   * Grundlage für den Beschreibungstext, der sich zeilenweise der Restfläche anpasst.
+   */
+  const freeIntervals = (y0, y1, obstacles, margin = 0) => {
+    const [l0, r0] = spanAt(y0 + 0.5);
+    const [l1, r1] = spanAt(y1 - 0.5);
+    let free = [[Math.max(l0, l1) + margin, Math.min(r0, r1) - margin]].filter(([l, r]) => r > l);
 
-    for (let i = 0; i < ys.length; i++) {
-      for (let j = i + 1; j < ys.length; j++) {
-        const [y0, y1] = [ys[i], ys[j]];
-        const [l0, r0] = spanAt(y0 + 0.5);
-        const [l1, r1] = spanAt(y1 - 0.5);
-        let free = [[Math.max(l0, l1), Math.min(r0, r1)]];
-
-        // Belegte Bereiche (plus Fuge) aus den freien Intervallen herausschneiden
-        for (const poly of obstacles) {
-          const ext = extentInBand(poly, y0, y1);
-          if (!ext) continue;
-          const [a, b] = [ext[0] - GRID_GAP, ext[1] + GRID_GAP];
-          free = free.flatMap(([l, r]) => [[l, Math.min(r, a)], [Math.max(l, b), r]]).filter(([l, r]) => r > l);
-        }
-
-        for (const [l, r] of free) {
-          if ((r - l) * (y1 - y0) > best.width * best.height) {
-            best = { left: l, top: y0, width: r - l, height: y1 - y0 };
-          }
-        }
-      }
+    for (const poly of obstacles) {
+      const ext = extentInBand(poly, y0, y1);
+      if (!ext) continue;
+      const [a, b] = [ext[0] - GRID_GAP - margin, ext[1] + GRID_GAP + margin];
+      free = free.flatMap(([l, r]) => [[l, Math.min(r, a)], [Math.max(l, b), r]]).filter(([l, r]) => r > l);
     }
-    return best;
+    return free;
   };
 
   const fullOutline = (inset) =>
@@ -271,11 +251,13 @@ export function buildFrame(shape, params) {
     tiles[id] = {
       clip: tileClip,
       imageClip: toClip(ownPoints),
+      imageBounds: boundingBox(ownPoints),
       image: own.image,
       overlayClip: toClip(sidePoints),
       name: side.name,
       nameSize: side.name.width,
-      description: e > 0 ? textRect([ownPoints, sidePoints]) : { left: 0, top: 0, width: 0, height: 0 },
+      // Bild- und Namensbereich: der Beschreibungstext fließt um beide herum
+      obstacles: [ownPoints, sidePoints],
     };
   }
 
@@ -284,5 +266,45 @@ export function buildFrame(shape, params) {
     frame: fullOutline(0),
     surface: fullOutline(GRID_BORDER),
     tiles,
+    freeIntervals,
+  };
+}
+
+// ─── Bildausschnitt (Dashboard) ─────────────────────────────────────────────
+
+/** Reihenfolge im Grid: Position 1, 2, 3, … im Uhrzeigersinn ab oben */
+export const sortByPosition = (members) =>
+  [...members].sort((a, b) => a.image_position - b.image_position || String(a.id).localeCompare(String(b.id), undefined, { numeric: true }));
+
+/**
+ * Transform für das Foto in seiner Bildbox: Bildpunkt (fx|fy in % der Box) rückt in die Boxmitte,
+ * gezoomt um z. Standard 50/50/1 ist exakt die ungeschnittene Ansicht.
+ */
+export function photoTransform(member) {
+  const fx = member?.image_focus_x ?? 50;
+  const fy = member?.image_focus_y ?? 50;
+  const z = member?.image_zoom ?? 1;
+  return {
+    transformOrigin: "0 0",
+    transform: `translate(50%, 50%) scale(${z}) translate(${-fx}%, ${-fy}%)`,
+  };
+}
+
+/**
+ * Erlaubter Bereich für den Fokuspunkt, damit das Foto das Dreieck immer ganz füllt.
+ * Gilt für jede Grid-Breite, weil die ganze Geometrie mit der Breite skaliert.
+ */
+export function focusRange(tile, zoom) {
+  const axis = (start, size, lo, hi) => {
+    const centre = start + size / 2;
+    const min = ((centre - lo) / (zoom * size)) * 100;
+    const max = (1 - (hi - centre) / (zoom * size)) * 100;
+    return min <= max ? [min, max] : [(min + max) / 2, (min + max) / 2];
+  };
+  const box = tile.image;
+  const t = tile.imageBounds;
+  return {
+    x: axis(box.left, box.width, t.left, t.left + t.width),
+    y: axis(box.top, box.height, t.top, t.top + t.height),
   };
 }

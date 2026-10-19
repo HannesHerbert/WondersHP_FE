@@ -95,44 +95,36 @@ $members_fade: 0.3s;
         }
       }
 
+      // Text fließt zeilenweise in der freien Restfläche: MemberDescription.jsx setzt jede Zeile einzeln
       .member-description {
-        box-sizing: border-box;
-        padding: 10px;
+        overflow: hidden;
         opacity: 0;
         pointer-events: none;
         font-size: clamp(0.95rem, 0.7rem + 0.6vw, 1.15rem);
-        line-height: 1.6;
+        line-height: 1.5;
 
-        .description-text {
-          height: 100%;
-          overflow-y: auto;
-          scrollbar-color: white black;
-          scrollbar-width: thin;
-          // Zeilenumbrüche aus dem Textfeld bleiben sichtbar, HTML wird trotzdem dargestellt
-          white-space: pre-line;
+        .desc-line,
+        .desc-measure {
+          position: absolute;
+          white-space: nowrap;
+        }
 
-          a {
-            color: $yellow_1;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-            text-decoration-thickness: 1px;
-            transition: color 0.2s ease;
+        .desc-measure {
+          left: 0;
+          top: 0;
+          visibility: hidden;
+        }
 
-            &:hover,
-            &:focus-visible {
-              color: $cream;
-            }
-          }
+        a {
+          color: $yellow_1;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-thickness: 1px;
+          transition: color 0.2s ease;
 
-          p {
-            margin: 0 0 0.6em;
-          }
-
-          ul,
-          ol {
-            margin: 0.3em 0 0.6em;
-            padding-left: 1.2em;
-            white-space: normal;
+          &:hover,
+          &:focus-visible {
+            color: $cream;
           }
         }
       }

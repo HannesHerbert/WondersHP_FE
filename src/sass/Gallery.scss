@@ -16,58 +16,85 @@
     margin-bottom: 2rem;
   }
 
+  // Versetztes Raster (Masonry): Spalten füllen sich von oben, jedes Bild im Originalformat
   .gallery-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: clamp(0.75rem, 2vw, 1.5rem);
+    $gap: clamp(0.5rem, 1.2vw, 0.9rem);
+    column-width: 230px;
+    column-gap: $gap;
 
     .gallery-image-wrapper {
       // Button-Reset (Kachel ist ein Button, damit sie auch per Tastatur öffnet)
+      position: relative;
+      display: block;
+      width: 100%;
+      margin: 0 0 $gap;
       padding: 0;
+      border: 0;
       font: inherit;
-      text-align: left;
       color: inherit;
-      @include card;
+      background: $surface;
       border-radius: $radius_md;
-      display: flex;
-      flex-direction: column;
-      cursor: zoom-in;
       overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      break-inside: avoid;
+      cursor: zoom-in;
+      box-shadow: 0 16px 30px -20px rgba(0, 0, 0, 0.9);
 
       >img {
-        width: 100%;
-        aspect-ratio: 4 / 3;
-        object-fit: cover;
         display: block;
-        transition: transform 0.5s ease;
+        width: 100%;
+        height: auto;
+        transition: transform 0.5s ease, filter 0.3s ease;
       }
 
+      // Titel nur beim Darüberfahren dezent im Bild
       .image-text {
-        padding: 0.8rem 1rem;
-        color: rgba(255, 255, 255, 0.85);
-        font-size: 0.9rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 1.6rem 0.8rem 0.6rem;
+        background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.75));
+        color: #fff;
+        font-size: 0.85rem;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        pointer-events: none;
       }
 
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 24px 40px -18px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba($yellow_1, 0.35);
-
+      &:hover,
+      &:focus-visible {
         >img {
-          transform: scale(1.05);
+          transform: scale(1.03);
+          filter: brightness(1.06);
         }
+
+        .image-text {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      &:focus-visible {
+        outline: 2px solid $yellow_1;
+        outline-offset: 2px;
       }
     }
   }
 }
 
 @media screen and (max-width: $bp_sm) {
+  // Handy: immer zwei Spalten
   #gallery .gallery-wrapper {
-    grid-template-columns: repeat(2, 1fr);
+    column-count: 2;
+    column-width: auto;
+  }
+}
 
-    .gallery-image-wrapper .image-text {
-      padding: 0.5rem 0.7rem;
-      font-size: 0.8rem;
-    }
+@media (hover: none) {
+  // Touch: kein Hover → Titel nicht verstecken, aber auch nicht über das Bild legen
+  #gallery .gallery-wrapper .gallery-image-wrapper .image-text {
+    display: none;
   }
 }

@@ -2,8 +2,9 @@ import "../../sass/Members.scss";
 import { useState, useEffect, useRef, useLayoutEffect, useMemo } from "react";
 import axios from "axios";
 import Image from "../Snippets/Image";
-import { createShape, blendShapes, targetParams, lerpParams, buildFrame } from "./membersLayout";
+import { createShape, blendShapes, targetParams, lerpParams, buildFrame, sortByPosition, photoTransform } from "./membersLayout";
 import { sanitizeRichText } from "../../services/richText";
+import MemberDescription from "./MemberDescription";
 
 // Overlay-Farbe (Index in $colors) je Platz im Uhrzeigersinn: die beiden ersten und letzten Plätze
 // behalten die Farben der früheren 2x2-Ecken, alle dazwischen wechseln durch die übrigen Farben
@@ -17,6 +18,8 @@ function colorAt(index, count) {
 }
 
 const MOVE_MS = 550;
+// Abstand des Beschreibungstextes zu Rand, Bild und Name (wächst mit der Grid-Breite)
+const textMargin = (gridWidth) => Math.min(10, Math.max(4, gridWidth * 0.02));
 // Beim Zuklappen erst Text ausblenden, dann zusammenfalten (wie im alten 2x2-Grid)
 const COLLAPSE_DELAY_MS = 250;
 const ease = (t) => 1 - Math.pow(1 - t, 3);
@@ -65,10 +68,7 @@ function Members() {
   }, []);
 
   // Alle Mitglieder im Uhrzeigersinn ab oben, Reihenfolge aus dem Dashboard (Position 1, 2, 3, …)
-  const visible = useMemo(
-    () => [...membersArr].sort((a, b) => a.image_position - b.image_position || a.id - b.id),
-    [membersArr]
-  );
+  const visible = useMemo(() => sortByPosition(membersArr), [membersArr]);
 
   // Beschreibungen dürfen HTML (v.a. Links) enthalten – einmal bereinigen, nicht in jedem Animations-Frame
   const descriptionsHtml = useMemo(
@@ -121,6 +121,19 @@ function Members() {
     return () => cancelAnimationFrame(frame);
   }, [targetKey]);
 
+  // Endzustand der Form: daraus die freie Fläche für den Text des geöffneten Mitglieds
+  const targetFrame = useMemo(() => {
+    if (!gridWidth || !membersArr.length) return null;
+    return buildFrame(createShape(visible.length, gridWidth), targetParams(membersArr, visible, expandedId));
+  }, [targetKey]);
+
+  const descriptionBands = useMemo(() => {
+    const tile = expandedId != null && targetFrame?.tiles[expandedId];
+    if (!tile) return null;
+    const margin = textMargin(gridWidth);
+    return (y0, y1) => targetFrame.freeIntervals(y0, y1, tile.obstacles, margin);
+  }, [targetFrame, expandedId]);
+
   const longestName = longestNamePart(membersArr);
   const frame = stateRef.current && buildFrame(stateRef.current.shape, stateRef.current.params);
 
@@ -156,7 +169,9 @@ function Members() {
             <Image imageObject={{
               images: member.images,
               altText: `${member.firstname} ${member.lastname}`.trim(),
-              className: "member-img-element"
+              className: "member-img-element",
+              // Im Dashboard gewählter Ausschnitt
+              style: photoTransform(member),
             }} />
           </div>
         </div>
@@ -175,9 +190,12 @@ function Members() {
           <span className="member-firstname">{member.firstname}</span>
           {member.lastname && <span className="member-lastname">{member.lastname}</span>}
         </div>
-        <div className="member-description" style={px(parts.description)}>
-          <div className="description-text" dangerouslySetInnerHTML={{ __html: descriptionsHtml[member.id] }}></div>
-        </div>
+        <MemberDescription
+          html={descriptionsHtml[member.id]}
+          width={gridWidth}
+          height={targetFrame?.height}
+          bandAt={isExpanded ? descriptionBands : null}
+        />
       </div>
     );
   });

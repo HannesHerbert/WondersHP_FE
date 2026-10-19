@@ -5,7 +5,7 @@ import { mediaUrl } from "../../config.js";
 
 function Image({ imageObject }) {
 
-  const { images, altText, className } = imageObject;
+  const { images, altText, className, style } = imageObject;
   const baseUrl = mediaUrl(`/media/images/`);
 
   if (!images || !images.sm || !images.md || !images.lg) {
@@ -34,6 +34,7 @@ function Image({ imageObject }) {
         sizes="(max-width: 450px) 35vw, (max-width: 760px) 36vw, 800px"
         alt={altText}
         className={className}
+        style={style}
         loading="lazy"
       />
     </picture>

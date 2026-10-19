@@ -1,6 +1,7 @@
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaCropAlt } from "react-icons/fa";
 import useModalStore from "../../store/useModalStore.js";
 import ImageSelect from "../ModalContent/ImageSelect.jsx";
+import MemberCropEditor from "./MemberCropEditor.jsx";
 import useAdminSettingsStore from "../../store/useAdminSettingsStore.js";
 import Image from "../Snippets/Image.jsx";
 import { useRef } from "react";
@@ -49,6 +50,16 @@ function MemberRow({ member }) {
         }}
         onCancel={() => setModalIsShown(false)}
       />
+    );
+    setModalIsShown(true);
+  }
+
+
+  // Bildausschnitt im Dreieck des Mitglieder-Grids wählen
+  function toggleCropModal() {
+    setModalContent(
+      `Bildausschnitt: ${`${member.firstname} ${member.lastname}`.trim()}`,
+      <MemberCropEditor memberId={member.id} onClose={() => setModalIsShown(false)} />
     );
     setModalIsShown(true);
   }
@@ -113,6 +124,12 @@ function MemberRow({ member }) {
           altText: `${member.firstname} ${member.lastname}`,
           className: "member-img-element"
         }} />
+
+        {member.images?.md && (
+          <span className="crop-btn" title="Bildausschnitt im Grid wählen" onClick={toggleCropModal}>
+            <FaCropAlt />
+          </span>
+        )}
 
         <span title="Bild ändern" onClick={toggleImageSelectModal}>
           <FaEdit />

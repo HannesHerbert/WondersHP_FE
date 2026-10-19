@@ -64,6 +64,11 @@
                     color: $ink;
                 }
             }
+
+            >span.crop-btn {
+                right: auto;
+                left: 0.5rem;
+            }
         }
 
         .member-informations {

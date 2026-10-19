@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useGalleryStore from "../../store/useGalleryStore.js";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { mediaUrl } from "../../config.js";
 
-/** Großansicht im Modal: größte Bildvariante, blättern per Pfeil (auch Tastatur ← →) */
+/** Großansicht im Modal: größte Bildvariante, blättern per Pfeil, Tastatur (← →) oder Wischen */
 function GalleryElementViewer({ currIdx }) {
 
     const galleryElements = useGalleryStore((state) => state.galleryElements);
@@ -22,6 +22,21 @@ function GalleryElementViewer({ currIdx }) {
         return () => window.removeEventListener("keydown", onKey);
     }, [count]);
 
+    // Wischen auf dem Handy: waagerechte Bewegung ab 50px blättert
+    const touchStart = useRef(null);
+    const onTouchStart = (event) => {
+        const t = event.touches[0];
+        touchStart.current = { x: t.clientX, y: t.clientY };
+    };
+    const onTouchEnd = (event) => {
+        if (!touchStart.current) return;
+        const t = event.changedTouches[0];
+        const dx = t.clientX - touchStart.current.x;
+        const dy = t.clientY - touchStart.current.y;
+        touchStart.current = null;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) (dx < 0 ? showNext : showPrevious)();
+    };
+
     const element = galleryElements[currElemIdx];
     if (!element) return null;
 
@@ -29,14 +44,14 @@ function GalleryElementViewer({ currIdx }) {
     const { images, title } = element;
 
     return (
-        <div id="gallery-viewer">
+        <div id="gallery-viewer" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
 
             <button type="button" className="previous-image" onClick={showPrevious} aria-label="Vorheriges Bild"><FaArrowLeft /></button>
 
             <img
                 src={baseUrl + images.lg}
                 srcSet={`${baseUrl + images.md} 800w, ${baseUrl + images.lg} 1920w`}
-                sizes="90vw"
+                sizes="100vw"
                 alt={title}
             />
             <div className="image-text">

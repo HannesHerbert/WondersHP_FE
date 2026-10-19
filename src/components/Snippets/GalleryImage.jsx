@@ -17,16 +17,15 @@ function GalleryImage({ imageIndex, image }) {
 
   return (
     <button type="button" className="gallery-image-wrapper" onClick={toggleImageViewModal} aria-label={`${title} vergrößern`}>
+      {/* Originalformat: Höhe ergibt sich aus dem Bild, die Spalten ordnen sich versetzt an */}
       <img
         src={baseUrl + images.md}
         srcSet={`${baseUrl + images.sm} 300w, ${baseUrl + images.md} 800w`}
-        sizes="(max-width: 480px) 50vw, 300px"
+        sizes="(max-width: 480px) 50vw, (max-width: 900px) 33vw, 360px"
         alt={title}
         loading="lazy"
       />
-      <div className="image-text">
-        <p>{title}</p>
-      </div>
+      {title && <span className="image-text">{title}</span>}
     </button>
   );
 }

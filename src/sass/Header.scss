@@ -40,11 +40,6 @@
     flex-shrink: 1;
     min-width: 0;
     text-decoration: none;
-    transition: transform 0.3s ease;
-
-    &:hover {
-      transform: scale(1.03) rotate(-1deg);
-    }
   }
 }
 

@@ -9,11 +9,6 @@ $slide_ease: cubic-bezier(0.65, 0, 0.35, 1);
   width: min(100%, 900px);
   margin: 0 0 3rem auto;
 
-  // Platz für die Pfeile neben dem Video
-  &.has-more {
-    padding: 0 3.25rem;
-  }
-
   .gv-stage {
     position: relative;
     display: grid;
@@ -62,9 +57,17 @@ $slide_ease: cubic-bezier(0.65, 0, 0.35, 1);
     &.in.from-left { animation: gv-in-left $slide_ms $slide_ease both; }
   }
 
+  // Navigation unter dem Video: Pfeil · Punkte · Pfeil
+  .gv-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
   .gv-arrow {
-    position: absolute;
-    top: calc(50% - 2.5rem);
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -77,9 +80,6 @@ $slide_ease: cubic-bezier(0.65, 0, 0.35, 1);
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-
-    &.prev { left: 0; }
-    &.next { right: 0; }
 
     &:hover,
     &:focus-visible {
@@ -94,12 +94,48 @@ $slide_ease: cubic-bezier(0.65, 0, 0.35, 1);
     }
   }
 
-  .gv-counter {
-    margin-top: 0.5rem;
-    text-align: right;
-    font-size: 0.8rem;
-    font-variant-numeric: tabular-nums;
-    color: rgba(255, 255, 255, 0.65);
+  .gv-dots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  // Punkt mit großer Klickfläche; der sichtbare Punkt ist das ::before
+  .gv-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.35);
+      transition: width 0.3s ease, background-color 0.2s ease;
+    }
+
+    &:hover::before {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    &.active::before {
+      width: 20px;
+      background: $yellow_1;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $yellow_1;
+      outline-offset: 1px;
+      border-radius: 999px;
+    }
   }
 }
 
@@ -124,23 +160,9 @@ $slide_ease: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 @media (max-width: $bp_sm) {
-  #gallery-videos.has-more {
-    padding: 0;
-
-    .gv-arrow {
-      top: auto;
-      bottom: -0.25rem;
-      width: 38px;
-      height: 38px;
-
-      &.prev { left: 0; }
-      &.next { left: 46px; right: auto; }
-    }
-
-    .gv-counter {
-      min-height: 38px;
-      line-height: 38px;
-    }
+  #gallery-videos .gv-arrow {
+    width: 38px;
+    height: 38px;
   }
 }
 

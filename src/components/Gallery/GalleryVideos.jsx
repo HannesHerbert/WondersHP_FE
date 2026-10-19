@@ -6,7 +6,7 @@ import "../../sass/GalleryVideos.scss";
 
 const SLIDE_MS = 450; // muss zu $slide_ms in GalleryVideos.scss passen
 
-// Galerie oben: alle freigegebenen Videos (Dashboard → Medien). Bei mehreren Pfeile zum Blättern;
+// Galerie oben: alle freigegebenen Videos (Dashboard → Medien). Bei mehreren Pfeile und Punkte zum Blättern;
 // altes Video gleitet in Pfeilrichtung hinaus, das neue mit derselben Bewegung herein.
 function GalleryVideos() {
   const [videos, setVideos] = useState([]);
@@ -23,16 +23,19 @@ function GalleryVideos() {
     return () => clearTimeout(timer.current);
   }, []);
 
-  function go(step) {
-    if (videos.length < 2) return;
+  // Zu einem Video wechseln; direction bestimmt die Gleitrichtung (1 = nach links hinaus)
+  function goTo(target, step) {
+    if (videos.length < 2 || target === index) return;
     // Laufendes Video anhalten, bevor es hinausgleitet
     stageRef.current?.querySelector(".gv-slide.current video")?.pause();
     clearTimeout(timer.current);
     setLeaving({ index, direction: step });
     setDirection(step);
-    setIndex((i) => (i + step + videos.length) % videos.length);
+    setIndex(target);
     timer.current = setTimeout(() => setLeaving(null), SLIDE_MS);
   }
+
+  const go = (step) => goTo((index + step + videos.length) % videos.length, step);
 
   if (videos.length === 0) return null;
 
@@ -60,16 +63,28 @@ function GalleryVideos() {
         {renderSlide(index, `current${leaving ? ` in ${direction > 0 ? "from-right" : "from-left"}` : ""}`)}
       </div>
 
+      {/* Unter dem Video: Pfeile mit einem Punkt je Video dazwischen */}
       {hasMore && (
-        <>
+        <div className="gv-nav">
           <button type="button" className="gv-arrow prev" onClick={() => go(-1)} aria-label="Vorheriges Video">
             <FaChevronLeft aria-hidden="true" />
           </button>
+          <div className="gv-dots" role="group" aria-label="Video wählen">
+            {videos.map((video, i) => (
+              <button
+                key={video.id}
+                type="button"
+                className={`gv-dot${i === index ? " active" : ""}`}
+                onClick={() => goTo(i, i > index ? 1 : -1)}
+                aria-label={`Video ${i + 1}: ${video.title}`}
+                aria-current={i === index || undefined}
+              />
+            ))}
+          </div>
           <button type="button" className="gv-arrow next" onClick={() => go(1)} aria-label="Nächstes Video">
             <FaChevronRight aria-hidden="true" />
           </button>
-          <p className="gv-counter">Video {index + 1} von {videos.length}</p>
-        </>
+        </div>
       )}
     </div>
   );

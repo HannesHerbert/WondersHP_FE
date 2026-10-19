@@ -46,19 +46,22 @@ function GalleryElementViewer({ currIdx }) {
     return (
         <div id="gallery-viewer" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
 
-            <button type="button" className="previous-image" onClick={showPrevious} aria-label="Vorheriges Bild"><FaArrowLeft /></button>
-
             <img
                 src={baseUrl + images.lg}
                 srcSet={`${baseUrl + images.md} 800w, ${baseUrl + images.lg} 1920w`}
                 sizes="100vw"
                 alt={title}
             />
-            <div className="image-text">
-                <p>{title}</p>
-            </div>
 
-            <button type="button" className="next-image" onClick={showNext} aria-label="Nächstes Bild"><FaArrowRight /></button>
+            {/* Navigation unter dem Bild: zurück · Titel und Position · weiter */}
+            <div className="viewer-nav">
+                <button type="button" className="previous-image" onClick={showPrevious} aria-label="Vorheriges Bild"><FaArrowLeft /></button>
+                <div className="image-text">
+                    {title && <p>{title}</p>}
+                    {count > 1 && <span className="image-count">{currElemIdx + 1} / {count}</span>}
+                </div>
+                <button type="button" className="next-image" onClick={showNext} aria-label="Nächstes Bild"><FaArrowRight /></button>
+            </div>
 
         </div>
     )

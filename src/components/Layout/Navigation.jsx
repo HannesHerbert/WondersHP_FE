@@ -6,7 +6,7 @@ import useAuthStore from "../../store/useAuthStore.js";
 
 const NAV_ITEMS = [
   { path: "/", label: "Home" },
-  { path: "/gallery", label: "Gallerie" },
+  { path: "/gallery", label: "Galerie" },
   { path: "/repertoire", label: "Repertoire" },
   { path: "/contact", label: "Kontakt" },
   // Nur mit gültigem Login sichtbar

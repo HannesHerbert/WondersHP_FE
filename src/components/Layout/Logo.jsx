@@ -23,6 +23,9 @@ const R_OUTER = 74;
 const STRIPE_W = 6;
 const STRIPE_END = 548;
 
+// Breite Desktop-Variante: Streifen um WIDE_SHIFT länger, "Jody Cooper & the" steht links neben "WONDERS"
+const WIDE_SHIFT = 316;
+
 function Sparkle({ x, y, size, delay }) {
   const s = size;
   return (
@@ -35,15 +38,21 @@ function Sparkle({ x, y, size, delay }) {
   );
 }
 
-function Logo() {
+function Logo({ variant = "stacked" }) {
+  const wide = variant === "wide";
+  const shift = wide ? WIDE_SHIFT : 0;
+  const width = 560 + shift;
+  // Schreibschrift: oben über WONDERS (Standard) oder auf Höhe von WONDERS (breit)
+  const script = wide ? { x: 170, y: 116 } : { x: 168, y: 46 };
+
   const uid = useId().replace(/:/g, "");
   const ballGrad = `ball-grad-${uid}`;
   const ballClip = `ball-clip-${uid}`;
 
   return (
     <svg
-      className="wonders-logo"
-      viewBox="0 0 560 150"
+      className={`wonders-logo${wide ? " wonders-logo--wide" : ""}`}
+      viewBox={wide ? `0 14 ${width} 136` : "0 0 560 150"}
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Jody Cooper & the Wonders"
@@ -55,7 +64,7 @@ function Logo() {
           <stop offset="100%" stopColor="#4a4a52" />
         </radialGradient>
         <clipPath id={ballClip}>
-          <rect x="0" y="0" width="560" height={BASE_Y} />
+          <rect x="0" y="0" width={width} height={BASE_Y} />
         </clipPath>
       </defs>
 
@@ -63,7 +72,7 @@ function Logo() {
       <g fill="none" strokeWidth={STRIPE_W} strokeLinecap="round">
         {STRIPES.map((color, i) => {
           const r = R_OUTER - i * STRIPE_W;
-          const end = STRIPE_END - i * 9;
+          const end = STRIPE_END + shift - i * 9;
           return (
             <path
               key={color}
@@ -90,29 +99,29 @@ function Logo() {
       {/* "Jody Cooper & the" – Schreibschrift */}
       <text
         className="logo-script"
-        x="168"
-        y="46"
+        x={script.x}
+        y={script.y}
         fontSize="34"
         fill={STRIPES[3]}
         stroke={INK}
         strokeWidth="7"
         strokeLinejoin="round"
         paintOrder="stroke"
-        transform="rotate(-4 168 46)"
+        transform={`rotate(-4 ${script.x} ${script.y})`}
       >
         Jody Cooper &amp; the
       </text>
 
       {/* "WONDERS" – 70er Blockschrift mit Schicht-Schatten */}
-      <g className="logo-block" fontSize="66" letterSpacing="2" strokeLinejoin="round">
+      <g className="logo-block" transform={`translate(${shift} 0)`} fontSize="66" letterSpacing="2" strokeLinejoin="round">
         <text x="166" y="128" fill={INK} stroke={INK} strokeWidth="12">WONDERS</text>
         <text x="163" y="125" fill={STRIPES[1]} stroke={STRIPES[1]} strokeWidth="5">WONDERS</text>
         <text x="160" y="122" fill={STRIPES[2]} stroke={STRIPES[2]} strokeWidth="5">WONDERS</text>
         <text x="157" y="119" fill={CREAM} stroke={INK} strokeWidth="2.5" paintOrder="stroke">WONDERS</text>
       </g>
 
-      <Sparkle x={536} y={28} size={11} delay={0} />
-      <Sparkle x={508} y={52} size={6} delay={0.8} />
+      <Sparkle x={536 + shift} y={28} size={11} delay={0} />
+      <Sparkle x={508 + shift} y={52} size={6} delay={0.8} />
       <Sparkle x={30} y={52} size={8} delay={1.6} />
     </svg>
   );

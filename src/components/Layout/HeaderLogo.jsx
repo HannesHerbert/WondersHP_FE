@@ -18,7 +18,13 @@ function HeaderLogo() {
   }, []);
 
   if (logo === undefined) return <span className="header-logo-placeholder" aria-hidden="true" />;
-  if (!logo) return <Logo />;
+  // Standard-Logo: breite Variante füllt den Header auf dem Desktop, sonst die kompakte
+  if (!logo) return (
+    <>
+      <span className="header-logo-default header-logo-stacked"><Logo /></span>
+      <span className="header-logo-default header-logo-wide"><Logo variant="wide" /></span>
+    </>
+  );
 
   const base = mediaUrl("/media/images/");
   return (

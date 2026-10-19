@@ -11,7 +11,6 @@ function MemberRow({ member }) {
   const setModalIsShown = useModalStore((state) => state.setModalIsShown);
   const setMembersArrStore = useAdminSettingsStore((state) => state.setMembersArray);
   const membersArrStore = useAdminSettingsStore((state) => state.membersArray);
-  const imagePositionVals = useAdminSettingsStore((state) => state.imagePositionVals);
 
   const firstnameRef = useRef();
   const lastnameRef = useRef();
@@ -19,11 +18,11 @@ function MemberRow({ member }) {
   const imagePositionRef = useRef();
   const descriptionRef = useRef();
 
-  const POSITION_OPTS = (imagePositionVals || []).map((option, index) => {
-    return (
-      <option key={option.class} value={option.value}>{option.label}</option>
-    )
-  });
+  // Position im Grid: im Uhrzeigersinn ab oben, 1 bis Anzahl der Mitglieder
+  const positionCount = Math.max((membersArrStore || []).length, member.image_position || 1);
+  const POSITION_OPTS = Array.from({ length: positionCount }, (_, i) => (
+    <option key={i + 1} value={i + 1}>{i + 1}{i === 0 ? " (oben, dann im Uhrzeigersinn)" : ""}</option>
+  ));
 
 
   function updateMemberImage(memberId, imageId) {
@@ -91,7 +90,7 @@ function MemberRow({ member }) {
           image_position: newImagePosition,
           description: descriptionRef.current.value || ""
         };
-      } else if (mem.image_position === newImagePosition && Boolean(mem.isGuest) === Boolean(member.isGuest)) {
+      } else if (mem.image_position === newImagePosition) {
         // Member mit Ziel-Position bekommt alte Position
         return {
           ...mem,
@@ -105,23 +104,8 @@ function MemberRow({ member }) {
   }
 
 
-  // Wechsel zwischen Stammbesetzung und Special Guest: nächste freie Position der Zielgruppe
-  function toggleGuest(event) {
-    const isGuest = event.target.checked;
-    const group = (membersArrStore || []).filter((mem) => mem.id !== member.id && Boolean(mem.isGuest) === isGuest);
-    const taken = group.map((mem) => mem.image_position);
-
-    let image_position = 1;
-    while (taken.includes(image_position) && (isGuest || image_position < 4)) image_position++;
-
-    setMembersArrStore((membersArrStore || []).map((mem) =>
-      mem.id === member.id ? { ...mem, isGuest, image_position } : mem
-    ));
-  }
-
-
   return (
-    <div className={`member-row${member.isGuest ? " is-guest" : ""}`}>
+    <div className="member-row">
       <div className="member-image">
 
         <Image imageObject={{
@@ -175,42 +159,16 @@ function MemberRow({ member }) {
             />
           </div>
 
-          {member.isGuest ? (
-            <div className="admin-form-group">
-              <label className="admin-label" htmlFor={`guest-order-${member.id}`}>Reihenfolge (Gast):</label>
-              <input type="number"
-                min="1"
-                className="admin-input"
-                id={`guest-order-${member.id}`}
-                name="image-position"
-                ref={imagePositionRef}
-                onChange={updateMembersStore}
-                value={member.image_position}
-              />
-            </div>
-          ) : (
-            <div className="admin-form-group">
-              <label className="admin-label" htmlFor="image-position-input">Bildposition:</label>
-              <select id="image-position-input"
-                className="admin-select"
-                name="image-position"
-                ref={imagePositionRef}
-                onChange={updateMembersStore}
-                value={member.image_position}>
-                {POSITION_OPTS}
-              </select>
-            </div>
-          )}
-
-          <div className="admin-form-group guest-toggle">
-            <label className="admin-label" htmlFor={`guest-${member.id}`}>
-              <input type="checkbox"
-                id={`guest-${member.id}`}
-                checked={Boolean(member.isGuest)}
-                onChange={toggleGuest}
-              />
-              Special Guest (programmabhängig)
-            </label>
+          <div className="admin-form-group">
+            <label className="admin-label" htmlFor={`image-position-${member.id}`}>Position im Grid:</label>
+            <select id={`image-position-${member.id}`}
+              className="admin-select"
+              name="image-position"
+              ref={imagePositionRef}
+              onChange={updateMembersStore}
+              value={member.image_position}>
+              {POSITION_OPTS}
+            </select>
           </div>
 
         </div>

@@ -56,6 +56,26 @@
   object-fit: contain;
 }
 
+// Standard-Logo: kompakt bis $bp_lg, darüber die breite Variante
+#header .header-logo-default {
+  display: block;
+  height: 100%;
+}
+
+#header .header-logo-wide {
+  display: none;
+}
+
+@media (min-width: $bp_lg + 1) {
+  #header .header-logo-stacked {
+    display: none;
+  }
+
+  #header .header-logo-wide {
+    display: block;
+  }
+}
+
 #header .header-logo-placeholder {
   display: block;
   width: 200px;

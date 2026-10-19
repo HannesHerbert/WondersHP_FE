@@ -2,12 +2,19 @@ import "../../sass/Members.scss";
 import { useState, useEffect, useRef, useLayoutEffect, useMemo } from "react";
 import axios from "axios";
 import Image from "../Snippets/Image";
-import { createShape, blendShapes, targetParams, lerpParams, buildFrame, orderClockwise } from "./membersLayout";
+import { createShape, blendShapes, targetParams, lerpParams, buildFrame } from "./membersLayout";
 import { sanitizeRichText } from "../../services/richText";
 
-// Overlay-Farbe (Index in $colors) je Ecke der Stammbesetzung; Gäste nutzen die übrigen Farben
-const POSITION_COLORS = { 1: 1, 2: 5, 3: 6, 4: 7 };
-const GUEST_COLORS = [2, 3, 4, 8];
+// Overlay-Farbe (Index in $colors) je Platz im Uhrzeigersinn: die beiden ersten und letzten Plätze
+// behalten die Farben der früheren 2x2-Ecken, alle dazwischen wechseln durch die übrigen Farben
+const MIDDLE_COLORS = [2, 3, 4, 8];
+function colorAt(index, count) {
+  if (index === count - 1 && count > 1) return 1;
+  if (index === count - 2 && count >= 4) return 6;
+  if (index === 0) return 5;
+  if (index === 1) return 7;
+  return MIDDLE_COLORS[(index - 2) % MIDDLE_COLORS.length];
+}
 
 const MOVE_MS = 550;
 // Beim Zuklappen erst Text ausblenden, dann zusammenfalten (wie im alten 2x2-Grid)
@@ -26,7 +33,6 @@ function Members() {
   const [expandedId, setExpandedId] = useState(null);
   // Zuletzt geöffnete Kachel bleibt beim Zuklappen über den anderen
   const [lastExpandedId, setLastExpandedId] = useState(null);
-  const [guestsShown, setGuestsShown] = useState(false);
   const [gridWidth, setGridWidth] = useState(0);
   const gridRef = useRef(null);
 
@@ -58,17 +64,11 @@ function Members() {
     return () => observer.disconnect();
   }, []);
 
-  const core = membersArr.filter((m) => !m.isGuest);
-  const guests = membersArr
-    .filter((m) => m.isGuest)
-    .sort((a, b) => a.image_position - b.image_position);
-  const visible = orderClockwise(core, guestsShown ? guests : []);
-
-  const toggleGuests = () => {
-    // Geöffnete Gast-Kachel vorher schließen, sonst bliebe sie ohne Platz offen
-    if (guestsShown && guests.some((g) => g.id === expandedId)) setExpandedId(null);
-    setGuestsShown((shown) => !shown);
-  };
+  // Alle Mitglieder im Uhrzeigersinn ab oben, Reihenfolge aus dem Dashboard (Position 1, 2, 3, …)
+  const visible = useMemo(
+    () => [...membersArr].sort((a, b) => a.image_position - b.image_position || a.id - b.id),
+    [membersArr]
+  );
 
   // Beschreibungen dürfen HTML (v.a. Links) enthalten – einmal bereinigen, nicht in jedem Animations-Frame
   const descriptionsHtml = useMemo(
@@ -129,16 +129,12 @@ function Members() {
     if (!parts) return null;
 
     const isExpanded = member.id === expandedId;
-    const isHidden = !visible.includes(member);
-    const color = member.isGuest
-      ? GUEST_COLORS[guests.indexOf(member) % GUEST_COLORS.length]
-      : POSITION_COLORS[member.image_position] || 1;
+    const color = colorAt(visible.indexOf(member), visible.length);
 
     const classes = [
       "member",
       `color-${color}`,
       isExpanded && "expanded",
-      isHidden && "hidden-guest",
       member.id === lastExpandedId && "last-expanded",
     ].filter(Boolean).join(" ");
 
@@ -149,10 +145,9 @@ function Members() {
         style={{ clipPath: parts.clip }}
         onClick={(event) => {
           // Klick auf einen Link in der Beschreibung soll die Ansicht nicht zuklappen
-          if (isHidden || event.target.closest("a")) return;
+          if (event.target.closest("a")) return;
           toggleDescription(member.id);
         }}
-        aria-hidden={isHidden || undefined}
       >
 
         {/* Bild bleibt immer im eigenen Ausschnitt (Dreieck bzw. Viertel) */}
@@ -204,17 +199,6 @@ function Members() {
         )}
       </div>
 
-      {guests.length > 0 && (
-        <button
-          type="button"
-          className={`members-cta${guestsShown ? " open" : ""}`}
-          onClick={toggleGuests}
-          aria-expanded={guestsShown}
-        >
-          <span>{guestsShown ? "Special Guests ausblenden" : "Special Guests anzeigen"}</span>
-          <span className="members-cta-icon" aria-hidden="true">+</span>
-        </button>
-      )}
     </section>
   );
 }

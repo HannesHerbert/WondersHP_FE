@@ -11,7 +11,7 @@ import FooterContentManagement from "./FooterContentManagement";
 const SECTIONS = [
   { key: "header", label: "Header", hint: "Logo und Social-Media-Links", Component: HeaderContentManagement },
   { key: "hero", label: "Herobereich", hint: "Herobild, Überschrift und Text", Component: HeroManagement },
-  { key: "members", label: "Mitglieder", hint: "Bandmitglieder und Special Guests", Component: MembersManagement },
+  { key: "members", label: "Mitglieder", hint: "Bandmitglieder und Gäste im Grid", Component: MembersManagement },
   { key: "media", label: "Medien", hint: "Plattencover, Demotitel und Video", Component: MediaContentManagement },
   { key: "events", label: "Spieltermine", hint: "Termine anlegen und bearbeiten", Component: EventManagement },
   { key: "booking", label: "Buchungsteaser", hint: "Überschrift, Bild und Zoompunkt", Component: BookingTeaserManagement },

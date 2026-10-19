@@ -9,17 +9,6 @@ const TAU = Math.PI * 2;
 export const START = -Math.PI / 2; // erste Sektorgrenze zeigt nach oben
 const SAMPLE_STEP = Math.PI / 36; // Zwischenpunkte am Rand, damit auch Mischformen rund wirken
 
-/**
- * Reihenfolge im Uhrzeigersinn ab der Grenze oben: oben rechts, unten rechts, Gäste,
- * unten links, oben links. So schieben sich Gäste unten zwischen die beiden unteren Ecken.
- * Positionen der Stammbesetzung: 1 = oben links, 2 = oben rechts, 3 = unten links, 4 = unten rechts
- */
-export function orderClockwise(core, guests) {
-  const byPos = (pos) => core.filter((m) => m.image_position === pos);
-  const rest = core.filter((m) => ![1, 2, 3, 4].includes(m.image_position));
-  return [...byPos(2), ...byPos(4), ...rest, ...guests, ...byPos(3), ...byPos(1)];
-}
-
 const lerp = (a, b, t) => a + (b - a) * t;
 const dir = (angle) => ({ x: Math.cos(angle), y: Math.sin(angle) });
 const add = (p, v, s = 1) => ({ x: p.x + v.x * s, y: p.y + v.y * s });
@@ -93,12 +82,7 @@ export function targetParams(members, visible, expandedId) {
 
   members.forEach((member) => {
     const index = visible.indexOf(member);
-    if (index === -1) {
-      // Eingeklappter Gast: Sektor ohne Breite an der Unterkante, wächst von dort auf
-      const bottom = Math.PI / 2;
-      params[member.id] = { a0: bottom, a1: bottom, e: 0, o0: bottom, o1: bottom };
-      return;
-    }
+    if (index === -1) return;
 
     const [a0, a1] = bounds(index);
     const expanded = member.id === expandedId && n > 1;

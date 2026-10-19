@@ -159,63 +159,9 @@ $members_fade: 0.3s;
           pointer-events: auto;
         }
       }
-
-      // Noch nicht eingeblendete Special Guests warten als Strich zwischen den unteren Ecken
-      &.hidden-guest {
-        opacity: 0;
-        pointer-events: none;
-        z-index: 5;
-      }
     }
   }
 
-  // Frei stehender Button unter dem Grid
-  .members-cta {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    width: fit-content;
-    margin: clamp(1.5rem, 3vw, 2.25rem) auto 0;
-    padding: 0.7rem 1.4rem 0.7rem 1.6rem;
-    background: rgba(10, 10, 14, 0.62);
-    color: $cream;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 999px;
-    box-shadow: 0 16px 30px -18px rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    font-family: $font_display;
-    font-size: 1rem;
-    letter-spacing: 0.02em;
-    cursor: pointer;
-    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
-
-    .members-cta-icon {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      width: 1.4em;
-      height: 1.4em;
-      border-radius: 50%;
-      border: 1px solid currentColor;
-      line-height: 1;
-      transition: transform $members_move $members_ease;
-    }
-
-    &:hover {
-      color: #fff;
-      background-color: lighten($ink, 6%);
-    }
-
-    &:focus-visible {
-      outline: 2px solid $yellow_1;
-      outline-offset: 3px;
-    }
-
-    &.open .members-cta-icon {
-      transform: rotate(45deg);
-    }
-  }
 }
 
 

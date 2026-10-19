@@ -70,8 +70,8 @@ function MembersManagement() {
         lastname: "Mitglied",
         instrument: "Instrument",
         description: "Beschreibung",
-        image_position: 1,
-        isGuest: false,
+        // Neues Mitglied kommt ans Ende (letzter Platz im Uhrzeigersinn)
+        image_position: Math.max(0, ...(membersArrStore || []).map((m) => m.image_position || 0)) + 1,
         image_id: null,
         images: { sm: '', md: '', lg: '' }
       };

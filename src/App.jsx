@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { lazy, Suspense } from "react";
 import "./sass/App.scss";
 import axios from "axios";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -14,9 +14,11 @@ import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRoute from "./services/AdminRoute";
-import AdminDashboard from "./pages/AdminDashboard";
 import BackgroundStripes from "./components/Layout/BackgroundStripes";
 import Notification from "./components/Snippets/Notification";
+
+// Dashboard (Bild-Zuschnitt, Verwaltung) erst laden, wenn jemand eingeloggt /admin öffnet
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 function App() {
 
@@ -51,7 +53,7 @@ function App() {
 
             {/* Nur mit gültigem Login-Token erreichbar */}
             <Route element={<AdminRoute />}>
-              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin" element={<Suspense fallback={null}><AdminDashboard /></Suspense>} />
             </Route>
 
           </Route>

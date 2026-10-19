@@ -3,15 +3,19 @@ import axios from "axios";
 import FlourishText from "../components/Snippets/FlourishText";
 import "../sass/Repertoire-page.scss";
 
-// Bandfarben (variables.scss) – je acht Titel ein Farbband wie an der Musikbox
-const COLORS = ["red_2", "red_1", "yellow_2", "yellow_1", "blue_4", "blue_3", "blue_2", "blue_1"];
+/** Stabiler Pseudo-Zufall je Titel, damit Größe und Farbe bei jedem Laden gleich bleiben */
+function hash(text) {
+  let h = 0;
+  for (let i = 0; i < text.length; i++) h = (h * 31 + text.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+const SIZES = ["s", "m", "l", "xl"];
 
 const byTitle = (a, b) => a.title.localeCompare(b.title, "de", { sensitivity: "base" });
 
-// Wahlcodes wie an der Musikbox: A1–A8, B1–B8 …
-const selectionCode = (i) => `${String.fromCharCode(65 + Math.floor(i / 8))}${(i % 8) + 1}`;
-
-// Öffentliche Seite: unser Repertoire als Jukebox-Titelstreifen
+// Öffentliche Seite: unser Repertoire als Konzertplakat – Titel in wechselnden Größen und Farben,
+// getrennt durch Sterne, Interpret klein dahinter
 function Repertoire() {
   const [songs, setSongs] = useState([]);
   const [status, setStatus] = useState("loading");
@@ -36,19 +40,20 @@ function Repertoire() {
       {status === "ready" && songs.length === 0 && <p className="rep-message">Hier erscheinen bald unsere Songs.</p>}
 
       {songs.length > 0 && (
-        <div className="rep-jukebox">
-          <ul className="rep-jukebox-grid">
-            {songs.map((song, i) => (
-              <li key={song.id} className={`rep-strip band-${COLORS[Math.floor(i / 8) % COLORS.length]}`}>
-                <span className="rep-code" aria-hidden="true">{selectionCode(i)}</span>
-                <span className="rep-strip-text">
-                  <span className="rep-title">{song.title}</span>
-                  <span className="rep-artist">{song.artist}</span>
-                </span>
+        <ul className="rep-poster">
+          {songs.map((song) => {
+            const h = hash(song.title);
+            // Kurze Titel dürfen größer werden, lange bleiben lesbar klein
+            const base = song.title.length > 22 ? 0 : song.title.length > 14 ? 1 : 2;
+            const size = SIZES[Math.min(3, base + (h % 2))];
+            return (
+              <li key={song.id} className={`rep-poster-item size-${size} tone-${h % 4}`}>
+                <span className="rep-title">{song.title}</span>
+                <span className="rep-artist">{song.artist}</span>
               </li>
-            ))}
-          </ul>
-        </div>
+            );
+          })}
+        </ul>
       )}
     </section>
   );

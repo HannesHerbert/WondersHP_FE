@@ -1,17 +1,6 @@
 @import "./variables.scss";
 
-// Öffentliche Seite /repertoire – Jukebox-Titelstreifen
-$rep_colors: (
-  "red_2": $red_2,
-  "red_1": $red_1,
-  "yellow_2": $yellow_2,
-  "yellow_1": $yellow_1,
-  "blue_4": $blue_4,
-  "blue_3": $blue_3,
-  "blue_2": $blue_2,
-  "blue_1": $blue_1,
-);
-
+// Öffentliche Seite /repertoire – Konzertplakat (Titel als Fließsatz wie ein Siebdruck-Poster)
 #repertoire {
   color: #fff;
 
@@ -40,98 +29,55 @@ $rep_colors: (
   }
 }
 
-// ─── Jukebox ────────────────────────────────────────────────────────────────
-// Titelstreifen wie in einer Musikbox, je acht Titel ein Farbband
-#repertoire .rep-jukebox {
-  padding: clamp(1rem, 3vw, 1.75rem);
-  border-radius: 28px 28px $radius_lg $radius_lg;
+// ─── Konzertplakat ──────────────────────────────────────────────────────────
+// Titel als Fließsatz in wechselnden Größen, Sterne als Trenner, Interpret klein dahinter
+#repertoire .rep-poster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.35em 0;
+  padding: clamp(1.5rem, 5vw, 3.5rem) clamp(1rem, 4vw, 3rem);
+  text-align: center;
+  line-height: 1.05;
+  @include card;
   background:
-    linear-gradient(180deg, rgba($yellow_2, 0.25), transparent 30%),
-    linear-gradient(90deg, $red_2, $red_1 12%, $red_1 88%, $red_2);
-  box-shadow: $shadow_card, inset 0 0 0 3px rgba($cream, 0.25);
-}
+    radial-gradient(ellipse at 50% 0%, rgba($yellow_2, 0.18), transparent 60%),
+    $surface_strong;
 
-#repertoire .rep-jukebox-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
-  gap: 0.5rem;
-  padding: clamp(0.75rem, 2vw, 1.25rem);
-  border-radius: $radius_md;
-  background: rgba(10, 10, 14, 0.85);
-  box-shadow: inset 0 6px 18px rgba(0, 0, 0, 0.8);
+  .rep-poster-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35em;
 
-  .rep-strip {
-    display: grid;
-    grid-template-columns: 2.6rem minmax(0, 1fr);
-    align-items: stretch;
-    border-radius: 6px;
-    overflow: hidden;
-    background: $cream;
-    color: $ink;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
-    transition: transform 0.15s ease;
-
-    &:hover {
-      transform: translateY(-2px);
+    &:not(:last-child)::after {
+      content: "✶";
+      margin: 0 0.45em 0 0.4em;
+      font-size: 0.55em;
+      color: rgba($cream, 0.45);
+      transform: translateY(-0.15em);
     }
   }
 
-  .rep-code {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: $font_display;
-    font-size: 0.95rem;
-    color: #fff;
-  }
-
-  @each $name, $color in $rep_colors {
-    .band-#{$name} .rep-code {
-      background: $color;
-    }
-  }
-
-  .band-yellow_1 .rep-code {
-    color: $ink;
-  }
-
-  .rep-strip-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0;
-    padding: 0.45rem 0.7rem;
+  .rep-title {
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
   }
 
   .rep-artist {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-family: $font_body;
+    font-size: clamp(0.65rem, 0.6rem + 0.2vw, 0.8rem);
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.55);
     white-space: nowrap;
   }
 
-  // Lange Titel dürfen zweizeilig werden statt abgeschnitten
-  // Trennlinie zwischen Titel und Interpret wie auf echten Jukebox-Etiketten
-  .rep-title {
-    padding-bottom: 0.2rem;
-    margin-bottom: 0.15rem;
-    border-bottom: 1px solid rgba($red_1, 0.35);
-    font-size: 0.98rem;
-    line-height: 1.25;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+  .size-s .rep-title { font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.4rem); }
+  .size-m .rep-title { font-size: clamp(1.35rem, 1.1rem + 1vw, 2rem); }
+  .size-l .rep-title { font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.7rem); }
+  .size-xl .rep-title { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.4rem); }
 
-  .rep-artist {
-    font-size: 0.78rem;
-    line-height: 1.5;
-    color: rgba($ink, 0.7);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #repertoire .rep-jukebox-grid .rep-strip {
-    transition: none;
-  }
+  .tone-0 .rep-title { color: $cream; }
+  .tone-1 .rep-title { color: $yellow_2; }
+  .tone-2 .rep-title { color: #fff; }
+  .tone-3 .rep-title { color: lighten($blue_4, 18%); }
 }
